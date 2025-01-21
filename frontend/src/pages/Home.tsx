@@ -18,7 +18,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
-            <span className="text-white">Hostel </span>
+            <span className="text-white"> </span>
             <span className="text-blue-400">Management </span>
             <span className="text-white">System</span>
           </motion.h1>
