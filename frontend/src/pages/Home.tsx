@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import hostelImage from '../assets/hms-logo.png';
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import hostelImage from "../assets/24501993.jpg";
 
 export default function Home() {
   return (
@@ -40,7 +40,7 @@ export default function Home() {
             >
               <Link
                 to="/login"
-                className="bg-[#00F2F2] text-[#004D40] px-20 py-3 rounded-full   text-xl font-medium
+                className="bg-[#00F2F2] text-[#004D40] px-20 py-3 rounded-full text-xl font-medium
                 hover:bg-opacity-90 transition-colors duration-300 inline-block"
               >
                 Login
@@ -89,4 +89,3 @@ export default function Home() {
     </div>
   );
 }
-
