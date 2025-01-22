@@ -19,7 +19,7 @@ export default function Home() {
             transition={{ delay: 0.2, duration: 0.8 }}
           >
             <span className="text-white">Hostel </span>
-            <span className="text-blue-400">Management </span>
+            <span className="text-blue-500">Management </span>
             <span className="text-white">System</span>
           </motion.h1>
 
