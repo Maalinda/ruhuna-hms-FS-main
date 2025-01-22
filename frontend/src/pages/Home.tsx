@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import hostelImage from "../assets/24501993.jpg";
+import hostelImage from "../assets/hms-logo.png";
 
 export default function Home() {
   return (
