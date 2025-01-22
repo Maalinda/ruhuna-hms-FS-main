@@ -40,13 +40,20 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-[#00695C] to-primary-dark flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full bg-white rounded-xl shadow-2xl p-6 sm:p-8">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-gray-800">Login</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-gray-800">
+          Login
+        </h2>
         {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Email
+            </label>
             <input
               type="email"
               id="email"
@@ -58,7 +65,12 @@ function Login() {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Password
+            </label>
             <input
               type="password"
               id="password"
@@ -77,7 +89,7 @@ function Login() {
           </button>
         </form>
         <p className="mt-4 text-center text-sm text-gray-600">
-          Don't have an account?{' '}
+          Don't have an account?{" "}
           <Link to="/register" className="text-accent hover:underline">
             Create Account
           </Link>

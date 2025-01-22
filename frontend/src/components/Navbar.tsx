@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { User } from "lucide-react";
 import logo from "../assets/logo.png";
@@ -10,6 +10,7 @@ function Navbar() {
   const navRef = useRef<HTMLDivElement>(null);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -29,6 +30,8 @@ function Navbar() {
     navigate("/");
   };
 
+  const isActive = (path: string) => location.pathname === path;
+
   return (
     <nav
       ref={navRef}
@@ -43,13 +46,17 @@ function Navbar() {
           <div className="hidden md:flex items-center space-x-6">
             <Link
               to="/about"
-              className="text-white hover:text-accent transition-colors font-bold"
+              className={`text-white hover:text-accent transition-colors font-bold ${
+                isActive("/about") ? "border-b-2 border-accent" : ""
+              }`}
             >
               About
             </Link>
             <Link
               to="/contact"
-              className="text-white hover:text-accent transition-colors font-bold"
+              className={`text-white hover:text-accent transition-colors font-bold ${
+                isActive("/contact") ? "border-b-2 border-accent" : ""
+              }`}
             >
               Contact Us
             </Link>
@@ -70,19 +77,25 @@ function Navbar() {
               <>
                 <Link
                   to="/register"
-                  className="text-white hover:text-accent transition-colors font-bold"
+                  className={`text-white hover:text-accent transition-colors font-bold ${
+                    isActive("/register") ? "border-b-2 border-accent" : ""
+                  }`}
                 >
                   Sign Up
                 </Link>
                 <Link
                   to="/admin"
-                  className="text-white hover:text-accent transition-colors font-bold"
+                  className={`text-white hover:text-accent transition-colors font-bold ${
+                    isActive("/admin") ? "border-b-2 border-accent" : ""
+                  }`}
                 >
                   Admin Login
                 </Link>
                 <Link
                   to="/login"
-                  className="bg-accent text-primary px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors font-bold"
+                  className={`bg-accent text-primary px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors font-bold ${
+                    isActive("/login") ? "border-b-2 border-accent" : ""
+                  }`}
                 >
                   Login
                 </Link>
@@ -126,13 +139,17 @@ function Navbar() {
             <div className="flex flex-col items-center py-4 space-y-4">
               <Link
                 to="/about"
-                className="text-white hover:text-accent transition-colors"
+                className={`text-white hover:text-accent transition-colors ${
+                  isActive("/about") ? "border-b-2 border-accent" : ""
+                }`}
               >
                 About
               </Link>
               <Link
                 to="/contact"
-                className="text-white hover:text-accent transition-colors"
+                className={`text-white hover:text-accent transition-colors ${
+                  isActive("/contact") ? "border-b-2 border-accent" : ""
+                }`}
               >
                 Contact Us
               </Link>
@@ -153,19 +170,25 @@ function Navbar() {
                 <>
                   <Link
                     to="/register"
-                    className="text-white hover:text-accent transition-colors"
+                    className={`text-white hover:text-accent transition-colors ${
+                      isActive("/register") ? "border-b-2 border-accent" : ""
+                    }`}
                   >
                     Sign Up
                   </Link>
                   <Link
                     to="/admin"
-                    className="text-white hover:text-accent transition-colors"
+                    className={`text-white hover:text-accent transition-colors ${
+                      isActive("/admin") ? "border-b-2 border-accent" : ""
+                    }`}
                   >
                     Admin Login
                   </Link>
                   <Link
                     to="/login"
-                    className="bg-accent text-primary px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors"
+                    className={`bg-accent text-primary px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors ${
+                      isActive("/login") ? "border-b-2 border-accent" : ""
+                    }`}
                   >
                     Login
                   </Link>
