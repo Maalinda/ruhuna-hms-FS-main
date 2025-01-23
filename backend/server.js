@@ -16,14 +16,21 @@ const formatPrivateKey = (key) => {
   return key.replace(/\\n/g, '\n');
 };
 
-// Initialize Firebase
-admin.initializeApp({
-  credential: admin.credential.cert({
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: formatPrivateKey(process.env.FIREBASE_PRIVATE_KEY),
-  }),
-});
+// Initialize Firebase with error handling
+try {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: formatPrivateKey(process.env.FIREBASE_PRIVATE_KEY),
+    }),
+  });
+  console.log('Firebase initialized successfully');
+} catch (error) {
+  console.error('Error initializing Firebase:', error);
+  process.exit(1); // Exit the application if Firebase fails to initialize
+}
+
 
 const db = getFirestore();
 
@@ -126,4 +133,3 @@ app.listen(PORT, () => {
 });
 
 console.log("Server started successfully :)");
-
