@@ -35,7 +35,7 @@ const ContactUs: React.FC = () => {
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-bold text-gray-700 mb-1"
             >
               Name
             </label>
@@ -52,7 +52,7 @@ const ContactUs: React.FC = () => {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-bold text-gray-700 mb-1"
             >
               Email
             </label>
@@ -69,7 +69,7 @@ const ContactUs: React.FC = () => {
           <div>
             <label
               htmlFor="message"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-bold text-gray-700 mb-1"
             >
               Message
             </label>
@@ -85,7 +85,7 @@ const ContactUs: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-accent text-primary py-2 rounded-md hover:bg-opacity-90 transition-colors font-semibold"
+            className="w-full bg-accent text-primary py-2 rounded-md hover:bg-opacity-90 transition-colors font-bold"
           >
             Send Message
           </button>
