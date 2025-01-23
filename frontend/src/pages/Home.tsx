@@ -82,7 +82,7 @@ export default function Home() {
             alt="Hostel Building"
             className="w-64 lg:w-80 h-auto"
             whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
           />
         </motion.div>
       </div>
