@@ -90,7 +90,10 @@ function Login() {
         </form>
         <p className="mt-4 text-center text-sm text-gray-600">
           Don't have an account?{" "}
-          <Link to="/register" className="text-accent hover:underline">
+          <Link
+            to="/register"
+            className="text-[#3182ce] hover:underline font-bold"
+          >
             Create Account
           </Link>
         </p>
