@@ -1,35 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-const Contact: React.FC = () => {
+const ContactUs: React.FC = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
+    name: "",
+    email: "",
+    message: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Here you would typically send the form data to a server
-    console.log('Form submitted:', formData);
+    console.log("Form submitted:", formData);
     // Reset form after submission
-    setFormData({ name: '', email: '', message: '' });
+    setFormData({ name: "", email: "", message: "" });
   };
 
   return (
     <div className="container mx-auto px-4 py-20">
-      <h1 className="text-4xl font-bold mb-8 text-white text-center">Contact Us</h1>
+      <h1 className="text-4xl font-bold mb-8 text-white text-center">
+        Contact Us
+      </h1>
       <div className="bg-white rounded-lg shadow-lg p-8">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Name
+            </label>
             <input
               type="text"
               id="name"
@@ -41,7 +50,12 @@ const Contact: React.FC = () => {
             />
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Email
+            </label>
             <input
               type="email"
               id="email"
@@ -53,7 +67,12 @@ const Contact: React.FC = () => {
             />
           </div>
           <div>
-            <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+            <label
+              htmlFor="message"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Message
+            </label>
             <textarea
               id="message"
               name="message"
@@ -76,5 +95,4 @@ const Contact: React.FC = () => {
   );
 };
 
-export default Contact;
-
+export default ContactUs;
