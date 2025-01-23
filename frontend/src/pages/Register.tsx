@@ -52,12 +52,7 @@ function Register() {
         {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label
-              htmlFor="fullName"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Full Name
-            </label>
+            <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
             <input
               type="text"
               id="fullName"
@@ -69,12 +64,7 @@ function Register() {
             />
           </div>
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Email
-            </label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
             <input
               type="email"
               id="email"
@@ -86,12 +76,7 @@ function Register() {
             />
           </div>
           <div>
-            <label
-              htmlFor="phoneNumber"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Phone Number
-            </label>
+            <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
             <input
               type="tel"
               id="phoneNumber"
@@ -103,12 +88,7 @@ function Register() {
             />
           </div>
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Password
-            </label>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input
               type="password"
               id="password"
@@ -120,12 +100,7 @@ function Register() {
             />
           </div>
           <div>
-            <label
-              htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Confirm Password
-            </label>
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
             <input
               type="password"
               id="confirmPassword"
@@ -138,7 +113,7 @@ function Register() {
           </div>
           <button
             type="submit"
-            className="w-full bg-accent text-primary py-2 rounded-md hover:bg-opacity-90 transition-colors font-semibold"
+            className="w-full bg-accent text-primary py-2 rounded-md hover:bg-opacity-90 transition-colors font-bold"
           >
             Create Account
           </button>
