@@ -30,7 +30,7 @@ const ContactUs: React.FC = () => {
       <h1 className="text-4xl font-bold mb-8 text-white text-center">
         Contact Us
       </h1>
-      <div className="bg-white rounded-lg shadow-lg p-8">
+      <div className="bg-white rounded-lg shadow-lg p-8 max-w-lg mx-auto">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label
@@ -83,12 +83,14 @@ const ContactUs: React.FC = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
             ></textarea>
           </div>
-          <button
-            type="submit"
-            className="w-full bg-accent text-primary py-2 rounded-md hover:bg-opacity-90 transition-colors font-bold"
-          >
-            Send Message
-          </button>
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="bg-accent text-primary py-3 rounded-md hover:bg-opacity-100 transition-colors font-bold"
+            >
+              Send Message
+            </button>
+          </div>
         </form>
       </div>
     </div>
