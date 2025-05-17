@@ -7,7 +7,7 @@ export default function Footer() {
           <img
             src="/images/logo_copy.png"
             alt="Ruhuna Logo"
-            className="w-20 h-20 mr-4"
+            className="w-90 h-22 mr-4"
           />
           <span className="text-5xl font-serif text-black">HMS</span>
         </div>
