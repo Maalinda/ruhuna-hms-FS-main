@@ -1,55 +1,42 @@
-import { Link } from "react-router-dom"
-
 export default function Footer() {
   return (
-    <footer className="bg-[#4a2d5f] text-white py-8">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Student Accommodation</h3>
-            <p className="text-gray-300">Providing affordable and comfortable housing solutions for students.</p>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/" className="text-gray-300 hover:text-white">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/apply" className="text-gray-300 hover:text-white">
-                  Apply for Housing
-                </Link>
-              </li>
-              <li>
-                <Link to="/login" className="text-gray-300 hover:text-white">
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link to="/register" className="text-gray-300 hover:text-white">
-                  Register
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Contact Us</h3>
-            <address className="not-italic text-gray-300">
-              <p>Email: info@studenthousing.com</p>
-              <p>Phone: +1 (123) 456-7890</p>
-              <p>Address: 123 University Ave, College Town</p>
-            </address>
-          </div>
+    <footer className="bg-[#c894e6] border-t-4  border-[#8528a6] border-b-2 border-[#3b82f6] p-2">
+      <div className="container mx-auto flex flex-col md:flex-row justify-between items-start md:items-start">
+        {/* Logo and HMS */}
+        <div className="flex items-center mb-2 md:mb-0 md:mr-8">
+          <img
+            src="/images/logo_copy.png"
+            alt="Ruhuna Logo"
+            className="w-20 h-20 mr-4"
+          />
+          <span className="text-5xl font-serif text-black">HMS</span>
         </div>
-
-        <div className="mt-8 pt-8 border-t border-gray-700 text-center text-gray-300">
-          <p>&copy; {new Date().getFullYear()} Student Accommodation. All rights reserved.</p>
+        {/* Contact Info */}
+        <div className="text-black text-base md:text-right">
+          <div className="mb-1 mt-2 md:mt-0">Contact us</div>
+          <div>Faculty of Engineering, Hapugala, Galle, Sri Lanka.</div>
+          <div>
+            Phone : + (94)0 91 2245765/6; Email:
+            <a
+              href="mailto:webmaster@eng.ruh.ac.lk"
+              className="ml-1 underline text-black"
+            >
+              webmaster@eng.ruh.ac.lk
+            </a>
+          </div>
         </div>
       </div>
+      {/* Description */}
+      <div className="container mx-auto mt-2">
+        <p className="text-center font-bold text-black text-lg leading-tight">
+          The Faculty of Engineering of University of Ruhuna was established on{" "}
+          <br />
+          1st July 1999 at Hapugala, Galle. Admission to the Faculty of <br />
+          Engineering, University of Ruhuna, is subject to the University Grants{" "}
+          <br />
+          Commission policy on university admissions.
+        </p>
+      </div>
     </footer>
-  )
+  );
 }
