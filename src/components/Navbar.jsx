@@ -24,19 +24,21 @@ export default function Navbar() {
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-          <h4 className="text-5xl text-[#F6BD1A] md:text-5xl font-bold mb-6">
+          
+            <Link to="/" className="flex items-center">
+            <h4 className="text-5xl text-[#F6BD1A] md:text-5xl font-bold mb-6">
               ENG
             </h4>
-            <Link to="/" className="flex items-center">
               <img
                 src="/images/logo_copy.png"
                 alt="Student Accommodation Logo"
                 className="h-20 w-auto"
               />
-            </Link>
-            <h4 className="text-5xl text-[#F6BD1A] md:text-5xl font-bold mb-6">
+              <h4 className="text-5xl text-[#F6BD1A] md:text-5xl font-bold mb-6">
               HMS
             </h4>
+            </Link>
+            
           </div>
 
           {/* Desktop Navigation */}
