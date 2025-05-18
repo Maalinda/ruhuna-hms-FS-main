@@ -6,7 +6,7 @@ import {
   ArrowRight,
   Wifi,
   Coffee,
-  Utensils,
+  ShowerHead,
   BookOpen,
   Users,
   Shield,
@@ -169,15 +169,14 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-
                 <div className="flex items-start">
                   <div className="mr-4 mt-1">
-                    <Utensils className="h-5 w-5 text-[#e91e63]" />
+                    <ShowerHead className="h-5 w-5 text-[#e91e63]" /> {/* Changed icon */}
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Shared Kitchens</h3>
+                    <h3 className="font-semibold mb-1">Modern Washrooms</h3>
                     <p className="text-sm text-gray-600">
-                      Fully equipped kitchens for preparing your meals.
+                      Our washrooms are kept clean and feature mirrors, sinks, and individual shower facilities for your comfort and privacy.
                     </p>
                   </div>
                 </div>
@@ -217,7 +216,7 @@ export default function Home() {
             <div className="md:w-1/2 order-1 md:order-2">
               <div className="rounded-lg h-[400px] overflow-hidden">
                 <img
-                  src="/images/facilities.jpg"
+                  src="/images/facilities.jpeg"
                   alt="Modern hostel facilities"
                   className="w-full h-full object-cover"
                 />
