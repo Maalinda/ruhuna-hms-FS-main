@@ -1,38 +1,45 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { useAuth } from "../contexts/AuthContext"
-import { Search, Menu, X } from "lucide-react"
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { Search, Menu, X } from "lucide-react";
 
 export default function Navbar() {
-  const { currentUser, logout, userRole } = useAuth()
-  const navigate = useNavigate()
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { currentUser, logout, userRole } = useAuth();
+  const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   async function handleLogout() {
     try {
-      await logout()
-      navigate("/")
+      await logout();
+      navigate("/");
     } catch (error) {
-      console.error("Failed to log out", error)
+      console.error("Failed to log out", error);
     }
   }
 
   return (
-    <header className="bg-gray-100 shadow-sm">
+    <header className="bg-[#821010] shadow-sm text-black">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <img src="/images/logo_copy.png" alt="Student Accommodation Logo" className="h-20 w-auto" />
+              <img
+                src="/images/logo_copy.png"
+                alt="Student Accommodation Logo"
+                className="h-20 w-auto"
+              />
             </Link>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
             <div className="relative">
-              <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+              <Search
+                size={20}
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+              />
               <input
                 type="text"
                 placeholder="Search"
@@ -43,20 +50,23 @@ export default function Navbar() {
             {currentUser ? (
               <>
                 {userRole === "admin" && (
-                  <Link to="/admin" className="text-[#4a2d5f] hover:text-[#3a2249]">
+                  <Link to="/admin" className="text-black hover:text-gray-700">
                     Admin Dashboard
                   </Link>
                 )}
-                <button onClick={handleLogout} className="text-[#4a2d5f] hover:text-[#3a2249]">
+                <button
+                  onClick={handleLogout}
+                  className="text-black hover:text-gray-700"
+                >
                   Logout
                 </button>
               </>
             ) : (
               <>
-                <Link to="/login" className="text-[#4a2d5f] hover:text-[#3a2249]">
+                <Link to="/login" className="text-black hover:text-gray-700">
                   Login
                 </Link>
-                <Link to="/register" className="text-[#4a2d5f] hover:text-[#3a2249]">
+                <Link to="/register" className="text-black hover:text-gray-700">
                   Register
                 </Link>
               </>
@@ -69,7 +79,10 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="bg-[#4a2d5f] text-white rounded-full p-2">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="bg-[#4a2d5f] text-white rounded-full p-2"
+            >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
@@ -80,7 +93,10 @@ export default function Navbar() {
           <div className="md:hidden mt-4 pb-4">
             <div className="flex flex-col space-y-4">
               <div className="relative">
-                <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+                <Search
+                  size={20}
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                />
                 <input
                   type="text"
                   placeholder="Search"
@@ -93,7 +109,7 @@ export default function Navbar() {
                   {userRole === "admin" && (
                     <Link
                       to="/admin"
-                      className="text-[#4a2d5f] hover:text-[#3a2249]"
+                      className="text-black hover:text-gray-700"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Admin Dashboard
@@ -101,10 +117,10 @@ export default function Navbar() {
                   )}
                   <button
                     onClick={() => {
-                      handleLogout()
-                      setIsMenuOpen(false)
+                      handleLogout();
+                      setIsMenuOpen(false);
                     }}
-                    className="text-[#4a2d5f] hover:text-[#3a2249] text-left"
+                    className="text-black hover:text-gray-700 text-left"
                   >
                     Logout
                   </button>
@@ -113,14 +129,14 @@ export default function Navbar() {
                 <>
                   <Link
                     to="/login"
-                    className="text-[#4a2d5f] hover:text-[#3a2249]"
+                    className="text-black hover:text-gray-700"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Login
                   </Link>
                   <Link
                     to="/register"
-                    className="text-[#4a2d5f] hover:text-[#3a2249]"
+                    className="text-black hover:text-gray-700"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Register
@@ -132,5 +148,5 @@ export default function Navbar() {
         )}
       </div>
     </header>
-  )
+  );
 }

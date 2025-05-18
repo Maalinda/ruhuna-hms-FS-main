@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { Link } from "react-router-dom"
-import { useAuth } from "../contexts/AuthContext"
+import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import {
   ArrowRight,
   Wifi,
@@ -15,16 +15,16 @@ import {
   Star,
   ChevronDown,
   ChevronUp,
-} from "lucide-react"
-import { useState } from "react"
+} from "lucide-react";
+import { useState } from "react";
 
 export default function Home() {
-  const { currentUser } = useAuth()
-  const [activeAccordion, setActiveAccordion] = useState(null)
+  const { currentUser } = useAuth();
+  const [activeAccordion, setActiveAccordion] = useState(null);
 
   const toggleAccordion = (index) => {
-    setActiveAccordion(activeAccordion === index ? null : index)
-  }
+    setActiveAccordion(activeAccordion === index ? null : index);
+  };
 
   const faqs = [
     {
@@ -52,7 +52,7 @@ export default function Home() {
       answer:
         "While we don't enforce a strict curfew, we do have quiet hours from 10 PM to 6 AM to ensure all residents can rest and study without disturbance.",
     },
-  ]
+  ];
 
   return (
     <div>
@@ -62,13 +62,13 @@ export default function Home() {
           <img
             src="/images/faculty.jpg"
             alt="Students at campus hostel"
-            className="w-full h-full object-cover blur-sm" // Change blur-md to your desired strength
+            className="w-full h-full object-cover blur-sm"
           />
         </div>
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="text-center text-[#ffffff] p-4 max-w-4xl">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Hostal Managment System Faculty of Enfineering Univercity of
+              Hostal Managment System Faculty of Engineering University of
               Ruhuna
             </h1>
             <p className="text-xl md:text-2xl font-bold mb-8">
@@ -322,6 +322,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
+      {/*
       <section className="py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -423,6 +424,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      */}
 
       {/* FAQ Section */}
       <section className="py-16 bg-white">
