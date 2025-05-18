@@ -41,7 +41,7 @@ export default function Home() {
     {
       question: "What security measures are in place?",
       answer:
-        "Our hostels are equipped with 24/7 security personnel, CCTV surveillance, secure access cards for entry, and emergency response systems to ensure the safety of all residents.",
+        "With 24/7 on‑site security staff, our hostels provide a safe environment you can trust.",
     },
     {
       question: "Is there a curfew?",
