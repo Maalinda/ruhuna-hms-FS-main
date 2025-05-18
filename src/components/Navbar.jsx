@@ -26,17 +26,13 @@ export default function Navbar() {
           <div className="flex items-center">
           
             <Link to="/" className="flex items-center">
-            <h4 className="text-5xl text-[#F6BD1A] md:text-5xl font-bold mb-6">
-              ENG
-            </h4>
+            <span className="text-yellow-400 text-4xl font-bold">ENG</span>
               <img
                 src="/images/logo_copy.png"
                 alt="Student Accommodation Logo"
                 className="h-20 w-auto"
               />
-              <h4 className="text-5xl text-[#F6BD1A] md:text-5xl font-bold mb-6">
-              HMS
-            </h4>
+              <span className="text-yellow-400 text-4xl font-bold">HMS</span>
             </Link>
             
           </div>
