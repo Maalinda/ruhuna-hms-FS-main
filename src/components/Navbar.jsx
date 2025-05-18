@@ -25,8 +25,9 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
+            
               <img
-                src="/images/logo1.png"
+                src="/images/logo_copy.png"
                 alt="Student Accommodation Logo"
                 className="h-20 w-auto"
               />
