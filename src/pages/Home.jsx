@@ -156,17 +156,7 @@ export default function Home() {
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="flex items-start">
-                  <div className="mr-4 mt-1">
-                    <Wifi className="h-5 w-5 text-[#e91e63]" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1">High-Speed WiFi</h3>
-                    <p className="text-sm text-gray-600">
-                      Stay connected with fast, reliable internet access.
-                    </p>
-                  </div>
-                </div>
+
 
                 <div className="flex items-start">
                   <div className="mr-4 mt-1">
