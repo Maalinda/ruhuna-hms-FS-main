@@ -497,11 +497,13 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center gap-12">
             <div className="md:w-1/2">
               <div className="rounded-lg h-[400px] overflow-hidden">
+              <a href="https://www.google.com/maps/search/faculty+of+engineering+university+of+ruhuna/@6.0796372,80.1909688,17.75z?entry=ttu&g_ep=EgoyMDI1MDUxMy4xIKXMDSoASAFQAw%3D%3D" target="_blank">
                 <img
-                  src="/images/location-map.png"
+                  src="/images/Hostel Locations.png"
                   alt="Map showing hostel locations"
                   className="w-full h-full object-cover"
                 />
+                </a>
               </div>
             </div>
 
