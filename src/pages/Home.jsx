@@ -68,8 +68,9 @@ export default function Home() {
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="text-center text-[#ffffff] p-4 max-w-4xl">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Hostal Managment System Faculty of Engineering University of
-              Ruhuna
+              Hostal Managment System
+              Faculty of Engineering
+
             </h1>
             <p className="text-xl md:text-2xl font-bold mb-8">
               Experience comfortable, affordable, and community-focused living
@@ -456,9 +457,8 @@ export default function Home() {
                   )}
                 </button>
                 <div
-                  className={`px-4 pb-4 ${
-                    activeAccordion === index ? "block" : "hidden"
-                  }`}
+                  className={`px-4 pb-4 ${activeAccordion === index ? "block" : "hidden"
+                    }`}
                 >
                   <p className="text-gray-600">{faq.answer}</p>
                 </div>
