@@ -33,15 +33,11 @@ export default function Home() {
         "The application process is simple. Create an account, log in, and click on the 'Apply' button. Fill out the application form with your personal and academic details, and submit it. Our team will review your application and get back to you within 5-7 business days.",
     },
     {
-      question: "Are utilities included in the hostel fee?",
+      question: "Is there a fee for staying in the hostel?",
       answer:
-        "Yes, all utilities including electricity, water, heating, and high-speed internet are included in your hostel fee. There are no hidden charges or additional costs for these services.",
+        "Our hostels only charge a very small amount for one year. Essentially, the hostel is completely free for students, with only a minimal annual fee required.",
     },
-    {
-      question: "Can I choose my roommate?",
-      answer:
-        "Yes, you can request a specific roommate in your application form. If both parties request each other, we will do our best to accommodate your preference, subject to availability.",
-    },
+
     {
       question: "What security measures are in place?",
       answer:
@@ -322,7 +318,7 @@ export default function Home() {
         </div>
       </section>
       */}
-    
+
       {/* Testimonials Section */}
       {/*
       <section className="py-16 bg-gray-100">
