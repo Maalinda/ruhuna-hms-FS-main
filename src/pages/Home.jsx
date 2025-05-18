@@ -522,10 +522,10 @@ export default function Home() {
                   <div>
                     <h3 className="font-semibold">Hostel A</h3>
                     <p className="text-gray-600">
-                    Near Faculty cafeteria and Department of Electrical and Information engineering
+                    Near Faculty cafeteria and Department of Electrical and Information engineering.
                     </p>
                     <p className="text-gray-600">
-                      2 minutes walk to Departments Buildings
+                      2 minutes walk to Departments Buildings.
                     </p>
                   </div>
                 </div>
