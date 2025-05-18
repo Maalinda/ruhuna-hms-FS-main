@@ -1,21 +1,21 @@
 export default function Footer() {
   return (
-    <footer className="bg-[#9737ce] border-t-4 border-b-2 border-[#384254] p-2">
+    <footer className="bg-[#d79df9] border-t-4  ">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-start md:items-start">
         {/* Logo and HMS */}
         <div className="flex items-center mb-2 md:mb-0 md:mr-8">
           <img
             src="/images/logo_copy.png"
             alt="Ruhuna Logo"
-            className="w-20 h-20 mr-4"
+            className="w-25 h-20 mr-4"
           />
-          <span className="text-5xl font-serif text-black">HMS</span>
+          <span className="text-4xl font-serif text-black">HMS</span>
         </div>
       </div>
       {/* Description */}
       <div className="container mx-auto mt-2 flex flex-col md:flex-row">
         <div className="flex-1">
-          <p className="text-center font-bold text-black text-lg leading-tight">
+          <p className="text-center font text-black text-lg leading-tight">
             The Faculty of Engineering of University of Ruhuna was established
             on <br />
             1st July 1999 at Hapugala, Galle. Admission to the Faculty of <br />
