@@ -68,8 +68,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="text-center text-[#ffffff] p-4 max-w-4xl">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Hostal Managment System
-              Faculty of Engineering
+              Hostel Management System
 
             </h1>
             <p className="text-xl md:text-2xl font-bold mb-8">

@@ -63,16 +63,16 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <Link to="/login" className="text-black hover:text-gray-700">
+                <Link to="/login" className="text-white hover:text-gray-700">
                   Login
                 </Link>
-                <Link to="/register" className="text-black hover:text-gray-700">
+                <Link to="/register" className="text-white hover:text-gray-700">
                   Register
                 </Link>
               </>
             )}
 
-            <button className="bg-[#4a2d5f] text-white rounded-full p-2">
+            <button className="bg-[#ffc107] text-black rounded-full p-2">
               <Menu size={24} />
             </button>
           </div>
@@ -81,7 +81,7 @@ export default function Navbar() {
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="bg-[#4a2d5f] text-white rounded-full p-2"
+              className="bg-[#ffc107] text-black rounded-full p-2"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
