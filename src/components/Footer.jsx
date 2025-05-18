@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-[#d79df9] border-t-4  ">
+    <footer className="bg-[#6B3FA0] border-t-4  ">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-start md:items-start">
         {/* Logo and HMS */}
         <div className="flex items-center mb-2 md:mb-0 md:mr-8">
