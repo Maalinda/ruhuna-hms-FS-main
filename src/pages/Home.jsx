@@ -62,13 +62,14 @@ export default function Home() {
           <img
             src="/images/faculty.jpg"
             alt="Students at campus hostel"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover blur-sm" // Change blur-md to your desired strength
           />
         </div>
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="text-center text-[#ffffff] p-4 max-w-4xl">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Student Housing & Accommodation
+              Hostal Managment System Faculty of Enfineering Univercity of
+              Ruhuna
             </h1>
             <p className="text-xl md:text-2xl font-bold mb-8">
               Experience comfortable, affordable, and community-focused living
