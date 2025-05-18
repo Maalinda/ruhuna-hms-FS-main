@@ -59,13 +59,20 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative">
         <div className="h-[600px] relative overflow-hidden">
-          <img src="/images/faculty.jpg" alt="Students at campus hostel" className="w-full h-full object-cover" />
+          <img
+            src="/images/faculty.jpg"
+            alt="Students at campus hostel"
+            className="w-full h-full object-cover"
+          />
         </div>
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="text-center text-white p-4 max-w-4xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">Student Housing & Accommodation</h1>
-            <p className="text-xl md:text-2xl mb-8">
-              Experience comfortable, affordable, and community-focused living designed specifically for students.
+          <div className="text-center text-[#ffffff] p-4 max-w-4xl">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              Student Housing & Accommodation
+            </h1>
+            <p className="text-xl md:text-2xl font-bold mb-8">
+              Experience comfortable, affordable, and community-focused living
+              designed specifically for students.
             </p>
             {currentUser ? (
               <Link
@@ -90,10 +97,13 @@ export default function Home() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#4a2d5f]">Welcome to Student Accommodation</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#4a2d5f]">
+              Welcome to Student Accommodation
+            </h2>
             <p className="text-lg text-gray-700">
-              Our mission is to provide students with a safe, comfortable, and enriching living environment that
-              supports their academic success and personal growth.
+              Our mission is to provide students with a safe, comfortable, and
+              enriching living environment that supports their academic success
+              and personal growth.
             </p>
           </div>
 
@@ -104,7 +114,8 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold mb-2">Safe & Secure</h3>
               <p className="text-gray-600">
-                24/7 security, controlled access, and emergency support ensure your safety is our top priority.
+                24/7 security, controlled access, and emergency support ensure
+                your safety is our top priority.
               </p>
             </div>
 
@@ -114,7 +125,8 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold mb-2">Community Living</h3>
               <p className="text-gray-600">
-                Connect with fellow students, build lasting friendships, and enjoy community events and activities.
+                Connect with fellow students, build lasting friendships, and
+                enjoy community events and activities.
               </p>
             </div>
 
@@ -124,7 +136,8 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold mb-2">Study-Friendly</h3>
               <p className="text-gray-600">
-                Dedicated study spaces, high-speed internet, and quiet hours to support your academic success.
+                Dedicated study spaces, high-speed internet, and quiet hours to
+                support your academic success.
               </p>
             </div>
           </div>
@@ -140,8 +153,9 @@ export default function Home() {
                 Modern Facilities for a Comfortable Student Life
               </h2>
               <p className="text-gray-700 mb-8">
-                Our student accommodation is designed with your needs in mind. Enjoy a range of amenities that make your
-                stay comfortable, convenient, and conducive to both studying and socializing.
+                Our student accommodation is designed with your needs in mind.
+                Enjoy a range of amenities that make your stay comfortable,
+                convenient, and conducive to both studying and socializing.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -151,7 +165,9 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">High-Speed WiFi</h3>
-                    <p className="text-sm text-gray-600">Stay connected with fast, reliable internet access.</p>
+                    <p className="text-sm text-gray-600">
+                      Stay connected with fast, reliable internet access.
+                    </p>
                   </div>
                 </div>
 
@@ -161,7 +177,9 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Common Lounges</h3>
-                    <p className="text-sm text-gray-600">Relax and socialize in our comfortable common areas.</p>
+                    <p className="text-sm text-gray-600">
+                      Relax and socialize in our comfortable common areas.
+                    </p>
                   </div>
                 </div>
 
@@ -171,7 +189,9 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Shared Kitchens</h3>
-                    <p className="text-sm text-gray-600">Fully equipped kitchens for preparing your meals.</p>
+                    <p className="text-sm text-gray-600">
+                      Fully equipped kitchens for preparing your meals.
+                    </p>
                   </div>
                 </div>
 
@@ -181,18 +201,26 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">24/7 Access</h3>
-                    <p className="text-sm text-gray-600">Come and go as you please with secure 24/7 access.</p>
+                    <p className="text-sm text-gray-600">
+                      Come and go as you please with secure 24/7 access.
+                    </p>
                   </div>
                 </div>
               </div>
 
               {currentUser ? (
-                <Link to="/apply" className="btn-primary mt-8 inline-flex items-center">
+                <Link
+                  to="/apply"
+                  className="btn-primary mt-8 inline-flex items-center"
+                >
                   Apply Now
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               ) : (
-                <Link to="/register" className="btn-primary mt-8 inline-flex items-center">
+                <Link
+                  to="/register"
+                  className="btn-primary mt-8 inline-flex items-center"
+                >
                   Register to Apply
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
@@ -216,9 +244,12 @@ export default function Home() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#4a2d5f]">Accommodation Options</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#4a2d5f]">
+              Accommodation Options
+            </h2>
             <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-              Choose from a variety of room types designed to suit different preferences and budgets.
+              Choose from a variety of room types designed to suit different
+              preferences and budgets.
             </p>
           </div>
 
@@ -234,7 +265,8 @@ export default function Home() {
               <div className="p-6">
                 <h3 className="text-xl font-bold mb-2">Single Rooms</h3>
                 <p className="text-gray-600 mb-4">
-                  Private rooms with a bed, desk, chair, wardrobe, and access to shared bathroom and kitchen facilities.
+                  Private rooms with a bed, desk, chair, wardrobe, and access to
+                  shared bathroom and kitchen facilities.
                 </p>
                 <div className="flex items-center text-sm text-gray-500">
                   <MapPin className="h-4 w-4 mr-1" />
@@ -254,7 +286,8 @@ export default function Home() {
               <div className="p-6">
                 <h3 className="text-xl font-bold mb-2">Shared Rooms</h3>
                 <p className="text-gray-600 mb-4">
-                  Economical option with 2-3 students per room, each with their own bed, desk, and storage space.
+                  Economical option with 2-3 students per room, each with their
+                  own bed, desk, and storage space.
                 </p>
                 <div className="flex items-center text-sm text-gray-500">
                   <MapPin className="h-4 w-4 mr-1" />
@@ -274,7 +307,8 @@ export default function Home() {
               <div className="p-6">
                 <h3 className="text-xl font-bold mb-2">Studio Apartments</h3>
                 <p className="text-gray-600 mb-4">
-                  Self-contained units with private bathroom and kitchenette, offering more independence.
+                  Self-contained units with private bathroom and kitchenette,
+                  offering more independence.
                 </p>
                 <div className="flex items-center text-sm text-gray-500">
                   <MapPin className="h-4 w-4 mr-1" />
@@ -290,9 +324,12 @@ export default function Home() {
       <section className="py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#4a2d5f]">What Our Residents Say</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#4a2d5f]">
+              What Our Residents Say
+            </h2>
             <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-              Hear from students who have experienced living in our accommodation.
+              Hear from students who have experienced living in our
+              accommodation.
             </p>
           </div>
 
@@ -306,17 +343,23 @@ export default function Home() {
                 />
                 <div>
                   <h4 className="font-bold">Sarah Johnson</h4>
-                  <p className="text-sm text-gray-600">Computer Science, Year 3</p>
+                  <p className="text-sm text-gray-600">
+                    Computer Science, Year 3
+                  </p>
                 </div>
               </div>
               <div className="flex mb-3">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  <Star
+                    key={i}
+                    className="h-5 w-5 text-yellow-400 fill-current"
+                  />
                 ))}
               </div>
               <p className="text-gray-700">
-                "Living in the student hostel has been an amazing experience. The facilities are great, and I've made
-                friends from all over the world. The staff is always helpful and responsive."
+                "Living in the student hostel has been an amazing experience.
+                The facilities are great, and I've made friends from all over
+                the world. The staff is always helpful and responsive."
               </p>
             </div>
 
@@ -329,17 +372,23 @@ export default function Home() {
                 />
                 <div>
                   <h4 className="font-bold">Michael Chen</h4>
-                  <p className="text-sm text-gray-600">Business Administration, Year 2</p>
+                  <p className="text-sm text-gray-600">
+                    Business Administration, Year 2
+                  </p>
                 </div>
               </div>
               <div className="flex mb-3">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  <Star
+                    key={i}
+                    className="h-5 w-5 text-yellow-400 fill-current"
+                  />
                 ))}
               </div>
               <p className="text-gray-700">
-                "The location is perfect - close to campus and all amenities. The high-speed internet has been a
-                lifesaver for online classes, and the common areas are great for group study sessions."
+                "The location is perfect - close to campus and all amenities.
+                The high-speed internet has been a lifesaver for online classes,
+                and the common areas are great for group study sessions."
               </p>
             </div>
 
@@ -357,13 +406,17 @@ export default function Home() {
               </div>
               <div className="flex mb-3">
                 {[...Array(4)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  <Star
+                    key={i}
+                    className="h-5 w-5 text-yellow-400 fill-current"
+                  />
                 ))}
                 <Star className="h-5 w-5 text-gray-300" />
               </div>
               <p className="text-gray-700">
-                "I've lived here for three years now, and it feels like home. The community events are fun, and the
-                quiet hours policy ensures I can study when needed. Highly recommend!"
+                "I've lived here for three years now, and it feels like home.
+                The community events are fun, and the quiet hours policy ensures
+                I can study when needed. Highly recommend!"
               </p>
             </div>
           </div>
@@ -374,7 +427,9 @@ export default function Home() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#4a2d5f]">Frequently Asked Questions</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#4a2d5f]">
+              Frequently Asked Questions
+            </h2>
             <p className="text-lg text-gray-700 max-w-3xl mx-auto">
               Find answers to common questions about our student accommodation.
             </p>
@@ -382,7 +437,10 @@ export default function Home() {
 
           <div className="max-w-3xl mx-auto">
             {faqs.map((faq, index) => (
-              <div key={index} className="mb-4 border border-gray-200 rounded-lg overflow-hidden">
+              <div
+                key={index}
+                className="mb-4 border border-gray-200 rounded-lg overflow-hidden"
+              >
                 <button
                   className="w-full flex justify-between items-center p-4 text-left font-medium focus:outline-none"
                   onClick={() => toggleAccordion(index)}
@@ -394,7 +452,11 @@ export default function Home() {
                     <ChevronDown className="h-5 w-5 text-[#4a2d5f]" />
                   )}
                 </button>
-                <div className={`px-4 pb-4 ${activeAccordion === index ? "block" : "hidden"}`}>
+                <div
+                  className={`px-4 pb-4 ${
+                    activeAccordion === index ? "block" : "hidden"
+                  }`}
+                >
                   <p className="text-gray-600">{faq.answer}</p>
                 </div>
               </div>
@@ -406,9 +468,12 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-16 bg-[#4a2d5f] text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Join Our Student Community?</h2>
+          <h2 className="text-3xl font-bold mb-6">
+            Ready to Join Our Student Community?
+          </h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Apply now to secure your spot in our student accommodation. Limited spaces available!
+            Apply now to secure your spot in our student accommodation. Limited
+            spaces available!
           </p>
 
           {currentUser ? (
@@ -452,10 +517,14 @@ export default function Home() {
             </div>
 
             <div className="md:w-1/2">
-              <h2 className="text-3xl font-bold mb-6 text-[#4a2d5f]">Conveniently Located</h2>
+              <h2 className="text-3xl font-bold mb-6 text-[#4a2d5f]">
+                Conveniently Located
+              </h2>
               <p className="text-gray-700 mb-6">
-                Our student accommodations are strategically located near university campuses, public transportation,
-                shopping centers, and recreational facilities to make your student life convenient and enjoyable.
+                Our student accommodations are strategically located near
+                university campuses, public transportation, shopping centers,
+                and recreational facilities to make your student life convenient
+                and enjoyable.
               </p>
 
               <div className="space-y-4">
@@ -463,8 +532,12 @@ export default function Home() {
                   <MapPin className="h-5 w-5 text-[#e91e63] mr-3 mt-1" />
                   <div>
                     <h3 className="font-semibold">Main Campus Location</h3>
-                    <p className="text-gray-600">123 University Avenue, College Town</p>
-                    <p className="text-gray-600">5 minutes walk to Main Campus</p>
+                    <p className="text-gray-600">
+                      123 University Avenue, College Town
+                    </p>
+                    <p className="text-gray-600">
+                      5 minutes walk to Main Campus
+                    </p>
                   </div>
                 </div>
 
@@ -472,8 +545,12 @@ export default function Home() {
                   <MapPin className="h-5 w-5 text-[#e91e63] mr-3 mt-1" />
                   <div>
                     <h3 className="font-semibold">Downtown Location</h3>
-                    <p className="text-gray-600">456 Central Street, Downtown</p>
-                    <p className="text-gray-600">10 minutes by bus to Business School</p>
+                    <p className="text-gray-600">
+                      456 Central Street, Downtown
+                    </p>
+                    <p className="text-gray-600">
+                      10 minutes by bus to Business School
+                    </p>
                   </div>
                 </div>
 
@@ -482,7 +559,9 @@ export default function Home() {
                   <div>
                     <h3 className="font-semibold">Suburban Location</h3>
                     <p className="text-gray-600">789 Quiet Lane, Suburbia</p>
-                    <p className="text-gray-600">15 minutes by shuttle to Medical Campus</p>
+                    <p className="text-gray-600">
+                      15 minutes by shuttle to Medical Campus
+                    </p>
                   </div>
                 </div>
               </div>
@@ -491,5 +570,5 @@ export default function Home() {
         </div>
       </section>
     </div>
-  )
+  );
 }
