@@ -512,10 +512,8 @@ export default function Home() {
                 Conveniently Located
               </h2>
               <p className="text-gray-700 mb-6">
-                Our student accommodations are strategically located near
-                university campuses, public transportation, shopping centers,
-                and recreational facilities to make your student life convenient
-                and enjoyable.
+              Our hostels are right inside the campus, so lectures, libraries, and sports grounds are only minutes away. 
+              Safe, convenient, and community focused - everything you need for an easier student life is on your doorstep. 
               </p>
 
               <div className="space-y-4">
