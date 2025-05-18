@@ -163,9 +163,9 @@ export default function Home() {
                     <Coffee className="h-5 w-5 text-[#e91e63]" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Common Lounges</h3>
+                    <h3 className="font-semibold mb-1">Common Area</h3>
                     <p className="text-sm text-gray-600">
-                      Relax and socialize in our comfortable common areas.
+                      Relax, study, charge your laptop at power points, and stay cool with ceiling fans in our comfortable common areas.
                     </p>
                   </div>
                 </div>
