@@ -535,10 +535,10 @@ export default function Home() {
                   <div>
                     <h3 className="font-semibold">Hostel B</h3>
                     <p className="text-gray-600">
-                      Near Faculty cafeteria and Department of Electrical and Information engineering
+                      Near Faculty cafeteria and Department of Electrical and Information engineering.
                     </p>
                     <p className="text-gray-600">
-                    2 minutes walk to Departments Buildings
+                    2 minutes walk to Departments Buildings.
                     </p>
                   </div>
                 </div>
@@ -547,9 +547,9 @@ export default function Home() {
                   <MapPin className="h-5 w-5 text-[#e91e63] mr-3 mt-1" />
                   <div>
                     <h3 className="font-semibold">Hostel C</h3>
-                    <p className="text-gray-600">Near Faculty cafeteria and Department of Electrical and Information engineering</p>
+                    <p className="text-gray-600">Near Faculty cafeteria and Department of Electrical and Information engineering.</p>
                     <p className="text-gray-600">
-                    2 minutes walk to Departments Buildings
+                    2 minutes walk to Departments Buildings.
                     </p>
                   </div>
                 </div>
@@ -558,10 +558,10 @@ export default function Home() {
                   <div>
                     <h3 className="font-semibold">Hostel D</h3>
                     <p className="text-gray-600">
-                    Near Faculty Quarters, Play ground and Gymnasium
+                    Near Faculty Quarters, Play ground and Gymnasium.
                     </p>
                     <p className="text-gray-600">
-                    10 minutes walk to Departments Buildings
+                    10 minutes walk to Departments Buildings.
                     </p>
                   </div>
                 </div>
