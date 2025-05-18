@@ -59,7 +59,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative">
         <div className="h-[600px] relative overflow-hidden">
-          <img src="/images/hero.jpg" alt="Students at campus hostel" className="w-full h-full object-cover" />
+          <img src="/images/faculty.jpg" alt="Students at campus hostel" className="w-full h-full object-cover" />
         </div>
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="text-center text-white p-4 max-w-4xl">
