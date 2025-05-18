@@ -520,25 +520,12 @@ export default function Home() {
                 <div className="flex items-start">
                   <MapPin className="h-5 w-5 text-[#e91e63] mr-3 mt-1" />
                   <div>
-                    <h3 className="font-semibold">Main Campus Location</h3>
+                    <h3 className="font-semibold">Hostel A</h3>
                     <p className="text-gray-600">
-                      123 University Avenue, College Town
+                    Near Faculty cafeteria and Department of Electrical and Information engineering
                     </p>
                     <p className="text-gray-600">
-                      5 minutes walk to Main Campus
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <MapPin className="h-5 w-5 text-[#e91e63] mr-3 mt-1" />
-                  <div>
-                    <h3 className="font-semibold">Downtown Location</h3>
-                    <p className="text-gray-600">
-                      456 Central Street, Downtown
-                    </p>
-                    <p className="text-gray-600">
-                      10 minutes by bus to Business School
+                      2 minutes walk to Departments Buildings
                     </p>
                   </div>
                 </div>
@@ -546,10 +533,35 @@ export default function Home() {
                 <div className="flex items-start">
                   <MapPin className="h-5 w-5 text-[#e91e63] mr-3 mt-1" />
                   <div>
-                    <h3 className="font-semibold">Suburban Location</h3>
-                    <p className="text-gray-600">789 Quiet Lane, Suburbia</p>
+                    <h3 className="font-semibold">Hostel B</h3>
                     <p className="text-gray-600">
-                      15 minutes by shuttle to Medical Campus
+                      Near Faculty cafeteria and Department of Electrical and Information engineering
+                    </p>
+                    <p className="text-gray-600">
+                    2 minutes walk to Departments Buildings
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start">
+                  <MapPin className="h-5 w-5 text-[#e91e63] mr-3 mt-1" />
+                  <div>
+                    <h3 className="font-semibold">Hostel C</h3>
+                    <p className="text-gray-600">Near Faculty cafeteria and Department of Electrical and Information engineering</p>
+                    <p className="text-gray-600">
+                    2 minutes walk to Departments Buildings
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <MapPin className="h-5 w-5 text-[#e91e63] mr-3 mt-1" />
+                  <div>
+                    <h3 className="font-semibold">Hostel D</h3>
+                    <p className="text-gray-600">
+                    Near Faculty Quarters, Play ground and Gymnasium
+                    </p>
+                    <p className="text-gray-600">
+                    10 minutes walk to Departments Buildings
                     </p>
                   </div>
                 </div>
