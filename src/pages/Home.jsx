@@ -15,93 +15,12 @@ import {
   Star,
   ChevronDown,
   ChevronUp,
-  CheckCircle2,
-  GraduationCap,
-  Building,
-  Leaf,
 } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "../firebase";
+import { useState } from "react";
 
 export default function Home() {
   const { currentUser } = useAuth();
   const [activeAccordion, setActiveAccordion] = useState(null);
-  const [hasApplied, setHasApplied] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [isVisible, setIsVisible] = useState({
-    welcome: false,
-    features: false,
-    faq: false,
-    cta: false,
-    location: false
-  });
-  
-  const sectionRefs = {
-    welcome: useRef(null),
-    features: useRef(null),
-    faq: useRef(null),
-    cta: useRef(null),
-    location: useRef(null)
-  };
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Get the id from the element
-            const id = entry.target.id;
-            setIsVisible(prev => ({
-              ...prev,
-              [id]: true
-            }));
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    // Observe all section refs
-    Object.values(sectionRefs).forEach(ref => {
-      if (ref.current) {
-        observer.observe(ref.current);
-      }
-    });
-
-    return () => {
-      Object.values(sectionRefs).forEach(ref => {
-        if (ref.current) {
-          observer.unobserve(ref.current);
-        }
-      });
-    };
-  }, []);
-
-  useEffect(() => {
-    async function checkApplicationStatus() {
-      if (!currentUser) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const q = query(
-          collection(db, "applications"),
-          where("userId", "==", currentUser.uid)
-        );
-        
-        const querySnapshot = await getDocs(q);
-        setHasApplied(!querySnapshot.empty);
-      } catch (error) {
-        console.error("Error checking application status:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    checkApplicationStatus();
-  }, [currentUser]);
 
   const toggleAccordion = (index) => {
     setActiveAccordion(activeAccordion === index ? null : index);
@@ -118,6 +37,7 @@ export default function Home() {
       answer:
         "Our hostels only charge a very small amount for one year. Essentially, the hostel is completely free for students, with only a minimal annual fee required.",
     },
+
     {
       question: "What security measures are in place?",
       answer:
@@ -131,101 +51,53 @@ export default function Home() {
   ];
 
   return (
-    <div className="overflow-x-hidden">
+    <div>
       {/* Hero Section */}
-      <section className="relative h-screen min-h-[600px] flex items-center justify-center">
-        <div className="absolute inset-0 z-0">
+      <section className="relative">
+        <div className="h-[600px] relative overflow-hidden">
           <img
             src="/images/faculty.jpg"
             alt="Students at campus hostel"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover blur-sm"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/80 to-[#4a2d5f]/70" />
         </div>
-        
-        <div className="relative z-10 container mx-auto px-4 py-16 text-center">
-          <div className="animate-fade-in-up">
-            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 text-white">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-white">
-                Hostel Management
-              </span>
-              <br /> System
-            </h1>
-            
-            <p className="text-xl md:text-2xl text-white/90 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Experience comfortable, affordable, and community-focused living
-              designed specifically for engineering students.
-            </p>
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="text-center text-[#ffffff] p-4 max-w-4xl">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              Hostel Management System
 
-            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-              {loading ? (
-                <div className="inline-flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
-                </div>
-              ) : currentUser ? (
-                hasApplied ? (
-                  <Link
-                    to="/dashboard"
-                    className="bg-gradient-to-r from-[#4a2d5f] to-[#5d3a75] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:shadow-xl hover:scale-105 flex items-center justify-center"
-                  >
-                    My Dashboard <ArrowRight className="ml-2" />
-                  </Link>
-                ) : (
-                  <>
-                    <Link
-                      to="/apply"
-                      className="bg-gradient-to-r from-[#e91e63] to-[#f05d78] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:shadow-xl hover:scale-105 flex items-center justify-center"
-                    >
-                      Apply for Housing <ArrowRight className="ml-2" />
-                    </Link>
-                    <Link
-                      to="/dashboard"
-                      className="bg-gradient-to-r from-[#4a2d5f] to-[#5d3a75] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:shadow-xl hover:scale-105 flex items-center justify-center"
-                    >
-                      My Dashboard <ArrowRight className="ml-2" />
-                    </Link>
-                  </>
-                )
-              ) : (
-                <>
-                  <Link
-                    to="/login"
-                    className="bg-gradient-to-r from-[#e91e63] to-[#f05d78] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:shadow-xl hover:scale-105 flex items-center justify-center"
-                  >
-                    Login to Apply <ArrowRight className="ml-2" />
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-bold py-4 px-8 rounded-full text-lg transition-all hover:shadow-lg flex items-center justify-center"
-                  >
-                    Register Account
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-        
-        <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-8">
-          <div className="animate-bounce">
-            <ArrowRight size={30} className="text-white rotate-90" />
+            </h1>
+            <p className="text-xl md:text-2xl font-bold mb-8">
+              Experience comfortable, affordable, and community-focused living
+              designed specifically for students.
+            </p>
+            {currentUser ? (
+              <Link
+                to="/apply"
+                className="bg-[#e91e63] hover:bg-[#d81b60] text-white font-bold py-3 px-8 rounded-md text-lg transition-colors inline-flex items-center"
+              >
+                Apply for Housing <ArrowRight className="ml-2" />
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="bg-[#e91e63] hover:bg-[#d81b60] text-white font-bold py-3 px-8 rounded-md text-lg transition-colors inline-flex items-center"
+              >
+                Login to Apply <ArrowRight className="ml-2" />
+              </Link>
+            )}
           </div>
         </div>
       </section>
 
       {/* Welcome Section */}
-      <section 
-        id="welcome" 
-        ref={sectionRefs.welcome} 
-        className="py-20 bg-white"
-      >
-        <div className={`container mx-auto px-4 transition-all duration-1000 ${isVisible.welcome ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-[#4a2d5f]">
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#4a2d5f]">
               Welcome to Student Accommodation
             </h2>
-            <div className="w-24 h-1 bg-yellow-400 mx-auto mb-6"></div>
-            <p className="text-xl text-gray-700 leading-relaxed">
+            <p className="text-lg text-gray-700">
               Our mission is to provide students with a safe, comfortable, and
               enriching living environment that supports their academic success
               and personal growth.
@@ -233,34 +105,34 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-t-4 border-[#4a2d5f]">
-              <div className="w-16 h-16 bg-gradient-to-r from-[#4a2d5f] to-[#5d3a75] rounded-full flex items-center justify-center mb-6 mx-auto">
-                <Shield className="text-white h-8 w-8" />
+            <div className="bg-gray-50 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-14 h-14 bg-[#4a2d5f] rounded-full flex items-center justify-center mb-4">
+                <Shield className="text-white h-7 w-7" />
               </div>
-              <h3 className="text-2xl font-bold mb-4 text-center">Safe & Secure</h3>
-              <p className="text-gray-600 text-center">
+              <h3 className="text-xl font-bold mb-2">Safe & Secure</h3>
+              <p className="text-gray-600">
                 24/7 security, controlled access, and emergency support ensure
                 your safety is our top priority.
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-t-4 border-[#e91e63]">
-              <div className="w-16 h-16 bg-gradient-to-r from-[#e91e63] to-[#f05d78] rounded-full flex items-center justify-center mb-6 mx-auto">
-                <Users className="text-white h-8 w-8" />
+            <div className="bg-gray-50 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-14 h-14 bg-[#e91e63] rounded-full flex items-center justify-center mb-4">
+                <Users className="text-white h-7 w-7" />
               </div>
-              <h3 className="text-2xl font-bold mb-4 text-center">Community Living</h3>
-              <p className="text-gray-600 text-center">
+              <h3 className="text-xl font-bold mb-2">Community Living</h3>
+              <p className="text-gray-600">
                 Connect with fellow students, build lasting friendships, and
                 enjoy community events and activities.
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-t-4 border-[#4a2d5f]">
-              <div className="w-16 h-16 bg-gradient-to-r from-[#4a2d5f] to-[#5d3a75] rounded-full flex items-center justify-center mb-6 mx-auto">
-                <BookOpen className="text-white h-8 w-8" />
+            <div className="bg-gray-50 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-14 h-14 bg-[#4a2d5f] rounded-full flex items-center justify-center mb-4">
+                <BookOpen className="text-white h-7 w-7" />
               </div>
-              <h3 className="text-2xl font-bold mb-4 text-center">Study-Friendly</h3>
-              <p className="text-gray-600 text-center">
+              <h3 className="text-xl font-bold mb-2">Study-Friendly</h3>
+              <p className="text-gray-600">
                 Dedicated study spaces, high-speed internet, and quiet hours to
                 support your academic success.
               </p>
@@ -270,100 +142,70 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section 
-        id="features" 
-        ref={sectionRefs.features}
-        className="py-20 bg-gray-50"
-      >
-        <div className={`container mx-auto px-4 transition-all duration-1000 ${isVisible.features ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="flex flex-col lg:flex-row items-center gap-16">
-            <div className="lg:w-1/2 order-2 lg:order-1">
-              <div className="mb-10">
-                <h2 className="text-4xl font-bold mb-6 text-[#4a2d5f]">
-                  Modern Facilities for a 
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4a2d5f] to-[#e91e63]"> Comfortable </span>
-                  Student Life
-                </h2>
-                <div className="w-24 h-1 bg-yellow-400 mb-6"></div>
-                <p className="text-xl text-gray-700 mb-8 leading-relaxed">
-                  Our student accommodation is designed with your needs in mind.
-                  Enjoy a range of amenities that make your stay comfortable,
-                  convenient, and conducive to both studying and socializing.
-                </p>
-              </div>
+      <section className="py-16 bg-gray-100">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center gap-12">
+            <div className="md:w-1/2 order-2 md:order-1">
+              <h2 className="text-3xl font-bold mb-6 text-[#4a2d5f]">
+                Modern Facilities for a Comfortable Student Life
+              </h2>
+              <p className="text-gray-700 mb-8">
+                Our student accommodation is designed with your needs in mind.
+                Enjoy a range of amenities that make your stay comfortable,
+                convenient, and conducive to both studying and socializing.
+              </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+
                 <div className="flex items-start">
-                  <div className="p-3 bg-[#e91e63]/10 rounded-lg mr-4">
-                    <Coffee className="h-6 w-6 text-[#e91e63]" />
+                  <div className="mr-4 mt-1">
+                    <Coffee className="h-5 w-5 text-[#e91e63]" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg mb-2">Common Area</h3>
-                    <p className="text-gray-600">
+                    <h3 className="font-semibold mb-1">Common Area</h3>
+                    <p className="text-sm text-gray-600">
                       Relax, study, charge your laptop at power points, and stay cool with ceiling fans in our comfortable common areas.
                     </p>
                   </div>
                 </div>
-                
                 <div className="flex items-start">
-                  <div className="p-3 bg-[#4a2d5f]/10 rounded-lg mr-4">
-                    <ShowerHead className="h-6 w-6 text-[#4a2d5f]" />
+                  <div className="mr-4 mt-1">
+                    <ShowerHead className="h-5 w-5 text-[#e91e63]" /> {/* Changed icon */}
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg mb-2">Modern Washrooms</h3>
-                    <p className="text-gray-600">
-                      Our washrooms are kept clean and feature mirrors, sinks, and individual shower facilities for your comfort.
+                    <h3 className="font-semibold mb-1">Modern Washrooms</h3>
+                    <p className="text-sm text-gray-600">
+                      Our washrooms are kept clean and feature mirrors, sinks, and individual shower facilities for your comfort and privacy.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start">
-                  <div className="p-3 bg-[#e91e63]/10 rounded-lg mr-4">
-                    <Wifi className="h-6 w-6 text-[#e91e63]" />
+                  <div className="mr-4 mt-1">
+                    <Clock className="h-5 w-5 text-[#e91e63]" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg mb-2">High-Speed WiFi</h3>
-                    <p className="text-gray-600">
-                      Stay connected with reliable, high-speed internet throughout the hostel.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="p-3 bg-[#4a2d5f]/10 rounded-lg mr-4">
-                    <Clock className="h-6 w-6 text-[#4a2d5f]" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg mb-2">24/7 Access</h3>
-                    <p className="text-gray-600">
-                      Come and go as you please with secure 24/7 access to the facilities.
+                    <h3 className="font-semibold mb-1">24/7 Access</h3>
+                    <p className="text-sm text-gray-600">
+                      Come and go as you please with secure 24/7 access.
                     </p>
                   </div>
                 </div>
               </div>
 
               {currentUser ? (
-                hasApplied ? (
-                  <Link
-                    to="/dashboard"
-                    className="bg-gradient-to-r from-[#4a2d5f] to-[#5d3a75] text-white font-bold py-3 px-8 rounded-full text-lg transition-all hover:shadow-lg hover:scale-105 inline-flex items-center mt-10"
-                  >
-                    View My Dashboard
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                ) : (
                 <Link
                   to="/apply"
-                  className="bg-gradient-to-r from-[#e91e63] to-[#f05d78] text-white font-bold py-3 px-8 rounded-full text-lg transition-all hover:shadow-lg hover:scale-105 inline-flex items-center mt-10"
+                  className="btn-primary mt-8 inline-flex items-center"
                 >
                   Apply Now
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
-                )
               ) : (
                 <Link
                   to="/register"
-                  className="bg-gradient-to-r from-[#4a2d5f] to-[#5d3a75] text-white font-bold py-3 px-8 rounded-full text-lg transition-all hover:shadow-lg hover:scale-105 inline-flex items-center mt-10"
+                  className="btn-primary mt-8 inline-flex items-center"
                 >
                   Register to Apply
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -371,8 +213,8 @@ export default function Home() {
               )}
             </div>
 
-            <div className="lg:w-1/2 order-1 lg:order-2">
-              <div className="rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-all duration-500">
+            <div className="md:w-1/2 order-1 md:order-2">
+              <div className="rounded-lg h-[400px] overflow-hidden">
                 <img
                   src="/images/facilities.jpeg"
                   alt="Modern hostel facilities"
@@ -384,125 +226,201 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats Section (NEW) */}
-      <section className="py-16 bg-gradient-to-r from-[#4a2d5f] to-[#5d3a75] text-white">
+      {/* Room Types Section */}
+      {/*
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-5xl font-bold mb-2">500+</div>
-              <div className="w-12 h-1 bg-yellow-400 mx-auto mb-4"></div>
-              <p className="text-lg">Students Housed</p>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#4a2d5f]">
+              Accommodation Options 
+            </h2>
+            <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+              Choose from a variety of room types designed to suit different
+              preferences and budgets.
+            </p>
+          </div> 
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-lg overflow-hidden shadow-md">
+              <div className="h-64 overflow-hidden">
+                <img
+                  src="/images/single-room.jpg"
+                  alt="Single room accommodation"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-2">Single Rooms</h3>
+                <p className="text-gray-600 mb-4">
+                  Private rooms with a bed, desk, chair, wardrobe, and access to
+                  shared bathroom and kitchen facilities.
+                </p>
+                <div className="flex items-center text-sm text-gray-500">
+                  <MapPin className="h-4 w-4 mr-1" />
+                  <span>All Locations</span>
+                </div>
+              </div>
             </div>
-            
-            <div className="text-center">
-              <div className="text-5xl font-bold mb-2">4</div>
-              <div className="w-12 h-1 bg-yellow-400 mx-auto mb-4"></div>
-              <p className="text-lg">Hostel Buildings</p>
+
+            <div className="bg-white rounded-lg overflow-hidden shadow-md">
+              <div className="h-64 overflow-hidden">
+                <img
+                  src="/images/shared-room.jpg"
+                  alt="Shared room accommodation"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-2">Shared Rooms</h3>
+                <p className="text-gray-600 mb-4">
+                  Economical option with 2-3 students per room, each with their
+                  own bed, desk, and storage space.
+                </p>
+                <div className="flex items-center text-sm text-gray-500">
+                  <MapPin className="h-4 w-4 mr-1" />
+                  <span>Main Campus, Downtown</span>
+                </div>
+              </div>
             </div>
-            
-            <div className="text-center">
-              <div className="text-5xl font-bold mb-2">24/7</div>
-              <div className="w-12 h-1 bg-yellow-400 mx-auto mb-4"></div>
-              <p className="text-lg">Security & Support</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="text-5xl font-bold mb-2">99%</div>
-              <div className="w-12 h-1 bg-yellow-400 mx-auto mb-4"></div>
-              <p className="text-lg">Student Satisfaction</p>
+
+            <div className="bg-white rounded-lg overflow-hidden shadow-md">
+              <div className="h-64 overflow-hidden">
+                <img
+                  src="/images/studio-apartment.jpg"
+                  alt="Studio apartment accommodation"
+                  className="w-full h-full object-cover"
+                />
+              </div> 
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-2">Studio Apartments</h3>
+                <p className="text-gray-600 mb-4">
+                  Self-contained units with private bathroom and kitchenette,
+                  offering more independence.
+                </p>
+                <div className="flex items-center text-sm text-gray-500">
+                  <MapPin className="h-4 w-4 mr-1" />
+                  <span>Premium Locations</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
+      */}
 
-      {/* Why Choose Us Section (NEW) */}
-      <section className="py-20 bg-white">
+      {/* Testimonials Section */}
+      {/*
+      <section className="py-16 bg-gray-100">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6 text-[#4a2d5f]">Why Choose Our Hostels?</h2>
-            <div className="w-24 h-1 bg-yellow-400 mx-auto mb-6"></div>
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-              We provide more than just a place to stay - we offer a complete student living experience.
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#4a2d5f]">
+              What Our Residents Say
+            </h2>
+            <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+              Hear from students who have experienced living in our
+              accommodation.
             </p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="p-6 rounded-xl hover:shadow-lg transition-all border border-gray-100">
-              <div className="rounded-full w-14 h-14 bg-[#e91e63]/10 flex items-center justify-center mb-4">
-                <GraduationCap className="h-7 w-7 text-[#e91e63]" />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="flex items-center mb-4">
+                <img
+                  src="/images/student1.jpg"
+                  alt="Sarah Johnson"
+                  className="w-12 h-12 rounded-full mr-4 object-cover"
+                />
+                <div>
+                  <h4 className="font-bold">Sarah Johnson</h4>
+                  <p className="text-sm text-gray-600">
+                    Computer Science, Year 3
+                  </p>
+                </div>
               </div>
-              <h3 className="text-xl font-bold mb-3">Academic Focus</h3>
-              <p className="text-gray-600">
-                Designed with your studies in mind, with quiet environments and study-friendly spaces.
+              <div className="flex mb-3">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="h-5 w-5 text-yellow-400 fill-current"
+                  />
+                ))}
+              </div>
+              <p className="text-gray-700">
+                "Living in the student hostel has been an amazing experience.
+                The facilities are great, and I've made friends from all over
+                the world. The staff is always helpful and responsive."
               </p>
             </div>
-            
-            <div className="p-6 rounded-xl hover:shadow-lg transition-all border border-gray-100">
-              <div className="rounded-full w-14 h-14 bg-[#4a2d5f]/10 flex items-center justify-center mb-4">
-                <Building className="h-7 w-7 text-[#4a2d5f]" />
+
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="flex items-center mb-4">
+                <img
+                  src="/images/student2.jpg"
+                  alt="Michael Chen"
+                  className="w-12 h-12 rounded-full mr-4 object-cover"
+                />
+                <div>
+                  <h4 className="font-bold">Michael Chen</h4>
+                  <p className="text-sm text-gray-600">
+                    Business Administration, Year 2
+                  </p>
+                </div>
               </div>
-              <h3 className="text-xl font-bold mb-3">Campus Proximity</h3>
-              <p className="text-gray-600">
-                Located right on campus, putting you minutes away from classes, libraries, and facilities.
+              <div className="flex mb-3">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="h-5 w-5 text-yellow-400 fill-current"
+                  />
+                ))}
+              </div>
+              <p className="text-gray-700">
+                "The location is perfect - close to campus and all amenities.
+                The high-speed internet has been a lifesaver for online classes,
+                and the common areas are great for group study sessions."
               </p>
             </div>
-            
-            <div className="p-6 rounded-xl hover:shadow-lg transition-all border border-gray-100">
-              <div className="rounded-full w-14 h-14 bg-[#e91e63]/10 flex items-center justify-center mb-4">
-                <Leaf className="h-7 w-7 text-[#e91e63]" />
+
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="flex items-center mb-4">
+                <img
+                  src="/images/student3.jpg"
+                  alt="Emma Rodriguez"
+                  className="w-12 h-12 rounded-full mr-4 object-cover"
+                />
+                <div>
+                  <h4 className="font-bold">Emma Rodriguez</h4>
+                  <p className="text-sm text-gray-600">Psychology, Year 4</p>
+                </div>
               </div>
-              <h3 className="text-xl font-bold mb-3">Sustainable Living</h3>
-              <p className="text-gray-600">
-                Environmentally conscious facilities with energy-efficient design and waste management.
-              </p>
-            </div>
-            
-            <div className="p-6 rounded-xl hover:shadow-lg transition-all border border-gray-100">
-              <div className="rounded-full w-14 h-14 bg-[#4a2d5f]/10 flex items-center justify-center mb-4">
-                <Users className="h-7 w-7 text-[#4a2d5f]" />
+              <div className="flex mb-3">
+                {[...Array(4)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="h-5 w-5 text-yellow-400 fill-current"
+                  />
+                ))}
+                <Star className="h-5 w-5 text-gray-300" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Inclusive Community</h3>
-              <p className="text-gray-600">
-                A diverse environment where students from all backgrounds feel welcome and supported.
-              </p>
-            </div>
-            
-            <div className="p-6 rounded-xl hover:shadow-lg transition-all border border-gray-100">
-              <div className="rounded-full w-14 h-14 bg-[#e91e63]/10 flex items-center justify-center mb-4">
-                <CheckCircle2 className="h-7 w-7 text-[#e91e63]" />
-              </div>
-              <h3 className="text-xl font-bold mb-3">Affordable Living</h3>
-              <p className="text-gray-600">
-                High-quality accommodation at minimal cost, helping you manage your budget effectively.
-              </p>
-            </div>
-            
-            <div className="p-6 rounded-xl hover:shadow-lg transition-all border border-gray-100">
-              <div className="rounded-full w-14 h-14 bg-[#4a2d5f]/10 flex items-center justify-center mb-4">
-                <Shield className="h-7 w-7 text-[#4a2d5f]" />
-              </div>
-              <h3 className="text-xl font-bold mb-3">Peace of Mind</h3>
-              <p className="text-gray-600">
-                Professional management, maintenance, and support teams available whenever you need assistance.
+              <p className="text-gray-700">
+                "I've lived here for three years now, and it feels like home.
+                The community events are fun, and the quiet hours policy ensures
+                I can study when needed. Highly recommend!"
               </p>
             </div>
           </div>
         </div>
       </section>
+      */}
 
       {/* FAQ Section */}
-      <section 
-        id="faq" 
-        ref={sectionRefs.faq}
-        className="py-20 bg-gray-50"
-      >
-        <div className={`container mx-auto px-4 transition-all duration-1000 ${isVisible.faq ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6 text-[#4a2d5f]">
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#4a2d5f]">
               Frequently Asked Questions
             </h2>
-            <div className="w-24 h-1 bg-yellow-400 mx-auto mb-6"></div>
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-700 max-w-3xl mx-auto">
               Find answers to common questions about our student accommodation.
             </p>
           </div>
@@ -511,29 +429,22 @@ export default function Home() {
             {faqs.map((faq, index) => (
               <div
                 key={index}
-                className="mb-5 overflow-hidden"
+                className="mb-4 border border-gray-200 rounded-lg overflow-hidden"
               >
                 <button
-                  className={`w-full flex justify-between items-center p-5 text-left font-medium focus:outline-none rounded-xl transition-all ${
-                    activeAccordion === index 
-                      ? "bg-gradient-to-r from-[#4a2d5f] to-[#5d3a75] text-white shadow-md" 
-                      : "bg-white hover:bg-gray-50 shadow-sm"
-                  }`}
+                  className="w-full flex justify-between items-center p-4 text-left font-medium focus:outline-none"
                   onClick={() => toggleAccordion(index)}
                 >
-                  <span className="text-lg">{faq.question}</span>
+                  <span>{faq.question}</span>
                   {activeAccordion === index ? (
-                    <ChevronUp className={`h-5 w-5 ${activeAccordion === index ? "text-white" : "text-[#4a2d5f]"}`} />
+                    <ChevronUp className="h-5 w-5 text-[#4a2d5f]" />
                   ) : (
-                    <ChevronDown className={`h-5 w-5 ${activeAccordion === index ? "text-white" : "text-[#4a2d5f]"}`} />
+                    <ChevronDown className="h-5 w-5 text-[#4a2d5f]" />
                   )}
                 </button>
                 <div
-                  className={`bg-white px-5 rounded-b-xl shadow-sm transition-all duration-300 ${
-                    activeAccordion === index 
-                      ? "max-h-96 py-5 opacity-100" 
-                      : "max-h-0 py-0 opacity-0"
-                  }`}
+                  className={`px-4 pb-4 ${activeAccordion === index ? "block" : "hidden"
+                    }`}
                 >
                   <p className="text-gray-600">{faq.answer}</p>
                 </div>
@@ -544,56 +455,34 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section 
-        id="cta" 
-        ref={sectionRefs.cta}
-        className="py-20 bg-gradient-to-r from-[#4a2d5f] to-[#5d3a75] text-white relative overflow-hidden"
-      >
-        <div className="absolute top-0 right-0 w-1/2 h-full opacity-10">
-          <img 
-            src="/images/hero.jpg" 
-            alt="Background pattern" 
-            className="w-full h-full object-cover"
-          />
-        </div>
-        
-        <div className={`container mx-auto px-4 text-center relative z-10 transition-all duration-1000 ${isVisible.cta ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <h2 className="text-4xl font-bold mb-6">
+      <section className="py-16 bg-[#4a2d5f] text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-6">
             Ready to Join Our Student Community?
           </h2>
-          <div className="w-24 h-1 bg-yellow-400 mx-auto mb-6"></div>
-          <p className="text-xl mb-10 max-w-2xl mx-auto">
+          <p className="text-xl mb-8 max-w-2xl mx-auto">
             Apply now to secure your spot in our student accommodation. Limited
             spaces available!
           </p>
 
           {currentUser ? (
-            hasApplied ? (
-              <Link
-                to="/dashboard"
-                className="bg-white hover:bg-gray-100 text-[#4a2d5f] font-bold py-4 px-10 rounded-full text-lg transition-all hover:shadow-lg transform hover:scale-105 inline-flex items-center"
-              >
-                View My Dashboard <ArrowRight className="ml-2" />
-              </Link>
-            ) : (
             <Link
               to="/apply"
-              className="bg-gradient-to-r from-[#e91e63] to-[#f05d78] hover:shadow-lg text-white font-bold py-4 px-10 rounded-full text-lg transition-all transform hover:scale-105 inline-flex items-center"
+              className="bg-[#e91e63] hover:bg-[#d81b60] text-white font-bold py-3 px-8 rounded-md text-lg transition-colors"
             >
-              Apply Now <ArrowRight className="ml-2" />
+              Apply Now
             </Link>
-            )
           ) : (
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <div className="space-x-4">
               <Link
                 to="/login"
-                className="bg-white text-[#4a2d5f] hover:bg-gray-100 font-bold py-4 px-10 rounded-full text-lg transition-all hover:shadow-lg transform hover:scale-105 inline-flex items-center justify-center"
+                className="bg-white text-[#4a2d5f] hover:bg-gray-100 font-bold py-3 px-8 rounded-md text-lg transition-colors"
               >
-                Login <ArrowRight className="ml-2" />
+                Login
               </Link>
               <Link
                 to="/register"
-                className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-bold py-4 px-10 rounded-full text-lg transition-all hover:shadow-lg inline-flex items-center justify-center"
+                className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#4a2d5f] font-bold py-3 px-8 rounded-md text-lg transition-colors"
               >
                 Register
               </Link>
@@ -603,44 +492,37 @@ export default function Home() {
       </section>
 
       {/* Location Section */}
-      <section 
-        id="location" 
-        ref={sectionRefs.location}
-        className="py-20 bg-white"
-      >
-        <div className={`container mx-auto px-4 transition-all duration-1000 ${isVisible.location ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="flex flex-col lg:flex-row items-center gap-16">
-            <div className="lg:w-1/2">
-              <div className="rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-all duration-500">
-                <a href="https://www.google.com/maps/search/faculty+of+engineering+university+of+ruhuna/@6.0796372,80.1909688,17.75z?entry=ttu&g_ep=EgoyMDI1MDUxMy4xIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" className="block">
-                  <img
-                    src="/images/Hostel Locations.png"
-                    alt="Map showing hostel locations"
-                    className="w-full h-full object-cover"
-                  />
+      <section className="py-16 bg-gray-100">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center gap-12">
+            <div className="md:w-1/2">
+              <div className="rounded-lg h-[400px] overflow-hidden">
+              <a href="https://www.google.com/maps/search/faculty+of+engineering+university+of+ruhuna/@6.0796372,80.1909688,17.75z?entry=ttu&g_ep=EgoyMDI1MDUxMy4xIKXMDSoASAFQAw%3D%3D" target="_blank">
+                <img
+                  src="/images/Hostel Locations.png"
+                  alt="Map showing hostel locations"
+                  className="w-full h-full object-cover"
+                />
                 </a>
               </div>
             </div>
 
-            <div className="lg:w-1/2">
-              <h2 className="text-4xl font-bold mb-6 text-[#4a2d5f]">
+            <div className="md:w-1/2">
+              <h2 className="text-3xl font-bold mb-6 text-[#4a2d5f]">
                 Conveniently Located
               </h2>
-              <div className="w-24 h-1 bg-yellow-400 mb-6"></div>
-              <p className="text-xl text-gray-700 mb-8 leading-relaxed">
-                Our hostels are right inside the campus, so lectures, libraries, and sports grounds are only minutes away. 
-                Safe, convenient, and community focused - everything you need for an easier student life is on your doorstep. 
+              <p className="text-gray-700 mb-6">
+              Our hostels are right inside the campus, so lectures, libraries, and sports grounds are only minutes away. 
+              Safe, convenient, and community focused - everything you need for an easier student life is on your doorstep. 
               </p>
 
-              <div className="space-y-6">
-                <div className="flex items-start p-4 rounded-xl hover:bg-gray-50 transition-all">
-                  <div className="p-3 bg-[#e91e63]/10 rounded-lg mr-4">
-                    <MapPin className="h-6 w-6 text-[#e91e63]" />
-                  </div>
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <MapPin className="h-5 w-5 text-[#e91e63] mr-3 mt-1" />
                   <div>
-                    <h3 className="font-bold text-lg mb-2">Hostel A (For Boys)</h3>
+                    <h3 className="font-semibold">Hostel A (For Boys)</h3>
                     <p className="text-gray-600">
-                      Near Faculty cafeteria and Department of Electrical and Information engineering.
+                    Near Faculty cafeteria and Department of Electrical and Information engineering.
                     </p>
                     <p className="text-gray-600">
                       2 minutes walk to Departments Buildings.
@@ -648,47 +530,38 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="flex items-start p-4 rounded-xl hover:bg-gray-50 transition-all">
-                  <div className="p-3 bg-[#4a2d5f]/10 rounded-lg mr-4">
-                    <MapPin className="h-6 w-6 text-[#4a2d5f]" />
-                  </div>
+                <div className="flex items-start">
+                  <MapPin className="h-5 w-5 text-[#e91e63] mr-3 mt-1" />
                   <div>
-                    <h3 className="font-bold text-lg mb-2">Hostel B (For Boys)</h3>
+                    <h3 className="font-semibold">Hostel B (For Boys)</h3>
                     <p className="text-gray-600">
                       Near Faculty cafeteria and Department of Electrical and Information engineering.
                     </p>
                     <p className="text-gray-600">
-                      2 minutes walk to Departments Buildings.
+                    2 minutes walk to Departments Buildings.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start p-4 rounded-xl hover:bg-gray-50 transition-all">
-                  <div className="p-3 bg-[#e91e63]/10 rounded-lg mr-4">
-                    <MapPin className="h-6 w-6 text-[#e91e63]" />
-                  </div>
+                <div className="flex items-start">
+                  <MapPin className="h-5 w-5 text-[#e91e63] mr-3 mt-1" />
                   <div>
-                    <h3 className="font-bold text-lg mb-2">Hostel C (For Girls)</h3>
+                    <h3 className="font-semibold">Hostel C (For Girls)</h3>
+                    <p className="text-gray-600">Near Faculty cafeteria and Department of Electrical and Information engineering.</p>
                     <p className="text-gray-600">
-                      Near Faculty cafeteria and Department of Electrical and Information engineering.
-                    </p>
-                    <p className="text-gray-600">
-                      2 minutes walk to Departments Buildings.
+                    2 minutes walk to Departments Buildings.
                     </p>
                   </div>
                 </div>
-
-                <div className="flex items-start p-4 rounded-xl hover:bg-gray-50 transition-all">
-                  <div className="p-3 bg-[#4a2d5f]/10 rounded-lg mr-4">
-                    <MapPin className="h-6 w-6 text-[#4a2d5f]" />
-                  </div>
+                <div className="flex items-start">
+                  <MapPin className="h-5 w-5 text-[#e91e63] mr-3 mt-1" />
                   <div>
-                    <h3 className="font-bold text-lg mb-2">Hostel D (For Boys)</h3>
+                    <h3 className="font-semibold">Hostel D (For Boys)</h3>
                     <p className="text-gray-600">
-                      Near Faculty Quarters, Play ground and Gymnasium.
+                    Near Faculty Quarters, Play ground and Gymnasium.
                     </p>
                     <p className="text-gray-600">
-                      10 minutes walk to Departments Buildings.
+                    10 minutes walk to Departments Buildings.
                     </p>
                   </div>
                 </div>
