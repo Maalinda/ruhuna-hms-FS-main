@@ -233,7 +233,7 @@ export default function ApplicationForm() {
 
                   <div>
                     <label htmlFor="nationality" className="form-label">
-                      Nationality
+                      District
                     </label>
                     <input
                       id="nationality"
@@ -254,7 +254,7 @@ export default function ApplicationForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="university" className="form-label">
-                      University/College
+                      Department
                     </label>
                     <input
                       id="university"
@@ -269,7 +269,7 @@ export default function ApplicationForm() {
 
                   <div>
                     <label htmlFor="course" className="form-label">
-                      Course/Program
+                      Registration Number
                     </label>
                     <input
                       id="course"
