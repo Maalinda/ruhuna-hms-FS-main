@@ -9,6 +9,7 @@ import Login from "./pages/Login"
 import Register from "./pages/Register"
 import ApplicationForm from "./pages/ApplicationForm"
 import AdminDashboard from "./pages/AdminDashboard"
+import StudentDashboard from "./pages/StudentDashboard"
 import NotFound from "./pages/NotFound"
 
 function App() {
@@ -36,6 +37,14 @@ function App() {
                   <AdminRoute>
                     <AdminDashboard />
                   </AdminRoute>
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <PrivateRoute>
+                    <StudentDashboard />
+                  </PrivateRoute>
                 }
               />
               <Route path="*" element={<NotFound />} />
