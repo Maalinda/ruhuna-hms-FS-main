@@ -31,3 +31,103 @@ body {
 .form-label {
   @apply block text-sm font-medium text-gray-700 mb-1;
 }
+
+/* Animation classes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+.slide-in-from-top {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+/* Additional Animations for Admin Dashboard */
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in.from-left {
+  animation: slideInFromLeft 0.5s ease-out forwards;
+}
+
+.animate-slide-in.from-right {
+  animation: slideInFromRight 0.5s ease-out forwards;
+}
+
+/* Hover animations */
+.hover-lift {
+  transition: transform 0.2s ease-out;
+}
+
+.hover-lift:hover {
+  transform: translateY(-3px);
+}
+
+/* Gradient text */
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, var(--primary), var(--secondary));
+}
+
+/* Pulse animation */
+@keyframes gentle-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(74, 45, 95, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(74, 45, 95, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(74, 45, 95, 0);
+  }
+}
+
+.pulse-animation {
+  animation: gentle-pulse 2s infinite;
+}

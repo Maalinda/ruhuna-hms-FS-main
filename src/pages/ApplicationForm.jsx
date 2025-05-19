@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
-import { collection, addDoc, serverTimestamp } from "firebase/firestore"
+import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore"
 import { db } from "../firebase"
 import { AlertCircle, CheckCircle } from "lucide-react"
 
@@ -33,6 +33,34 @@ export default function ApplicationForm() {
   const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [checkingStatus, setCheckingStatus] = useState(true)
+
+  useEffect(() => {
+    async function checkApplicationStatus() {
+      if (!currentUser) return
+
+      try {
+        const q = query(
+          collection(db, "applications"),
+          where("userId", "==", currentUser.uid)
+        )
+        
+        const querySnapshot = await getDocs(q)
+        
+        if (!querySnapshot.empty) {
+          // User has already applied, redirect to dashboard
+          navigate("/dashboard")
+        }
+      } catch (error) {
+        console.error("Error checking application status:", error)
+        setError("Failed to check your application status. Please try again.")
+      } finally {
+        setCheckingStatus(false)
+      }
+    }
+
+    checkApplicationStatus()
+  }, [currentUser, navigate])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -59,16 +87,28 @@ export default function ApplicationForm() {
 
       setSuccess(true)
 
-      // Reset form after 3 seconds and redirect
+      // Reset form after 1 second and redirect to dashboard
       setTimeout(() => {
-        navigate("/")
-      }, 3000)
+        navigate("/dashboard")
+      }, 1000)
     } catch (error) {
       console.error("Error submitting application:", error)
       setError("Failed to submit application. Please try again.")
     } finally {
       setLoading(false)
     }
+  }
+
+  if (checkingStatus) {
+    return (
+      <div className="min-h-screen bg-gray-100 py-12">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#4a2d5f]"></div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   if (success) {
@@ -82,7 +122,7 @@ export default function ApplicationForm() {
               <p className="text-gray-600 mb-6">
                 Thank you for your application. We will review it and get back to you soon.
               </p>
-              <p className="text-gray-500">You will be redirected to the homepage in a few seconds...</p>
+              <p className="text-gray-500">You will be redirected to the dashboard in a few seconds...</p>
             </div>
           </div>
         </div>

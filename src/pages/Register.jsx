@@ -19,7 +19,7 @@ export default function Register() {
     e.preventDefault()
 
     if (password !== confirmPassword) {
-      return setError("Passwords do not match")
+      return setError("Passwords don’t match - please re‑enter both fields.")
     }
 
     try {
