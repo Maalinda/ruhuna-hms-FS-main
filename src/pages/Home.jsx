@@ -473,7 +473,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold mb-3">Affordable Living</h3>
               <p className="text-gray-600">
-                High-quality accommodation at minimal cost, helping you manage your budget effectively.
+                Accommodation is free for students. Only a small annual fee (about Rs. 1000) is charged for the student welfare fund.
               </p>
             </div>
 
@@ -515,8 +515,8 @@ export default function Home() {
               >
                 <button
                   className={`w-full flex justify-between items-center p-5 text-left font-medium focus:outline-none rounded-xl transition-all ${activeAccordion === index
-                      ? "bg-gradient-to-r from-[#4a2d5f] to-[#5d3a75] text-white shadow-md"
-                      : "bg-white hover:bg-gray-50 shadow-sm"
+                    ? "bg-gradient-to-r from-[#4a2d5f] to-[#5d3a75] text-white shadow-md"
+                    : "bg-white hover:bg-gray-50 shadow-sm"
                     }`}
                   onClick={() => toggleAccordion(index)}
                 >
@@ -529,8 +529,8 @@ export default function Home() {
                 </button>
                 <div
                   className={`bg-white px-5 rounded-b-xl shadow-sm transition-all duration-300 ${activeAccordion === index
-                      ? "max-h-96 py-5 opacity-100"
-                      : "max-h-0 py-0 opacity-0"
+                    ? "max-h-96 py-5 opacity-100"
+                    : "max-h-0 py-0 opacity-0"
                     }`}
                 >
                   <p className="text-gray-600">{faq.answer}</p>
