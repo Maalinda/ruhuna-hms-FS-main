@@ -44,9 +44,9 @@ export default function ApplicationForm() {
           collection(db, "applications"),
           where("userId", "==", currentUser.uid)
         )
-        
+
         const querySnapshot = await getDocs(q)
-        
+
         if (!querySnapshot.empty) {
           // User has already applied, redirect to dashboard
           navigate("/dashboard")
@@ -299,8 +299,6 @@ export default function ApplicationForm() {
                       <option value="2">2nd Year</option>
                       <option value="3">3rd Year</option>
                       <option value="4">4th Year</option>
-                      <option value="5+">5th Year or above</option>
-                      <option value="postgraduate">Postgraduate</option>
                     </select>
                   </div>
                 </div>
