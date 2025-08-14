@@ -274,8 +274,8 @@ export default function Home() {
                 Study-Friendly
               </h3>
               <p className="text-gray-600 text-center">
-                Dedicated study spaces, high-speed internet, and quiet hours to
-                support your academic success.
+                Enjoy dedicated study areas, fast and reliable internet, 
+                and quiet hours — all designed to help you excel academically.
               </p>
             </div>
           </div>
