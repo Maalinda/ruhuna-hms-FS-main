@@ -177,7 +177,7 @@ export default function Home() {
                       to="/apply"
                       className="bg-gradient-to-r from-[#e91e63] to-[#f05d78] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:shadow-xl hover:scale-105 flex items-center justify-center"
                     >
-                      Apply for Housing <ArrowRight className="ml-2" />
+                      Apply Now <ArrowRight className="ml-2" />
                     </Link>
                     <Link
                       to="/dashboard"
