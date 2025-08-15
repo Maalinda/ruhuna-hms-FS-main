@@ -52,7 +52,7 @@ export default function Footer() {
             <div className="space-y-3 text-white/80">
               <div className="flex items-center gap-2">
                 <MapPin size={16} className="text-yellow-400 flex-shrink-0" />
-                <span>Faculty of Engineering, Hapugala, Galle, Sri Lanka</span>
+                <span>Faculty of Engineering, Hapugala, Galle, Sri Lanka.</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone size={16} className="text-yellow-400 flex-shrink-0" />
