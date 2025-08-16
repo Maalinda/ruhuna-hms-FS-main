@@ -35,7 +35,7 @@ export default function Login() {
         <div className="text-center">
           <h2 className="text-3xl font-extrabold text-[#4a2d5f]">Welcome Back</h2>
           <p className="mt-2 text-sm text-gray-600">
-          Log in to manage your dashboard and submit your hostel application 
+          Log in to access your dashboard and complete your hostel application
           </p>
         </div>
 
