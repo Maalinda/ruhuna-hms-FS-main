@@ -35,11 +35,12 @@ export default function Navbar() {
   };
 
   return (
-    <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled
-        ? "bg-[#821010]/75 backdrop-blur-sm shadow-md"
-        : "bg-[#821010]"
-        }`}
+    <header 
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+        scrolled 
+          ? "bg-[#821010]/75 backdrop-blur-sm shadow-md" 
+          : "bg-[#821010]"
+      }`}
     >
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
@@ -70,10 +71,11 @@ export default function Navbar() {
             </div>
 
             <nav className="flex items-center space-x-6">
-              <Link
-                to="/"
-                className={`text-white hover:text-yellow-400 transition-colors relative ${isActive("/") ? "font-medium" : ""
-                  }`}
+              <Link 
+                to="/" 
+                className={`text-white hover:text-yellow-400 transition-colors relative ${
+                  isActive("/") ? "font-medium" : ""
+                }`}
               >
                 <span>Home</span>
                 {isActive("/") && (
@@ -83,11 +85,12 @@ export default function Navbar() {
 
               {currentUser ? (
                 <>
-                  {userRole === "administrator" ? (
-                    <Link
-                      to="/admin"
-                      className={`text-white hover:text-yellow-400 transition-colors relative ${isActive("/admin") ? "font-medium" : ""
-                        }`}
+                  {userRole === "admin" ? (
+                    <Link 
+                      to="/admin" 
+                      className={`text-white hover:text-yellow-400 transition-colors relative ${
+                        isActive("/admin") ? "font-medium" : ""
+                      }`}
                     >
                       <span className="flex items-center gap-1">
                         <Settings size={16} />
@@ -98,10 +101,11 @@ export default function Navbar() {
                       )}
                     </Link>
                   ) : (
-                    <Link
-                      to="/dashboard"
-                      className={`text-white hover:text-yellow-400 transition-colors relative ${isActive("/dashboard") ? "font-medium" : ""
-                        }`}
+                    <Link 
+                      to="/dashboard" 
+                      className={`text-white hover:text-yellow-400 transition-colors relative ${
+                        isActive("/dashboard") ? "font-medium" : ""
+                      }`}
                     >
                       <span className="flex items-center gap-1">
                         <Home size={16} />
@@ -112,7 +116,7 @@ export default function Navbar() {
                       )}
                     </Link>
                   )}
-
+                  
                   <button
                     onClick={handleLogout}
                     className="text-white hover:text-yellow-400 transition-colors flex items-center gap-1"
@@ -123,19 +127,20 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
-                  <Link
-                    to="/login"
-                    className={`text-white hover:text-yellow-400 transition-colors relative ${isActive("/login") ? "font-medium" : ""
-                      }`}
+                  <Link 
+                    to="/login" 
+                    className={`text-white hover:text-yellow-400 transition-colors relative ${
+                      isActive("/login") ? "font-medium" : ""
+                    }`}
                   >
                     <span>Login</span>
                     {isActive("/login") && (
                       <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-yellow-400 rounded-full"></span>
                     )}
                   </Link>
-
-                  <Link
-                    to="/register"
+                  
+                  <Link 
+                    to="/register" 
                     className="bg-yellow-400 hover:bg-yellow-500 text-[#821010] px-4 py-1.5 rounded-full font-medium transition-all hover:shadow-lg active:scale-95"
                   >
                     Register
