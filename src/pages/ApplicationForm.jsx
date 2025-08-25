@@ -21,7 +21,6 @@ export default function ApplicationForm() {
     university: "", // This holds the Department value
     course: "",
     yearOfStudy: "",
-    roomPreference: "single",
     specialRequirements: "",
     emergencyContactName: "",
     emergencyContactPhone: "",
