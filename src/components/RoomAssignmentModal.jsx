@@ -251,7 +251,7 @@ export default function RoomAssignmentModal({ application, onClose, onComplete }
                         Rooms in {selectedHostel.name}
                       </h3>
                       <span className="text-sm text-gray-500">
-                        Select a room to assign
+                        Choose a room to assign
                       </span>
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
