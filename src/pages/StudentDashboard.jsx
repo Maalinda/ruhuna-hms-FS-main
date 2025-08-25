@@ -400,7 +400,7 @@ export default function StudentDashboard() {
                               <div>
                                 <p className="font-medium text-red-800">Application Not Approved</p>
                                 <p className="text-red-700 text-sm mt-1">
-                                  Unfortunately, your application was approved. You may submit a new application or contact administration for more information.
+                                  Unfortunately, your application was rejected. You may submit a new application or contact administration for more information.
                                 </p>
                               </div>
                             </div>
