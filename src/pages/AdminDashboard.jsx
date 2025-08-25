@@ -659,7 +659,7 @@ export default function AdminDashboard() {
                     </div>
                     <h3 className="text-xl font-semibold text-gray-700 mb-2">No Application Selected</h3>
                     <p className="text-gray-600 max-w-md">
-                      Select an application from the list to view details and take actions.
+                       Choose an application from the list to see details and take action.
                     </p>
                   </div>
                 )}
