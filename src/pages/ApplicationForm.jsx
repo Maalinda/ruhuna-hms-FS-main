@@ -930,7 +930,7 @@ export default function ApplicationForm() {
                   <div className="flex items-center">
                     <input id="terms" type="checkbox" required className="h-4 w-4 text-[#4a2d5f] focus:ring-[#4a2d5f] border-gray-300 rounded" />
                     <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
-                      I agree to the terms and conditions and confirm that all information provided is accurate and all documents are genuine.
+                      I agree to the terms and conditions and confirm that the information I have provided is accurate and all submitted documents are authentic.
                     </label>
                   </div>
 
