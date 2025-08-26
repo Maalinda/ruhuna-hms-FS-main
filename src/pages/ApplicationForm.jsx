@@ -651,7 +651,7 @@ export default function ApplicationForm() {
                       Details of Permanent Residence
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
+                      {/*<div>
                         <label htmlFor="district" className="form-label">
                           District
                         </label>
@@ -664,6 +664,47 @@ export default function ApplicationForm() {
                           required
                           className="form-input"
                         />
+                      </div> */}
+                      <div>
+                        <label htmlFor="district" className="form-label">
+                          District
+                        </label>
+                        <select
+                          id="district"
+                          name="district"
+                          type="text"
+                          value={formData.district}
+                          onChange={handleChange}
+                          required
+                          className="form-input"
+                        >
+                          <option value="">Select Your District</option>
+                          <option value="1">Colombo</option>
+                          <option value="2">Gampaha</option>
+                          <option value="3">Kalutara</option>
+                          <option value="4">Kandy</option>
+                          <option value="5">Matale</option>
+                          <option value="6">Nuwara Eliya</option>
+                          <option value="7">Galle</option>
+                          <option value="8">Matara</option>
+                          <option value="9">Hambantota</option>
+                          <option value="10">Jaffna</option>
+                          <option value="11">Kilinochchi</option>
+                          <option value="12">Mannar</option>
+                          <option value="13">Vavuniya</option>
+                          <option value="14">Mullaitivu</option>
+                          <option value="15">Batticaloa</option>
+                          <option value="16">Ampara</option>
+                          <option value="17">Trincomalee</option>
+                          <option value="18">Kurunegala</option>
+                          <option value="19">Puttalam</option>
+                          <option value="20">Anuradhapura</option>
+                          <option value="21">Polonnaruwa</option>
+                          <option value="22">Badulla</option>
+                          <option value="23">Moneragala</option>
+                          <option value="24">Ratnapura</option>
+                          <option value="25">Kegalle</option>
+                        </select>
                       </div>
 
                       <div>
@@ -791,9 +832,7 @@ export default function ApplicationForm() {
                           <option value="Computer Engineering">
                             Computer Engineering
                           </option>
-                          <option value="No">
-                            -No-
-                          </option>
+                          <option value="No">-No-</option>
                         </select>
                       </div>
 
