@@ -651,20 +651,6 @@ export default function ApplicationForm() {
                       Details of Permanent Residence
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {/*<div>
-                        <label htmlFor="district" className="form-label">
-                          District
-                        </label>
-                        <input
-                          id="district"
-                          name="district"
-                          type="text"
-                          value={formData.district}
-                          onChange={handleChange}
-                          required
-                          className="form-input"
-                        />
-                      </div> */}
                       <div>
                         <label htmlFor="district" className="form-label">
                           District
@@ -672,7 +658,6 @@ export default function ApplicationForm() {
                         <select
                           id="district"
                           name="district"
-                          type="text"
                           value={formData.district}
                           onChange={handleChange}
                           required
