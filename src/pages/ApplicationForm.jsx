@@ -682,37 +682,7 @@ export default function ApplicationForm() {
                       Academic Details
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="form-label">Degree</label>
-                        <div className="flex gap-4">
-                          <label className="flex items-center">
-                            <input
-                              type="radio"
-                              name="academicDegreeType"
-                              value="general"
-                              checked={
-                                formData.academicDegreeType === "general"
-                              }
-                              onChange={handleChange}
-                              className="mr-2"
-                            />
-                            General
-                          </label>
-                          <label className="flex items-center">
-                            <input
-                              type="radio"
-                              name="academicDegreeType"
-                              value="special"
-                              checked={
-                                formData.academicDegreeType === "special"
-                              }
-                              onChange={handleChange}
-                              className="mr-2"
-                            />
-                            Special
-                          </label>
-                        </div>
-                      </div>
+                      
                       <div>
                         <label htmlFor="presentLevel" className="form-label">
                           Present level / year
