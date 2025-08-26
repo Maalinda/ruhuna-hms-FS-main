@@ -1655,6 +1655,7 @@ export default function AdminDashboard() {
             </div>
           )}
 
+          {/* Notices Tab */}
           {activeTab === "notices" && (
             <div className="space-y-6">
               {/* Create Notice Form */}
@@ -1728,6 +1729,7 @@ export default function AdminDashboard() {
                   </div>
                 </div>
               </div>
+              
 
               {/* Notices List */}
               <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden animate-fade-in-up">
@@ -1740,6 +1742,7 @@ export default function AdminDashboard() {
                     {notices.length} Notice{notices.length !== 1 ? 's' : ''}
                   </span>
                 </div>
+                
                 
                 <div className="divide-y divide-gray-100 max-h-96 overflow-y-auto">
                   {notices.length === 0 ? (
@@ -1857,7 +1860,7 @@ export default function AdminDashboard() {
                             <div className="flex items-center space-x-3 mb-3">
                               <span className={`px-3 py-1 rounded-full text-xs font-medium ${getDefectStatusBadgeClass(report.status)}`}>
                                 {report.status === 'in_progress' ? 'In Progress' : report.status.charAt(0).toUpperCase() + report.status.slice(1)}
-                              </span>
+                              </span> 
                               <span className={`px-3 py-1 rounded-full text-xs font-medium ${getDefectPriorityBadgeClass(report.priority)}`}>
                                 {report.priority.charAt(0).toUpperCase() + report.priority.slice(1)} Priority
                               </span>
