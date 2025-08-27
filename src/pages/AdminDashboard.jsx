@@ -809,6 +809,7 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Filters and Search */}
               <div className="lg:col-span-12 bg-white p-6 rounded-xl border border-gray-200 shadow-sm mb-6 hover:shadow-md transition-all">
+<<<<<<< HEAD
                 <div className="space-y-4">
                   {/* First Row - Status and Search */}
                   <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
@@ -853,10 +854,48 @@ export default function AdminDashboard() {
                     <div className="text-right flex items-center gap-3 justify-end">
                       <div className="px-4 py-1.5 bg-gray-100 rounded-full text-sm font-medium text-gray-700">
                         Showing <span className="font-semibold text-[#4a2d5f]">{filteredApplications.length}</span> of <span className="font-semibold text-[#4a2d5f]">{applications.length}</span>
+=======
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div className="flex flex-col sm:flex-row gap-4 w-full md:w-2/3">
+                    <div className="w-full sm:w-1/3">
+                      <label htmlFor="statusFilter" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                        <Filter className="h-3.5 w-3.5 mr-1 text-gray-500" />
+                        Filter by Status
+                      </label>
+                      <select
+                        id="statusFilter"
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a2d5f] focus:border-transparent transition-colors bg-white"
+                      >
+                        <option value="all">All Applications</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                      </select>
+                    </div>
+
+                    <div className="w-full sm:w-2/3">
+                      <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                        <Search className="h-3.5 w-3.5 mr-1 text-gray-500" />
+                        Search Applications
+                      </label>
+                      <div className="relative">
+                        <input
+                          id="search"
+                          type="text"
+                          placeholder="Search by name, registration number, or department"
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a2d5f] focus:border-transparent transition-colors"
+                        />
+                        <Search className="h-5 w-5 text-gray-400 absolute left-3 top-3" />
+>>>>>>> b83937615d7319f012ff957ac9d6273778737211
                       </div>
                     </div>
                   </div>
 
+<<<<<<< HEAD
                   {/* Second Row - Distance, Income, and Marks Filters */}
                   <div className="flex flex-col sm:flex-row gap-4 pt-3 border-t border-gray-100">
                     <div className="w-full sm:w-1/3">
@@ -936,6 +975,12 @@ export default function AdminDashboard() {
                       <RefreshCw className="h-4 w-4 mr-1" />
                       Clear All Filters
                     </button>
+=======
+                  <div className="text-right flex items-center gap-3 justify-end">
+                    <div className="px-4 py-1.5 bg-gray-100 rounded-full text-sm font-medium text-gray-700">
+                      Showing <span className="font-semibold text-[#4a2d5f]">{filteredApplications.length}</span> of <span className="font-semibold text-[#4a2d5f]">{applications.length}</span>
+                    </div>
+>>>>>>> b83937615d7319f012ff957ac9d6273778737211
                   </div>
                 </div>
               </div>
@@ -1602,6 +1647,7 @@ export default function AdminDashboard() {
                                     </p>
                                   </div>
 
+<<<<<<< HEAD
                                   {/* Special Reasons Related to Parent */}
                                   <div className="space-y-2 md:col-span-2">
                                     <label className="block text-sm font-medium text-gray-700">
@@ -1625,6 +1671,8 @@ export default function AdminDashboard() {
                                     </p>
                                   </div>
 
+=======
+>>>>>>> b83937615d7319f012ff957ac9d6273778737211
                                   {/* Special Reasons for Siblings */}
                                   <div className="space-y-2 md:col-span-2">
                                     <label className="block text-sm font-medium text-gray-700">
@@ -1653,7 +1701,11 @@ export default function AdminDashboard() {
                                     <div className="flex items-center justify-between">
                                       <label className="text-lg font-semibold text-gray-800">Total Marks:</label>
                                       <div className="text-2xl font-bold text-amber-600">
+<<<<<<< HEAD
                                         {calculateTotal(evaluationData)} / 400
+=======
+                                        {calculateTotal(evaluationData)} / 300
+>>>>>>> b83937615d7319f012ff957ac9d6273778737211
                                       </div>
                                     </div>
                                   </div>
@@ -1821,7 +1873,11 @@ export default function AdminDashboard() {
                                 <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
                                   <h5 className="text-sm font-medium text-gray-700 mb-2">Current Evaluation Summary:</h5>
                                   <div className="text-sm text-gray-600">
+<<<<<<< HEAD
                                     <p>Total Marks: <span className="font-medium">{selectedApplication.evaluation.totalMarks}/400</span></p>
+=======
+                                    <p>Total Marks: <span className="font-medium">{selectedApplication.evaluation.totalMarks}/300</span></p>
+>>>>>>> b83937615d7319f012ff957ac9d6273778737211
                                     <p>Recommendation: <span className="font-medium capitalize">{selectedApplication.evaluation.recommendation?.replace('_', ' ') || 'Not set'}</span></p>
                                     <p>Final Decision: <span className="font-medium capitalize">{selectedApplication.evaluation.finalDecision?.replace('_', ' ') || 'Pending'}</span></p>
                                   </div>
