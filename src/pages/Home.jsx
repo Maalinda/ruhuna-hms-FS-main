@@ -152,7 +152,7 @@ export default function Home() {
               <br /> System
             </h1>
 
-            <p className="text-xl md:text-2xl text-white font-bold mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-lg bg-black/30 rounded-xl px-4 py-3 inline-block">
+            <p className="text-xl md:text-1.5xl text-white font-bold mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-lg bg-black/30 rounded-xl px-4 py-3 inline-block">
               Experience comfortable, affordable, and community-focused living
               <br />
               designed specifically for engineering students.
