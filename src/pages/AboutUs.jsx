@@ -59,9 +59,9 @@ export default function AboutUs() {
               <Users className="mx-auto mb-3 text-purple-600 w-10 h-10" />
               <h2 className="text-xl font-semibold text-gray-700 mb-2">Our Team</h2>
               <p className="text-gray-600 text-sm">
-                Developed by undergraduate students of the Faculty of Engineering, 
-                University of Ruhuna, with the aim of applying technology to solve 
-                real-world problems.
+              Developed by engineering undergraduates from the University of Ruhuna's 
+              Faculty of Engineering, driven by a mission to utilize technology 
+              for meaningful problem-solving.
               </p>
             </CardContent>
           </Card>
