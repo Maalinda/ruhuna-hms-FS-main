@@ -34,7 +34,7 @@ export default function Home() {
     features: false,
     faq: false,
     cta: false,
-    location: false
+    location: false,
   });
 
   const sectionRefs = {
@@ -42,7 +42,7 @@ export default function Home() {
     features: useRef(null),
     faq: useRef(null),
     cta: useRef(null),
-    location: useRef(null)
+    location: useRef(null),
   };
 
   useEffect(() => {
@@ -52,9 +52,9 @@ export default function Home() {
           if (entry.isIntersecting) {
             // Get the id from the element
             const id = entry.target.id;
-            setIsVisible(prev => ({
+            setIsVisible((prev) => ({
               ...prev,
-              [id]: true
+              [id]: true,
             }));
           }
         });
@@ -63,14 +63,14 @@ export default function Home() {
     );
 
     // Observe all section refs
-    Object.values(sectionRefs).forEach(ref => {
+    Object.values(sectionRefs).forEach((ref) => {
       if (ref.current) {
         observer.observe(ref.current);
       }
     });
 
     return () => {
-      Object.values(sectionRefs).forEach(ref => {
+      Object.values(sectionRefs).forEach((ref) => {
         if (ref.current) {
           observer.unobserve(ref.current);
         }
@@ -152,7 +152,7 @@ export default function Home() {
               <br /> System
             </h1>
 
-            <p className="text-xl md:text-2xl text-white font-bold mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-lg bg-black/30 rounded-xl px-4 py-3 inline-block">
+            <p className="text-xl md:text-xl text-white font-normal mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-lg bg-black/30 rounded-xl px-4 py-3 inline-block">
               Experience comfortable, affordable, and community-focused living
               <br />
               designed specifically for engineering students.
@@ -274,8 +274,8 @@ export default function Home() {
                 Study-Friendly
               </h3>
               <p className="text-gray-600 text-center">
-                Enjoy dedicated study areas, fast and reliable internet, 
-                and quiet hours — all designed to help you excel academically.
+                Enjoy dedicated study areas, fast and reliable internet, and
+                quiet hours — all designed to help you excel academically.
               </p>
             </div>
           </div>
@@ -540,7 +540,8 @@ export default function Home() {
             </h2>
             <div className="w-24 h-1 bg-yellow-400 mx-auto mb-6"></div>
             <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-              Find answers to common questions about our Hostel Management System.
+              Find answers to common questions about our Hostel Management
+              System.
             </p>
           </div>
 
