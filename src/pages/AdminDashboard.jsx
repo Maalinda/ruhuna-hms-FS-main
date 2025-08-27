@@ -58,6 +58,9 @@ export default function AdminDashboard() {
   const [selectedApplication, setSelectedApplication] = useState(null)
   const [statusFilter, setStatusFilter] = useState("all")
   const [searchTerm, setSearchTerm] = useState("")
+  const [distanceFilter, setDistanceFilter] = useState("all")
+  const [incomeFilter, setIncomeFilter] = useState("all")
+  const [marksFilter, setMarksFilter] = useState("all")
   const [activeTab, setActiveTab] = useState("applications")
   const [showRoomAssignment, setShowRoomAssignment] = useState(false)
   const [applicationToAssign, setApplicationToAssign] = useState(null)
@@ -95,7 +98,7 @@ export default function AdminDashboard() {
               formattedDate = "Unknown";
             }
           }
-
+          
           return {
             id: doc.id,
             ...data,
@@ -107,7 +110,7 @@ export default function AdminDashboard() {
         const pending = applicationsData.filter(app => app.status === "pending").length
         const approved = applicationsData.filter(app => app.status === "approved").length
         const rejected = applicationsData.filter(app => app.status === "rejected").length
-
+        
         setStats({
           pending,
           approved,
@@ -120,7 +123,7 @@ export default function AdminDashboard() {
         // Fetch notices
         const noticesQuery = query(collection(db, "notices"), orderBy("createdAt", "desc"))
         const noticesSnapshot = await getDocs(noticesQuery)
-
+        
         const noticesData = noticesSnapshot.docs.map((doc) => {
           const data = doc.data();
           let formattedDate = "Unknown";
@@ -132,7 +135,7 @@ export default function AdminDashboard() {
               formattedDate = "Unknown";
             }
           }
-
+          
           return {
             id: doc.id,
             ...data,
@@ -145,7 +148,7 @@ export default function AdminDashboard() {
         // Fetch defect reports
         const defectReportsQuery = query(collection(db, "defect_reports"), orderBy("createdAt", "desc"))
         const defectReportsSnapshot = await getDocs(defectReportsQuery)
-
+        
         const defectReportsData = defectReportsSnapshot.docs.map((doc) => {
           const data = doc.data();
           let formattedDate = "Unknown";
@@ -157,7 +160,7 @@ export default function AdminDashboard() {
               formattedDate = "Unknown";
             }
           }
-
+          
           return {
             id: doc.id,
             ...data,
@@ -190,7 +193,7 @@ export default function AdminDashboard() {
       })
 
       // Update application in state
-      const updatedApplications = applications.map((app) =>
+      const updatedApplications = applications.map((app) => 
         app.id === applicationId ? { ...app, status: newStatus } : app
       )
       setApplications(updatedApplications)
@@ -199,7 +202,7 @@ export default function AdminDashboard() {
       const pending = updatedApplications.filter(app => app.status === "pending").length
       const approved = updatedApplications.filter(app => app.status === "approved").length
       const rejected = updatedApplications.filter(app => app.status === "rejected").length
-
+      
       setStats({
         pending,
         approved,
@@ -210,7 +213,7 @@ export default function AdminDashboard() {
       if (selectedApplication?.id === applicationId) {
         setSelectedApplication({ ...selectedApplication, status: newStatus })
       }
-
+      
       // If approving, prompt for room assignment
       if (newStatus === "approved") {
         const appToAssign = applications.find(app => app.id === applicationId);
@@ -227,16 +230,16 @@ export default function AdminDashboard() {
 
   const handleRoomAssignmentComplete = (assignmentDetails) => {
     // Update local state with the room assignment details
-    setApplications(applications.map((app) =>
-      app.id === applicationToAssign.id
-        ? {
-          ...app,
-          hostelName: assignmentDetails.hostelName,
-          roomNumber: assignmentDetails.roomNumber
-        }
+    setApplications(applications.map((app) => 
+      app.id === applicationToAssign.id 
+        ? { 
+            ...app, 
+            hostelName: assignmentDetails.hostelName,
+            roomNumber: assignmentDetails.roomNumber
+          } 
         : app
     ))
-
+    
     if (selectedApplication?.id === applicationToAssign.id) {
       setSelectedApplication({
         ...selectedApplication,
@@ -244,7 +247,7 @@ export default function AdminDashboard() {
         roomNumber: assignmentDetails.roomNumber
       })
     }
-
+    
     // Close the modal
     setShowRoomAssignment(false)
     setApplicationToAssign(null)
@@ -265,7 +268,7 @@ export default function AdminDashboard() {
       const pending = updatedApplications.filter(app => app.status === "pending").length
       const approved = updatedApplications.filter(app => app.status === "approved").length
       const rejected = updatedApplications.filter(app => app.status === "rejected").length
-
+      
       setStats({
         pending,
         approved,
@@ -290,7 +293,103 @@ export default function AdminDashboard() {
       app.department?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       app.district?.toLowerCase().includes(searchTerm.toLowerCase())
 
-    return matchesStatus && matchesSearch
+    // Distance filter logic
+    let matchesDistance = true
+    if (distanceFilter !== "all" && app.distanceToFaculty) {
+      const distance = parseFloat(app.distanceToFaculty)
+      switch (distanceFilter) {
+        case "under_10":
+          matchesDistance = distance < 10
+          break
+        case "10_to_25":
+          matchesDistance = distance >= 10 && distance <= 25
+          break
+        case "25_to_50":
+          matchesDistance = distance > 25 && distance <= 50
+          break
+        case "over_50":
+          matchesDistance = distance > 50
+          break
+        default:
+          matchesDistance = true
+      }
+    }
+
+    // Income filter logic
+    let matchesIncome = true
+    if (incomeFilter !== "all") {
+      const fatherIncome = parseFloat(app.fatherIncome || 0)
+      const motherIncome = parseFloat(app.motherIncome || 0)
+      const guardianIncome = parseFloat(app.guardianIncome || 0)
+      const totalIncome = fatherIncome + motherIncome + guardianIncome
+      
+      switch (incomeFilter) {
+        case "under_50000":
+          matchesIncome = totalIncome < 50000
+          break
+        case "50000_to_100000":
+          matchesIncome = totalIncome >= 50000 && totalIncome <= 100000
+          break
+        case "100000_to_200000":
+          matchesIncome = totalIncome > 100000 && totalIncome <= 200000
+          break
+        case "over_200000":
+          matchesIncome = totalIncome > 200000
+          break
+        case "receives_grant":
+          matchesIncome = app.receivesGrant === 'yes'
+          break
+        case "receives_samurdhi":
+          matchesIncome = app.receivesSamurdhi === 'yes'
+          break
+        default:
+          matchesIncome = true
+      }
+    }
+
+    // Marks filter logic
+    let matchesMarks = true
+    if (marksFilter !== "all") {
+      switch (marksFilter) {
+        case "not_evaluated":
+          matchesMarks = !app.evaluation || !app.evaluation.totalMarks
+          break
+        case "under_100":
+        case "100_to_200":
+        case "200_to_300":
+        case "300_to_400":
+        case "above_300":
+          // Only include applications that have been evaluated
+          if (app.evaluation && app.evaluation.totalMarks) {
+            const totalMarks = parseFloat(app.evaluation.totalMarks)
+            switch (marksFilter) {
+              case "under_100":
+                matchesMarks = totalMarks < 100
+                break
+              case "100_to_200":
+                matchesMarks = totalMarks >= 100 && totalMarks < 200
+                break
+              case "200_to_300":
+                matchesMarks = totalMarks >= 200 && totalMarks < 300
+                break
+              case "300_to_400":
+                matchesMarks = totalMarks >= 300 && totalMarks <= 400
+                break
+              case "above_300":
+                matchesMarks = totalMarks > 300
+                break
+            }
+          } else {
+            // Application not evaluated, exclude from score-based filters
+            matchesMarks = false
+          }
+          break
+        default:
+          matchesMarks = true
+      }
+    }
+
+    return matchesStatus && matchesSearch && matchesDistance && matchesIncome && matchesMarks
   })
 
   const getStatusBadgeClass = (status) => {
@@ -345,16 +444,17 @@ export default function AdminDashboard() {
   const calculateTotal = (data) => {
     const distanceMarks = parseFloat(data.distanceMarks || 0)
     const incomeMarks = parseFloat(data.incomeMarks || 0)
+    const specialReasonsParentMarks = parseFloat(data.specialReasonsParentMarks || 0)
     const specialReasonsMarks = parseFloat(data.specialReasonsMarks || 0)
-    return (distanceMarks + incomeMarks + specialReasonsMarks).toFixed(1)
+    return (distanceMarks + incomeMarks + specialReasonsParentMarks + specialReasonsMarks).toFixed(1)
   }
 
   const saveEvaluation = async () => {
     if (!selectedApplication) return
-
+    
     try {
       setSavingEvaluation(true)
-
+      
       const evaluationWithTimestamp = {
         ...evaluationData,
         totalMarks: calculateTotal(evaluationData),
@@ -374,7 +474,7 @@ export default function AdminDashboard() {
       const updateData = {
         evaluation: evaluationWithTimestamp
       }
-
+      
       if (newStatus !== selectedApplication.status) {
         updateData.status = newStatus
         updateData.statusUpdatedAt = new Date().toISOString()
@@ -395,7 +495,7 @@ export default function AdminDashboard() {
         const pending = updatedApplications.filter(app => app.status === "pending").length
         const approved = updatedApplications.filter(app => app.status === "approved").length
         const rejected = updatedApplications.filter(app => app.status === "rejected").length
-
+        
         setStats({
           pending,
           approved,
@@ -403,7 +503,7 @@ export default function AdminDashboard() {
           total: updatedApplications.length
         })
       }
-
+      
       if (selectedApplication) {
         setSelectedApplication({
           ...selectedApplication,
@@ -424,7 +524,7 @@ export default function AdminDashboard() {
 
       // Clear the evaluation form
       setEvaluationData({})
-
+      
     } catch (error) {
       console.error("Error saving evaluation:", error)
       setError("Failed to save evaluation. Please try again.")
@@ -449,7 +549,7 @@ export default function AdminDashboard() {
 
     try {
       setSavingNotice(true)
-
+      
       const noticeData = {
         title: noticeForm.title.trim(),
         content: noticeForm.content.trim(),
@@ -459,19 +559,19 @@ export default function AdminDashboard() {
       }
 
       const docRef = await addDoc(collection(db, "notices"), noticeData)
-
+      
       // Add to local state
       const newNotice = {
         id: docRef.id,
         ...noticeData,
         createdAt: new Date().toLocaleDateString()
       }
-
+      
       setNotices(prevNotices => [newNotice, ...prevNotices])
-
+      
       // Clear form
       setNoticeForm({ title: '', content: '', type: 'info' })
-
+      
     } catch (error) {
       console.error("Error creating notice:", error)
       setError("Failed to create notice. Please try again.")
@@ -481,7 +581,7 @@ export default function AdminDashboard() {
   }
 
   const deleteNotice = async (noticeId) => {
-    if (!window.confirm("Are you sure you want to delete this notice? Once deleted, it will be removed for all students.")) {
+    if (!window.confirm("Are you sure you want to delete this notice?")) {
       return
     }
 
@@ -571,9 +671,9 @@ export default function AdminDashboard() {
           </div>
           <p className="text-gray-500 font-medium text-sm mt-2">Loading admin dashboard...</p>
           <div className="mt-3 flex space-x-1">
-            <div className="h-2 w-2 rounded-full bg-[#4a2d5f] animate-bounce" style={{ animationDelay: "0ms" }}></div>
-            <div className="h-2 w-2 rounded-full bg-[#4a2d5f] animate-bounce" style={{ animationDelay: "150ms" }}></div>
-            <div className="h-2 w-2 rounded-full bg-[#4a2d5f] animate-bounce" style={{ animationDelay: "300ms" }}></div>
+            <div className="h-2 w-2 rounded-full bg-[#4a2d5f] animate-bounce" style={{animationDelay: "0ms"}}></div>
+            <div className="h-2 w-2 rounded-full bg-[#4a2d5f] animate-bounce" style={{animationDelay: "150ms"}}></div>
+            <div className="h-2 w-2 rounded-full bg-[#4a2d5f] animate-bounce" style={{animationDelay: "300ms"}}></div>
           </div>
         </div>
       </div>
@@ -599,7 +699,7 @@ export default function AdminDashboard() {
                 </div>
                 <span className="mt-0.5">{error}</span>
               </div>
-              <button
+              <button 
                 onClick={() => window.location.reload()}
                 className="bg-white hover:bg-red-50 text-red-700 py-2 px-4 rounded-lg border border-red-300 shadow-sm inline-flex items-center text-sm font-medium transition-colors sm:ml-auto"
               >
@@ -616,7 +716,7 @@ export default function AdminDashboard() {
               { title: "Approved", value: stats.approved, icon: <CheckCircle className="h-6 w-6 text-green-500" />, bgColor: "green" },
               { title: "Rejected", value: stats.rejected, icon: <XCircle className="h-6 w-6 text-red-500" />, bgColor: "red" }
             ].map((stat, index) => (
-              <div
+              <div 
                 key={stat.title}
                 className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 transition-all hover:shadow-md hover:translate-y-[-2px] animate-fade-in-up"
                 style={{ animationDelay: getStaggeredDelay(index) }}
@@ -632,8 +732,8 @@ export default function AdminDashboard() {
                 </div>
                 <div className="mt-4 pt-3 border-t border-gray-100">
                   <div className="w-full bg-gray-100 rounded-full h-1.5">
-                    <div
-                      className={`bg-${stat.bgColor}-500 h-1.5 rounded-full`}
+                    <div 
+                      className={`bg-${stat.bgColor}-500 h-1.5 rounded-full`} 
                       style={{ width: `${(stat.value / stats.total) * 100}%` }}
                     ></div>
                   </div>
@@ -647,10 +747,11 @@ export default function AdminDashboard() {
             <div className="flex space-x-1">
               <button
                 onClick={() => setActiveTab("applications")}
-                className={`px-4 py-3 font-medium rounded-t-lg transition-colors ${activeTab === "applications"
-                  ? "bg-white border-t border-l border-r border-gray-200 text-[#4a2d5f] font-semibold relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#4a2d5f]"
-                  : "text-gray-600 hover:text-[#4a2d5f] hover:bg-gray-50"
-                  }`}
+                className={`px-4 py-3 font-medium rounded-t-lg transition-colors ${
+                  activeTab === "applications"
+                    ? "bg-white border-t border-l border-r border-gray-200 text-[#4a2d5f] font-semibold relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#4a2d5f]"
+                    : "text-gray-600 hover:text-[#4a2d5f] hover:bg-gray-50"
+                }`}
               >
                 <div className="flex items-center">
                   <Users className="h-4 w-4 mr-2" />
@@ -659,10 +760,11 @@ export default function AdminDashboard() {
               </button>
               <button
                 onClick={() => setActiveTab("hostels")}
-                className={`px-4 py-3 font-medium rounded-t-lg transition-colors ${activeTab === "hostels"
-                  ? "bg-white border-t border-l border-r border-gray-200 text-[#4a2d5f] font-semibold relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#4a2d5f]"
-                  : "text-gray-600 hover:text-[#4a2d5f] hover:bg-gray-50"
-                  }`}
+                className={`px-4 py-3 font-medium rounded-t-lg transition-colors ${
+                  activeTab === "hostels"
+                    ? "bg-white border-t border-l border-r border-gray-200 text-[#4a2d5f] font-semibold relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#4a2d5f]"
+                    : "text-gray-600 hover:text-[#4a2d5f] hover:bg-gray-50"
+                }`}
               >
                 <div className="flex items-center">
                   <Building className="h-4 w-4 mr-2" />
@@ -671,10 +773,11 @@ export default function AdminDashboard() {
               </button>
               <button
                 onClick={() => setActiveTab("notices")}
-                className={`px-4 py-3 font-medium rounded-t-lg transition-colors ${activeTab === "notices"
-                  ? "bg-white border-t border-l border-r border-gray-200 text-[#4a2d5f] font-semibold relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#4a2d5f]"
-                  : "text-gray-600 hover:text-[#4a2d5f] hover:bg-gray-50"
-                  }`}
+                className={`px-4 py-3 font-medium rounded-t-lg transition-colors ${
+                  activeTab === "notices"
+                    ? "bg-white border-t border-l border-r border-gray-200 text-[#4a2d5f] font-semibold relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#4a2d5f]"
+                    : "text-gray-600 hover:text-[#4a2d5f] hover:bg-gray-50"
+                }`}
               >
                 <div className="flex items-center">
                   <Bell className="h-4 w-4 mr-2" />
@@ -683,10 +786,11 @@ export default function AdminDashboard() {
               </button>
               <button
                 onClick={() => setActiveTab("defects")}
-                className={`px-4 py-3 font-medium rounded-t-lg transition-colors ${activeTab === "defects"
-                  ? "bg-white border-t border-l border-r border-gray-200 text-[#4a2d5f] font-semibold relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#4a2d5f]"
-                  : "text-gray-600 hover:text-[#4a2d5f] hover:bg-gray-50"
-                  }`}
+                className={`px-4 py-3 font-medium rounded-t-lg transition-colors ${
+                  activeTab === "defects"
+                    ? "bg-white border-t border-l border-r border-gray-200 text-[#4a2d5f] font-semibold relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#4a2d5f]"
+                    : "text-gray-600 hover:text-[#4a2d5f] hover:bg-gray-50"
+                }`}
               >
                 <div className="flex items-center">
                   <Bug className="h-4 w-4 mr-2" />
@@ -705,49 +809,133 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Filters and Search */}
               <div className="lg:col-span-12 bg-white p-6 rounded-xl border border-gray-200 shadow-sm mb-6 hover:shadow-md transition-all">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                  <div className="flex flex-col sm:flex-row gap-4 w-full md:w-2/3">
-                    <div className="w-full sm:w-1/3">
-                      <label htmlFor="statusFilter" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
-                        <Filter className="h-3.5 w-3.5 mr-1 text-gray-500" />
-                        Filter by Status
-                      </label>
-                      <select
-                        id="statusFilter"
-                        value={statusFilter}
-                        onChange={(e) => setStatusFilter(e.target.value)}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a2d5f] focus:border-transparent transition-colors bg-white"
-                      >
-                        <option value="all">All Applications</option>
-                        <option value="pending">Pending</option>
-                        <option value="approved">Approved</option>
-                        <option value="rejected">Rejected</option>
-                      </select>
+                <div className="space-y-4">
+                  {/* First Row - Status and Search */}
+                  <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4 w-full md:w-2/3">
+                      <div className="w-full sm:w-1/3">
+                        <label htmlFor="statusFilter" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                          <Filter className="h-3.5 w-3.5 mr-1 text-gray-500" />
+                          Filter by Status
+                        </label>
+                        <select
+                          id="statusFilter"
+                          value={statusFilter}
+                          onChange={(e) => setStatusFilter(e.target.value)}
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a2d5f] focus:border-transparent transition-colors bg-white"
+                        >
+                          <option value="all">All Applications</option>
+                          <option value="pending">Pending</option>
+                          <option value="approved">Approved</option>
+                          <option value="rejected">Rejected</option>
+                        </select>
+                      </div>
+
+                      <div className="w-full sm:w-2/3">
+                        <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                          <Search className="h-3.5 w-3.5 mr-1 text-gray-500" />
+                          Search Applications
+                        </label>
+                        <div className="relative">
+                          <input
+                            id="search"
+                            type="text"
+                            placeholder="Search by name, registration number, or department"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a2d5f] focus:border-transparent transition-colors"
+                          />
+                          <Search className="h-5 w-5 text-gray-400 absolute left-3 top-3" />
+                        </div>
+                      </div>
                     </div>
 
-                    <div className="w-full sm:w-2/3">
-                      <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
-                        <Search className="h-3.5 w-3.5 mr-1 text-gray-500" />
-                        Search Applications
-                      </label>
-                      <div className="relative">
-                        <input
-                          id="search"
-                          type="text"
-                          placeholder="Search by name, registration number, or department"
-                          value={searchTerm}
-                          onChange={(e) => setSearchTerm(e.target.value)}
-                          className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a2d5f] focus:border-transparent transition-colors"
-                        />
-                        <Search className="h-5 w-5 text-gray-400 absolute left-3 top-3" />
+                    <div className="text-right flex items-center gap-3 justify-end">
+                      <div className="px-4 py-1.5 bg-gray-100 rounded-full text-sm font-medium text-gray-700">
+                        Showing <span className="font-semibold text-[#4a2d5f]">{filteredApplications.length}</span> of <span className="font-semibold text-[#4a2d5f]">{applications.length}</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="text-right flex items-center gap-3 justify-end">
-                    <div className="px-4 py-1.5 bg-gray-100 rounded-full text-sm font-medium text-gray-700">
-                      Showing <span className="font-semibold text-[#4a2d5f]">{filteredApplications.length}</span> of <span className="font-semibold text-[#4a2d5f]">{applications.length}</span>
+                  {/* Second Row - Distance, Income, and Marks Filters */}
+                  <div className="flex flex-col sm:flex-row gap-4 pt-3 border-t border-gray-100">
+                    <div className="w-full sm:w-1/3">
+                      <label htmlFor="distanceFilter" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                        <MapPin className="h-3.5 w-3.5 mr-1 text-gray-500" />
+                        Filter by Distance (km)
+                      </label>
+                      <select
+                        id="distanceFilter"
+                        value={distanceFilter}
+                        onChange={(e) => setDistanceFilter(e.target.value)}
+                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a2d5f] focus:border-transparent transition-colors bg-white"
+                      >
+                        <option value="all">All Distances</option>
+                        <option value="under_10">Under 10 km</option>
+                        <option value="10_to_25">10 - 25 km</option>
+                        <option value="25_to_50">25 - 50 km</option>
+                        <option value="over_50">Over 50 km</option>
+                      </select>
                     </div>
+
+                    <div className="w-full sm:w-1/3">
+                      <label htmlFor="incomeFilter" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                        <DollarSign className="h-3.5 w-3.5 mr-1 text-gray-500" />
+                        Filter by Income (Rs.)
+                      </label>
+                      <select
+                        id="incomeFilter"
+                        value={incomeFilter}
+                        onChange={(e) => setIncomeFilter(e.target.value)}
+                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a2d5f] focus:border-transparent transition-colors bg-white"
+                      >
+                        <option value="all">All Income Levels</option>
+                        <option value="under_50000">Under Rs. 50,000</option>
+                        <option value="50000_to_100000">Rs. 50,000 - 100,000</option>
+                        <option value="100000_to_200000">Rs. 100,000 - 200,000</option>
+                        <option value="over_200000">Over Rs. 200,000</option>
+                        <option value="receives_grant">Receives Grant</option>
+                        <option value="receives_samurdhi">Receives Samurdhi</option>
+                      </select>
+                    </div>
+
+                    <div className="w-full sm:w-1/3">
+                      <label htmlFor="marksFilter" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                        <Calculator className="h-3.5 w-3.5 mr-1 text-gray-500" />
+                        Filter by Total Marks
+                      </label>
+                      <select
+                        id="marksFilter"
+                        value={marksFilter}
+                        onChange={(e) => setMarksFilter(e.target.value)}
+                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a2d5f] focus:border-transparent transition-colors bg-white"
+                      >
+                        <option value="all">All Applications</option>
+                        <option value="not_evaluated">Not Evaluated</option>
+                        <option value="under_100">Under 100 marks</option>
+                        <option value="100_to_200">100 - 199 marks</option>
+                        <option value="200_to_300">200 - 299 marks</option>
+                        <option value="300_to_400">300 - 400 marks</option>
+                        <option value="above_300">Above 300 marks</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Clear Filters Button */}
+                  <div className="flex justify-end pt-2">
+                    <button
+                      onClick={() => {
+                        setStatusFilter("all")
+                        setSearchTerm("")
+                        setDistanceFilter("all")
+                        setIncomeFilter("all")
+                        setMarksFilter("all")
+                      }}
+                      className="px-4 py-2 text-sm text-gray-600 hover:text-[#4a2d5f] hover:bg-gray-50 rounded-lg transition-colors flex items-center"
+                    >
+                      <RefreshCw className="h-4 w-4 mr-1" />
+                      Clear All Filters
+                    </button>
                   </div>
                 </div>
               </div>
@@ -770,7 +958,7 @@ export default function AdminDashboard() {
                         </div>
                         <h3 className="text-lg font-medium text-gray-700 mb-2">No Applications Found</h3>
                         <p className="text-gray-500 mb-4">Try adjusting your search or filter criteria.</p>
-                        <button
+                        <button 
                           onClick={() => { setSearchTerm(""); setStatusFilter("all"); }}
                           className="text-[#4a2d5f] hover:text-[#3a2248] font-medium transition-colors"
                         >
@@ -782,12 +970,13 @@ export default function AdminDashboard() {
                         {filteredApplications.map((application, index) => (
                           <li
                             key={application.id}
-                            className={`p-4 hover:bg-gray-50 cursor-pointer transition-all duration-150 ${selectedApplication?.id === application.id
-                              ? "bg-[#4a2d5f]/5 border-l-4 border-[#4a2d5f]"
-                              : ""
-                              }`}
+                            className={`p-4 hover:bg-gray-50 cursor-pointer transition-all duration-150 ${
+                              selectedApplication?.id === application.id 
+                                ? "bg-[#4a2d5f]/5 border-l-4 border-[#4a2d5f]" 
+                                : ""
+                            }`}
                             onClick={() => setSelectedApplication(application)}
-                            style={{
+                            style={{ 
                               animationDelay: getStaggeredDelay(index),
                               animation: activateAnimation ? 'fadeInUp 0.5s ease-out forwards' : 'none'
                             }}
@@ -807,7 +996,7 @@ export default function AdminDashboard() {
                                     <Calendar className="h-3 w-3 mr-1 text-gray-400" />
                                     {application.createdAt}
                                   </p>
-
+                                  
                                   <div className="flex items-center">
                                     {application.hostelName && application.roomNumber && (
                                       <span className="flex items-center text-xs font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full mr-2">
@@ -870,7 +1059,7 @@ export default function AdminDashboard() {
                           {getStatusIcon(selectedApplication.status)}
                           <span className="ml-1.5">{selectedApplication.status.charAt(0).toUpperCase() + selectedApplication.status.slice(1)}</span>
                         </span>
-
+                        
                         {selectedApplication.hostelName && selectedApplication.roomNumber && (
                           <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 flex items-center">
                             <Home className="h-3.5 w-3.5 mr-1.5" />
@@ -1010,7 +1199,7 @@ export default function AdminDashboard() {
                                 </span>
                               </div>
                             </div>
-
+                            
                             {/* Occupations */}
                             {(selectedApplication.fatherOccupation || selectedApplication.motherOccupation || selectedApplication.guardianOccupation) && (
                               <div className="mt-4 pt-4 border-t border-gray-200">
@@ -1073,7 +1262,7 @@ export default function AdminDashboard() {
                                 <span className="font-medium text-gray-800">{selectedApplication.presentLevel ? `${selectedApplication.presentLevel}${selectedApplication.presentLevel === '1' ? 'st' : selectedApplication.presentLevel === '2' ? 'nd' : selectedApplication.presentLevel === '3' ? 'rd' : 'th'} Year` : 'Not specified'}</span>
                               </div>
                             </div>
-
+                            
                             <div className="flex flex-col pt-3 border-t border-gray-200">
                               <span className="text-xs font-medium text-gray-500">Misconduct/Misbehavior History</span>
                               <span className={`font-medium ${selectedApplication.hasMisconduct === 'no' ? 'text-green-600' : 'text-red-600'}`}>
@@ -1324,13 +1513,13 @@ export default function AdminDashboard() {
 
                               {/* No Documents Message */}
                               {!selectedApplication.gramaNiladhariRecommendationUrl &&
-                                !selectedApplication.physicalEducationRecommendationUrl &&
-                                (!selectedApplication.additionalDocumentsUrls || selectedApplication.additionalDocumentsUrls.length === 0) && (
-                                  <div className="bg-gray-50 p-6 rounded-lg text-center">
-                                    <FileText className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                                    <p className="text-gray-600">No documents uploaded with this application</p>
-                                  </div>
-                                )}
+                               !selectedApplication.physicalEducationRecommendationUrl &&
+                               (!selectedApplication.additionalDocumentsUrls || selectedApplication.additionalDocumentsUrls.length === 0) && (
+                                <div className="bg-gray-50 p-6 rounded-lg text-center">
+                                  <FileText className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                                  <p className="text-gray-600">No documents uploaded with this application</p>
+                                </div>
+                              )}
                             </div>
                           )}
                         </div>
@@ -1365,7 +1554,7 @@ export default function AdminDashboard() {
                                   <Calculator className="h-5 w-5 mr-2 text-amber-600" />
                                   Valuation Marks
                                 </h4>
-
+                                
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                   {/* Distance Based Marks */}
                                   <div className="space-y-2">
@@ -1413,6 +1602,29 @@ export default function AdminDashboard() {
                                     </p>
                                   </div>
 
+                                  {/* Special Reasons Related to Parent */}
+                                  <div className="space-y-2 md:col-span-2">
+                                    <label className="block text-sm font-medium text-gray-700">
+                                      Special Reasons Related to Parent
+                                    </label>
+                                    <div className="flex items-center space-x-2">
+                                      <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        step="0.5"
+                                        value={evaluationData.specialReasonsParentMarks || ''}
+                                        onChange={(e) => handleEvaluationChange('specialReasonsParentMarks', e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                                        placeholder="Enter marks"
+                                      />
+                                      <span className="text-sm text-gray-500">/ 100</span>
+                                    </div>
+                                    <p className="text-xs text-gray-500">
+                                      Parent-related special circumstances
+                                    </p>
+                                  </div>
+
                                   {/* Special Reasons for Siblings */}
                                   <div className="space-y-2 md:col-span-2">
                                     <label className="block text-sm font-medium text-gray-700">
@@ -1441,7 +1653,7 @@ export default function AdminDashboard() {
                                     <div className="flex items-center justify-between">
                                       <label className="text-lg font-semibold text-gray-800">Total Marks:</label>
                                       <div className="text-2xl font-bold text-amber-600">
-                                        {calculateTotal(evaluationData)} / 300
+                                        {calculateTotal(evaluationData)} / 400
                                       </div>
                                     </div>
                                   </div>
@@ -1454,7 +1666,7 @@ export default function AdminDashboard() {
                                   <Edit3 className="h-5 w-5 mr-2 text-blue-600" />
                                   Administrative Details
                                 </h4>
-
+                                
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                   <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Prepared by</label>
@@ -1508,7 +1720,7 @@ export default function AdminDashboard() {
                                   <CheckSquare className="h-5 w-5 mr-2 text-purple-600" />
                                   Warden/Registrar Recommendation
                                 </h4>
-
+                                
                                 <div className="space-y-4">
                                   <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Hostel Facility Recommendation</label>
@@ -1543,7 +1755,7 @@ export default function AdminDashboard() {
                                   <CheckCircle className="h-5 w-5 mr-2 text-green-600" />
                                   Final Approval Decision
                                 </h4>
-
+                                
                                 <div className="space-y-4">
                                   <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Final Decision</label>
@@ -1609,7 +1821,7 @@ export default function AdminDashboard() {
                                 <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
                                   <h5 className="text-sm font-medium text-gray-700 mb-2">Current Evaluation Summary:</h5>
                                   <div className="text-sm text-gray-600">
-                                    <p>Total Marks: <span className="font-medium">{selectedApplication.evaluation.totalMarks}/300</span></p>
+                                    <p>Total Marks: <span className="font-medium">{selectedApplication.evaluation.totalMarks}/400</span></p>
                                     <p>Recommendation: <span className="font-medium capitalize">{selectedApplication.evaluation.recommendation?.replace('_', ' ') || 'Not set'}</span></p>
                                     <p>Final Decision: <span className="font-medium capitalize">{selectedApplication.evaluation.finalDecision?.replace('_', ' ') || 'Pending'}</span></p>
                                   </div>
@@ -1628,7 +1840,7 @@ export default function AdminDashboard() {
                     </div>
                     <h3 className="text-xl font-semibold text-gray-700 mb-2">No Application Selected</h3>
                     <p className="text-gray-600 max-w-md">
-                      Choose an application from the list to see details and take action.
+                       Choose an application from the list to see details and take action.
                     </p>
                   </div>
                 )}
@@ -1677,7 +1889,7 @@ export default function AdminDashboard() {
                         <option value="urgent">Urgent</option>
                       </select>
                     </div>
-
+                    
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Notice Title
@@ -1690,7 +1902,7 @@ export default function AdminDashboard() {
                         placeholder="Enter notice title..."
                       />
                     </div>
-
+                    
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Notice Content
@@ -1703,7 +1915,7 @@ export default function AdminDashboard() {
                         placeholder="Enter notice content..."
                       />
                     </div>
-
+                    
                     <div className="flex justify-end space-x-3">
                       <button
                         onClick={() => setNoticeForm({ title: '', content: '', type: 'info' })}
@@ -1735,7 +1947,7 @@ export default function AdminDashboard() {
                     {notices.length} Notice{notices.length !== 1 ? 's' : ''}
                   </span>
                 </div>
-
+                
                 <div className="divide-y divide-gray-100 max-h-96 overflow-y-auto">
                   {notices.length === 0 ? (
                     <div className="p-8 text-center">
@@ -1749,11 +1961,12 @@ export default function AdminDashboard() {
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
                             <div className="flex items-center space-x-2 mb-2">
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${notice.type === 'urgent' ? 'bg-red-100 text-red-800' :
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                notice.type === 'urgent' ? 'bg-red-100 text-red-800' :
                                 notice.type === 'warning' ? 'bg-yellow-100 text-yellow-800' :
-                                  notice.type === 'success' ? 'bg-green-100 text-green-800' :
-                                    'bg-blue-100 text-blue-800'
-                                }`}>
+                                notice.type === 'success' ? 'bg-green-100 text-green-800' :
+                                'bg-blue-100 text-blue-800'
+                              }`}>
                                 {notice.type.charAt(0).toUpperCase() + notice.type.slice(1)}
                               </span>
                               <span className="text-sm text-gray-500">{notice.createdAt}</span>
@@ -1835,7 +2048,7 @@ export default function AdminDashboard() {
                     {defectReports.length} Report{defectReports.length !== 1 ? 's' : ''}
                   </span>
                 </div>
-
+                
                 <div className="divide-y divide-gray-100 max-h-[600px] overflow-y-auto">
                   {defectReports.length === 0 ? (
                     <div className="p-8 text-center">
@@ -1857,24 +2070,24 @@ export default function AdminDashboard() {
                               </span>
                               <span className="text-sm text-gray-500">{report.createdAt}</span>
                             </div>
-
+                            
                             <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
                               <Bug className="h-4 w-4 mr-2 text-gray-600" />
                               {report.subject}
                             </h3>
-
+                            
                             <div className="mb-3">
                               <span className="text-sm font-medium text-gray-700">Category: </span>
                               <span className="text-sm text-gray-600 capitalize">{report.category}</span>
                             </div>
-
+                            
                             <p className="text-gray-600 text-sm mb-3 leading-relaxed">{report.description}</p>
-
+                            
                             <div className="text-sm text-gray-500">
                               <p><span className="font-medium">Reported by:</span> {report.reporterName} ({report.reporterEmail})</p>
                             </div>
                           </div>
-
+                          
                           <div className="ml-6 flex flex-col space-y-2">
                             {report.status !== 'resolved' && (
                               <div className="flex flex-col space-y-1">
@@ -1889,7 +2102,7 @@ export default function AdminDashboard() {
                                 </select>
                               </div>
                             )}
-
+                            
                             <button
                               onClick={() => deleteDefectReport(report.id)}
                               className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-sm"

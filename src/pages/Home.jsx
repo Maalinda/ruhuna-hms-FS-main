@@ -540,7 +540,7 @@ export default function Home() {
             </h2>
             <div className="w-24 h-1 bg-yellow-400 mx-auto mb-6"></div>
             <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-              Find answers to common questions about our Hostel Management System.
+              Find answers to common questions about our student accommodation.
             </p>
           </div>
 
