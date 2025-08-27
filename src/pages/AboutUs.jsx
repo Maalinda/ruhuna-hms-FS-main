@@ -20,12 +20,7 @@ export default function AboutUs() {
         <Card className="shadow-lg rounded-2xl">
           <CardContent className="p-6">
             <p className="text-lg text-gray-700 leading-relaxed">
-              The <span className="font-semibold">Hostel Management System (HMS)</span> 
-              is a web-based platform designed to simplify and digitalize hostel 
-              administration tasks at the University of Ruhuna. Our system allows 
-              students and wardens to manage hostel-related activities such as 
-              registration, late arrivals, early departures, defect reporting, 
-              and accessing virtual notice boards.
+              The <span className="font-semibold">Hostel Management System (HMS)</span> is a web-based platform designed to simplify and digitalize hostel administration tasks at the University of Ruhuna. Our system allows students and wardens to manage hostel-related activities such as registration, defect reporting and accessing virtual notice boards.
             </p>
           </CardContent>
         </Card>
