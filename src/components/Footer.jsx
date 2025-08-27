@@ -1,5 +1,4 @@
 import { Facebook, Twitter, Instagram, Mail, MapPin, Phone } from "lucide-react";
-import { Link } from "react-router-dom";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -30,18 +29,20 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div className="flex flex-col">
-            <h3 className="text-xl font-bold mb-4 text-center lg:text-left border-b border-yellow-400 pb-2">
-                Quick Links
-            </h3>
-              <ul className="space-y-2">
+            <h3 className="text-xl font-bold mb-4 text-center lg:text-left border-b border-yellow-400 pb-2">Quick Links</h3>
+            <ul className="space-y-2">
               <li>
-                <Link  to="/" className="text-white/80 hover:text-yellow-400 transition-colors" >Home</Link>
+                <a href="#" className="text-white/80 hover:text-yellow-400 transition-colors">Home</a>
               </li>
-              
               <li>
-                <Link to="/aboutus" className="text-white/80 hover:text-yellow-400 transition-colors">About Us</Link>
+                <a href="#" className="text-white/80 hover:text-yellow-400 transition-colors">Accommodation</a>
               </li>
-              
+              <li>
+                <a href="#" className="text-white/80 hover:text-yellow-400 transition-colors">About Us</a>
+              </li>
+              <li>
+                <a href="#" className="text-white/80 hover:text-yellow-400 transition-colors">Contact</a>
+              </li>
             </ul>
           </div>
 
