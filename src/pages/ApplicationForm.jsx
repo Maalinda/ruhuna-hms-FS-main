@@ -1,35 +1,16 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import {
-  collection,
-  addDoc,
-  serverTimestamp,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db, storage } from "../firebase";
-import {
-  AlertCircle,
-  CheckCircle,
-  Plus,
-  Minus,
-  Upload,
-  FileText,
-  Award,
-  Shield,
-  ArrowLeft,
-  ArrowRight,
-  Users,
-} from "lucide-react";
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../contexts/AuthContext"
+import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore"
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
+import { db, storage } from "../firebase"
+import { AlertCircle, CheckCircle, Plus, Minus, Upload, FileText, Award, Shield, ArrowLeft, ArrowRight, Users } from "lucide-react"
 
 export default function ApplicationForm() {
-  const { currentUser } = useAuth();
-  const navigate = useNavigate();
+  const { currentUser } = useAuth()
+  const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
     // Basic Information
@@ -43,27 +24,27 @@ export default function ApplicationForm() {
     mobileNumber: "",
     gender: "",
     maritalStatus: "single",
-
+    
     // Residence Details
     district: "",
     closestTown: "",
     distanceToTown: "",
     distanceToFaculty: "",
     walkingDistanceToBusStop: "",
-
+    
     // Academic Details
     academicDegreeType: "",
     department: "",
     presentLevel: "",
     hasMisconduct: "no",
-
+    
     // Financial Information
     receivesGrant: "no",
     grantAmount: "",
-
+    
     // Family Details - Brothers/Sisters
     siblings: [{ name: "", schoolUniversity: "", gradeYear: "" }],
-
+    
     // Family Income
     fatherIncome: "",
     motherIncome: "",
@@ -72,141 +53,135 @@ export default function ApplicationForm() {
     fatherOccupation: "",
     motherOccupation: "",
     guardianOccupation: "",
-
+    
     // Previous Hostel
     receivedHostelBefore: "no",
     previousHostelYears: "",
-
+    
     // Emergency Contact
     emergencyContactName: "",
     emergencyContactAddress: "",
     emergencyContactPhone: "",
     emergencyContactRelation: "",
-
+    
     // Sports Activities
     universityTeam: "",
-    receivedColors: "no",
-  });
+    receivedColors: "no"
+  })
 
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [checkingStatus, setCheckingStatus] = useState(true);
-  const [currentStep, setCurrentStep] = useState(1);
-
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [checkingStatus, setCheckingStatus] = useState(true)
+  const [currentStep, setCurrentStep] = useState(1)
+  
   // Document upload states
   const [documents, setDocuments] = useState({
     gramaNiladhariRecommendation: null,
     physicalEducationRecommendation: null,
-    additionalDocuments: [],
-  });
-  const [specialReasons, setSpecialReasons] = useState("");
+    additionalDocuments: []
+  })
+  const [specialReasons, setSpecialReasons] = useState("")
 
   useEffect(() => {
     async function checkApplicationStatus() {
-      if (!currentUser) return;
+      if (!currentUser) return
 
       try {
         const q = query(
           collection(db, "applications"),
           where("userId", "==", currentUser.uid)
-        );
+        )
 
-        const querySnapshot = await getDocs(q);
+        const querySnapshot = await getDocs(q)
 
         if (!querySnapshot.empty) {
-          navigate("/dashboard");
+          navigate("/dashboard")
         }
       } catch (error) {
-        console.error("Error checking application status:", error);
-        setError("Failed to check your application status. Please try again.");
+        console.error("Error checking application status:", error)
+        setError("Failed to check your application status. Please try again.")
       } finally {
-        setCheckingStatus(false);
+        setCheckingStatus(false)
       }
     }
 
-    checkApplicationStatus();
-  }, [currentUser, navigate]);
+    checkApplicationStatus()
+  }, [currentUser, navigate])
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   const handleSiblingChange = (index, field, value) => {
-    const updatedSiblings = [...formData.siblings];
-    updatedSiblings[index][field] = value;
+    const updatedSiblings = [...formData.siblings]
+    updatedSiblings[index][field] = value
     setFormData((prev) => ({
       ...prev,
       siblings: updatedSiblings,
-    }));
-  };
+    }))
+  }
 
   const addSibling = () => {
     setFormData((prev) => ({
       ...prev,
-      siblings: [
-        ...prev.siblings,
-        { name: "", schoolUniversity: "", gradeYear: "" },
-      ],
-    }));
-  };
+      siblings: [...prev.siblings, { name: "", schoolUniversity: "", gradeYear: "" }],
+    }))
+  }
 
   const removeSibling = (index) => {
     if (formData.siblings.length > 1) {
-      const updatedSiblings = formData.siblings.filter((_, i) => i !== index);
+      const updatedSiblings = formData.siblings.filter((_, i) => i !== index)
       setFormData((prev) => ({
         ...prev,
         siblings: updatedSiblings,
-      }));
+      }))
     }
-  };
+  }
 
   const handleDocumentUpload = (field, file) => {
-    if (field === "additionalDocuments") {
-      setDocuments((prev) => ({
+    if (field === 'additionalDocuments') {
+      setDocuments(prev => ({
         ...prev,
-        additionalDocuments: [...prev.additionalDocuments, file],
-      }));
+        additionalDocuments: [...prev.additionalDocuments, file]
+      }))
     } else {
-      setDocuments((prev) => ({
+      setDocuments(prev => ({
         ...prev,
-        [field]: file,
-      }));
+        [field]: file
+      }))
     }
-  };
+  }
 
   const removeDocument = (field, index = null) => {
-    if (field === "additionalDocuments" && index !== null) {
-      setDocuments((prev) => ({
+    if (field === 'additionalDocuments' && index !== null) {
+      setDocuments(prev => ({
         ...prev,
-        additionalDocuments: prev.additionalDocuments.filter(
-          (_, i) => i !== index
-        ),
-      }));
+        additionalDocuments: prev.additionalDocuments.filter((_, i) => i !== index)
+      }))
     } else {
-      setDocuments((prev) => ({
+      setDocuments(prev => ({
         ...prev,
-        [field]: null,
-      }));
+        [field]: null
+      }))
     }
-  };
+  }
 
   const uploadFileToFirebase = async (file, path) => {
-    const storageRef = ref(storage, path);
-    const snapshot = await uploadBytes(storageRef, file);
-    return await getDownloadURL(snapshot.ref);
-  };
+    const storageRef = ref(storage, path)
+    const snapshot = await uploadBytes(storageRef, file)
+    return await getDownloadURL(snapshot.ref)
+  }
 
   const handleStepSubmit = async (e) => {
-    e.preventDefault();
-
+    e.preventDefault()
+    
     if (currentStep === 1) {
       // Validate required fields for step 1
-<<<<<<< HEAD
       let requiredFields = ['registrationNumber', 'fullName', 'nameWithInitials', 'permanentAddress', 'mobileNumber', 'gender', 'district', 'closestTown', 'distanceToTown', 'distanceToFaculty', 'walkingDistanceToBusStop', 'presentLevel', 'emergencyContactName', 'emergencyContactAddress', 'emergencyContactPhone', 'emergencyContactRelation']
       
       // Add department to required fields only for 2nd year and above students
@@ -214,87 +189,51 @@ export default function ApplicationForm() {
         requiredFields.push('department')
       }
       
-=======
-      const requiredFields = [
-        "registrationNumber",
-        "fullName",
-        "nameWithInitials",
-        "permanentAddress",
-        "mobileNumber",
-        "gender",
-        "district",
-        "closestTown",
-        "distanceToTown",
-        "distanceToFaculty",
-        "walkingDistanceToBusStop",
-        "department",
-        "presentLevel",
-        "emergencyContactName",
-        "emergencyContactAddress",
-        "emergencyContactPhone",
-        "emergencyContactRelation",
-      ];
-
->>>>>>> b83937615d7319f012ff957ac9d6273778737211
       for (const field of requiredFields) {
         if (!formData[field]) {
-          setError(`Please fill in all required fields in Step 1.`);
-          return;
+          setError(`Please fill in all required fields in Step 1.`)
+          return
         }
       }
-
-      setCurrentStep(2);
-      setError("");
+      
+      setCurrentStep(2)
+      setError("")
     } else {
       // Step 2 - Final submission
-      await handleFinalSubmit();
+      await handleFinalSubmit()
     }
-  };
+  }
 
   const handleFinalSubmit = async () => {
     try {
-      setError("");
-      setLoading(true);
+      setError("")
+      setLoading(true)
 
       // Upload documents to Firebase Storage
-      const documentUrls = {};
-
+      const documentUrls = {}
+      
       if (documents.gramaNiladhariRecommendation) {
-        const path = `applications/${
-          currentUser.uid
-        }/grama-niladhari-${Date.now()}`;
-        documentUrls.gramaNiladhariRecommendationUrl =
-          await uploadFileToFirebase(
-            documents.gramaNiladhariRecommendation,
-            path
-          );
+        const path = `applications/${currentUser.uid}/grama-niladhari-${Date.now()}`
+        documentUrls.gramaNiladhariRecommendationUrl = await uploadFileToFirebase(documents.gramaNiladhariRecommendation, path)
       }
-
+      
       if (documents.physicalEducationRecommendation) {
-        const path = `applications/${
-          currentUser.uid
-        }/physical-education-${Date.now()}`;
-        documentUrls.physicalEducationRecommendationUrl =
-          await uploadFileToFirebase(
-            documents.physicalEducationRecommendation,
-            path
-          );
+        const path = `applications/${currentUser.uid}/physical-education-${Date.now()}`
+        documentUrls.physicalEducationRecommendationUrl = await uploadFileToFirebase(documents.physicalEducationRecommendation, path)
       }
-
+      
       if (documents.additionalDocuments.length > 0) {
-        const additionalUrls = [];
+        const additionalUrls = []
         for (let i = 0; i < documents.additionalDocuments.length; i++) {
-          const file = documents.additionalDocuments[i];
-          const path = `applications/${
-            currentUser.uid
-          }/additional-${i}-${Date.now()}`;
-          const url = await uploadFileToFirebase(file, path);
+          const file = documents.additionalDocuments[i]
+          const path = `applications/${currentUser.uid}/additional-${i}-${Date.now()}`
+          const url = await uploadFileToFirebase(file, path)
           additionalUrls.push({
             name: file.name,
-            url: url,
-          });
+            url: url
+          })
         }
-        documentUrls.additionalDocumentsUrls = additionalUrls;
+        documentUrls.additionalDocumentsUrls = additionalUrls
       }
 
       // Submit application with form data and document URLs
@@ -305,25 +244,25 @@ export default function ApplicationForm() {
         userId: currentUser.uid,
         status: "pending",
         createdAt: serverTimestamp(),
-      });
+      })
 
-      setSuccess(true);
+      setSuccess(true)
 
       setTimeout(() => {
-        navigate("/dashboard");
-      }, 1000);
+        navigate("/dashboard")
+      }, 1000)
     } catch (error) {
-      console.error("Error submitting application:", error);
-      setError("Failed to submit application. Please try again.");
+      console.error("Error submitting application:", error)
+      setError("Failed to submit application. Please try again.")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const goBackToStep1 = () => {
-    setCurrentStep(1);
-    setError("");
-  };
+    setCurrentStep(1)
+    setError("")
+  }
 
   if (checkingStatus) {
     return (
@@ -334,7 +273,7 @@ export default function ApplicationForm() {
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   if (success) {
@@ -344,21 +283,16 @@ export default function ApplicationForm() {
           <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8">
             <div className="text-center">
               <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                Application Submitted Successfully!
-              </h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">Application Submitted Successfully!</h2>
               <p className="text-gray-600 mb-6">
-                Thank you for your application and uploaded documents. We will
-                review them and get back to you soon.
+                Thank you for your application and uploaded documents. We will review them and get back to you soon.
               </p>
-              <p className="text-gray-500">
-                You will be redirected to the dashboard in a few seconds...
-              </p>
+              <p className="text-gray-500">You will be redirected to the dashboard in a few seconds...</p>
             </div>
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -425,7 +359,6 @@ export default function ApplicationForm() {
                     </div>
                   </div>
 
-<<<<<<< HEAD
                   <div>
                     <label className="form-label">Degree</label>
                     <div className="flex gap-4">
@@ -449,183 +382,6 @@ export default function ApplicationForm() {
                     <label htmlFor="registrationNumber" className="form-label">Student Registration Number</label>
                     <input id="registrationNumber" name="registrationNumber" type="text" value={formData.registrationNumber} onChange={handleChange} required className="form-input" />
                   </div>
-=======
-                  {/* Residence Details */}
-                  <div className="bg-gray-50 p-4 rounded-md">
-                    <h3 className="text-lg font-semibold mb-4">
-                      Details of Permanent Residence
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="district" className="form-label">
-                          District
-                        </label>
-                        <select
-                          id="district"
-                          name="district"
-                          value={formData.district}
-                          onChange={handleChange}
-                          required
-                          className="form-input"
-                        >
-                          <option value="">Select Your District</option>
-                          <option value="1">Colombo</option>
-                          <option value="2">Gampaha</option>
-                          <option value="3">Kalutara</option>
-                          <option value="4">Kandy</option>
-                          <option value="5">Matale</option>
-                          <option value="6">Nuwara Eliya</option>
-                          <option value="7">Galle</option>
-                          <option value="8">Matara</option>
-                          <option value="9">Hambantota</option>
-                          <option value="10">Jaffna</option>
-                          <option value="11">Kilinochchi</option>
-                          <option value="12">Mannar</option>
-                          <option value="13">Vavuniya</option>
-                          <option value="14">Mullaitivu</option>
-                          <option value="15">Batticaloa</option>
-                          <option value="16">Ampara</option>
-                          <option value="17">Trincomalee</option>
-                          <option value="18">Kurunegala</option>
-                          <option value="19">Puttalam</option>
-                          <option value="20">Anuradhapura</option>
-                          <option value="21">Polonnaruwa</option>
-                          <option value="22">Badulla</option>
-                          <option value="23">Moneragala</option>
-                          <option value="24">Ratnapura</option>
-                          <option value="25">Kegalle</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label htmlFor="closestTown" className="form-label">
-                          Closest town to your residence
-                        </label>
-                        <input
-                          id="closestTown"
-                          name="closestTown"
-                          type="text"
-                          value={formData.closestTown}
-                          onChange={handleChange}
-                          required
-                          className="form-input"
-                        />
-                      </div>
-
-                      <div>
-                        <label htmlFor="distanceToTown" className="form-label">
-                          Distance from residence to closest town (km)
-                        </label>
-                        <input
-                          id="distanceToTown"
-                          name="distanceToTown"
-                          type="number"
-                          step="0.1"
-                          value={formData.distanceToTown}
-                          onChange={handleChange}
-                          required
-                          className="form-input"
-                        />
-                      </div>
-
-                      <div>
-                        <label
-                          htmlFor="distanceToFaculty"
-                          className="form-label"
-                        >
-                          Distance from residence to Faculty of Engineering (km)
-                        </label>
-                        <input
-                          id="distanceToFaculty"
-                          name="distanceToFaculty"
-                          type="number"
-                          step="0.1"
-                          value={formData.distanceToFaculty}
-                          onChange={handleChange}
-                          required
-                          className="form-input"
-                        />
-                      </div>
-
-                      <div>
-                        <label
-                          htmlFor="walkingDistanceToBusStop"
-                          className="form-label"
-                        >
-                          Walking distance from bus stop to residence (km)
-                        </label>
-                        <input
-                          id="walkingDistanceToBusStop"
-                          name="walkingDistanceToBusStop"
-                          type="number"
-                          step="0.1"
-                          value={formData.walkingDistanceToBusStop}
-                          onChange={handleChange}
-                          required
-                          className="form-input"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Academic Details */}
-                  <div className="bg-gray-50 p-4 rounded-md">
-                    <h3 className="text-lg font-semibold mb-4">
-                      Academic Details
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="presentLevel" className="form-label">
-                          Present level / year
-                        </label>
-                        <select
-                          id="presentLevel"
-                          name="presentLevel"
-                          value={formData.presentLevel}
-                          onChange={handleChange}
-                          required
-                          className="form-input"
-                        >
-                          <option value="">Select Year</option>
-                          <option value="1">1st Year</option>
-                          <option value="2">2nd Year</option>
-                          <option value="3">3rd Year</option>
-                          <option value="4">4th Year</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label htmlFor="department" className="form-label">
-                          Department
-                        </label>
-                        <select
-                          id="department"
-                          name="department"
-                          value={formData.department}
-                          onChange={handleChange}
-                          required
-                          className="form-input"
-                        >
-                          <option value="">Select Department</option>
-                          <option value="Civil and Environmental Engineering">
-                            Civil and Environmental Engineering
-                          </option>
-                          <option value="Electrical and Information Engineering">
-                            Electrical and Information Engineering
-                          </option>
-                          <option value="Mechanical and Manufacturing Engineering">
-                            Mechanical and Manufacturing Engineering
-                          </option>
-                          <option value="Marine Engineering and Naval Architecture">
-                            Marine Engineering and Naval Architecture
-                          </option>
-                          <option value="Computer Engineering">
-                            Computer Engineering
-                          </option>
-                          <option value="No">-No-</option>
-                        </select>
-                      </div>
->>>>>>> b83937615d7319f012ff957ac9d6273778737211
 
                   <div className="md:col-span-2">
                     <label htmlFor="fullName" className="form-label">Name in full</label>
