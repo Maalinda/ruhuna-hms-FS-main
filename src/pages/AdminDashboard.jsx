@@ -306,33 +306,15 @@ export default function AdminDashboard() {
 
     // Income filter logic
     let matchesIncome = true
-    if (incomeFilter !== "all") {
+    if (incomeFilter && (app.fatherIncome || app.motherIncome || app.guardianIncome)) {
       const fatherIncome = parseFloat(app.fatherIncome || 0)
       const motherIncome = parseFloat(app.motherIncome || 0)
       const guardianIncome = parseFloat(app.guardianIncome || 0)
       const totalIncome = fatherIncome + motherIncome + guardianIncome
 
-      switch (incomeFilter) {
-        case "under_50000":
-          matchesIncome = totalIncome < 50000
-          break
-        case "50000_to_100000":
-          matchesIncome = totalIncome >= 50000 && totalIncome <= 100000
-          break
-        case "100000_to_200000":
-          matchesIncome = totalIncome > 100000 && totalIncome <= 200000
-          break
-        case "over_200000":
-          matchesIncome = totalIncome > 200000
-          break
-        case "receives_grant":
-          matchesIncome = app.receivesGrant === 'yes'
-          break
-        case "receives_samurdhi":
-          matchesIncome = app.receivesSamurdhi === 'yes'
-          break
-        default:
-          matchesIncome = true
+      const filterValue = parseFloat(incomeFilter)
+      if (!isNaN(filterValue)) {
+        matchesIncome = totalIncome < filterValue
       }
     }
 
@@ -861,25 +843,23 @@ export default function AdminDashboard() {
 
 
                     <div className="w-full sm:w-1/3">
-                      <label htmlFor="incomeFilter" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                      <label
+                        htmlFor="incomeFilter"
+                        className="block text-sm font-medium text-gray-700 mb-1 flex items-center"
+                      >
                         <DollarSign className="h-3.5 w-3.5 mr-1 text-gray-500" />
-                        Filter by Income (Rs.)
+                        Show Applications Below Income (Rs.)
                       </label>
-                      <select
+                      <input
+                        type="number"
                         id="incomeFilter"
                         value={incomeFilter}
                         onChange={(e) => setIncomeFilter(e.target.value)}
+                        placeholder="Enter income (e.g., 100000)"
                         className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a2d5f] focus:border-transparent transition-colors bg-white"
-                      >
-                        <option value="all">All Income Levels</option>
-                        <option value="under_50000">Under Rs. 50,000</option>
-                        <option value="50000_to_100000">Rs. 50,000 - 100,000</option>
-                        <option value="100000_to_200000">Rs. 100,000 - 200,000</option>
-                        <option value="over_200000">Over Rs. 200,000</option>
-                        <option value="receives_grant">Receives Grant</option>
-                        <option value="receives_samurdhi">Receives Samurdhi</option>
-                      </select>
+                      />
                     </div>
+
 
                     <div className="w-full sm:w-1/3">
                       <label htmlFor="marksFilter" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
