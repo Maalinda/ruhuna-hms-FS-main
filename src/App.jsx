@@ -11,6 +11,7 @@ import ApplicationForm from "./pages/ApplicationForm"
 import AdminDashboard from "./pages/AdminDashboard"
 import StudentDashboard from "./pages/StudentDashboard"
 import NotFound from "./pages/NotFound"
+import AboutUs from "./pages/AboutUs"
 
 function App() {
   return (
@@ -45,6 +46,12 @@ function App() {
                   <PrivateRoute>
                     <StudentDashboard />
                   </PrivateRoute>
+                }
+              />
+              <Route
+                path="/aboutus"
+                element={
+                  <AboutUs />
                 }
               />
               <Route path="*" element={<NotFound />} />
