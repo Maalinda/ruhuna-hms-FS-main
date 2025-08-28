@@ -27,7 +27,7 @@ export default function AboutUs() {
 
         {/* Mission, Vision, Team */}
         <div className="grid md:grid-cols-3 gap-6">
-          <Card className="shadow-lg rounded-2xl">
+          <Card className="shadow-lg rounded-3xl">
             <CardContent className="p-6 text-center">
               <Target className="mx-auto mb-3 text-blue-600 w-10 h-10" />
               <h2 className="text-xl font-semibold text-gray-700 mb-2">Our Mission</h2>
@@ -38,7 +38,7 @@ export default function AboutUs() {
             </CardContent>
           </Card>
 
-          <Card className="shadow-lg rounded-2xl">
+          <Card className="shadow-lg rounded-3xl">
             <CardContent className="p-6 text-center">
               <Building2 className="mx-auto mb-3 text-green-600 w-10 h-10" />
               <h2 className="text-xl font-semibold text-gray-700 mb-2">Our Vision</h2>
@@ -49,7 +49,7 @@ export default function AboutUs() {
             </CardContent>
           </Card>
 
-          <Card className="shadow-lg rounded-2xl">
+          <Card className="shadow-lg rounded-3xl">
             <CardContent className="p-6 text-center">
               <Users className="mx-auto mb-3 text-purple-600 w-10 h-10" />
               <h2 className="text-xl font-semibold text-gray-700 mb-2">Our Team</h2>
