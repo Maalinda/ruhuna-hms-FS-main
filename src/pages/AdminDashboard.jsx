@@ -2089,7 +2089,7 @@ export default function AdminDashboard() {
                         onChange={(e) => setNoticeForm(prev => ({ ...prev, expiryDate: e.target.value }))}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4a2d5f]"
                       />
-                    </div>                    
+                    </div>                                   
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -2103,6 +2103,17 @@ export default function AdminDashboard() {
                         placeholder="Enter notice content..."
                       />
                     </div>
+
+                      {/* Pin Notice */}
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={noticeForm.pinned || false}
+                          onChange={(e) => setNoticeForm(prev => ({ ...prev, pinned: e.target.checked }))}
+                          className="mr-2"
+                        />
+                        <label className="text-sm text-gray-700">Pin this notice to top</label>
+                      </div>          
 
                     <div className="flex justify-end space-x-3">
                       <button
