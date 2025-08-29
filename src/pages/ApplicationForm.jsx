@@ -9,8 +9,8 @@ import { db, storage } from "../firebase"
 import { AlertCircle, CheckCircle, Plus, Minus, Upload, FileText, Award, Shield, ArrowLeft, ArrowRight, Users } from "lucide-react"
 
 export default function ApplicationForm() {
-  const { currentUser } = useAuth()
-  const navigate = useNavigate()
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     // Basic Information
@@ -66,174 +66,210 @@ export default function ApplicationForm() {
 
     // Sports Activities
     universityTeam: "",
-    receivedColors: "no"
-  })
+    receivedColors: "no",
+  });
 
-  const [error, setError] = useState("")
-  const [success, setSuccess] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [checkingStatus, setCheckingStatus] = useState(true)
-  const [currentStep, setCurrentStep] = useState(1)
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [checkingStatus, setCheckingStatus] = useState(true);
+  const [currentStep, setCurrentStep] = useState(1);
 
   // Document upload states
   const [documents, setDocuments] = useState({
     gramaNiladhariRecommendation: null,
     physicalEducationRecommendation: null,
-    additionalDocuments: []
-  })
-  const [specialReasons, setSpecialReasons] = useState("")
+    additionalDocuments: [],
+  });
+  const [specialReasons, setSpecialReasons] = useState("");
 
   useEffect(() => {
     async function checkApplicationStatus() {
-      if (!currentUser) return
+      if (!currentUser) return;
 
       try {
         const q = query(
           collection(db, "applications"),
           where("userId", "==", currentUser.uid)
-        )
+        );
 
-        const querySnapshot = await getDocs(q)
+        const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-          navigate("/dashboard")
+          navigate("/dashboard");
         }
       } catch (error) {
-        console.error("Error checking application status:", error)
-        setError("Failed to check your application status. Please try again.")
+        console.error("Error checking application status:", error);
+        setError("Failed to check your application status. Please try again.");
       } finally {
-        setCheckingStatus(false)
+        setCheckingStatus(false);
       }
     }
 
-    checkApplicationStatus()
-  }, [currentUser, navigate])
+    checkApplicationStatus();
+  }, [currentUser, navigate]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleSiblingChange = (index, field, value) => {
-    const updatedSiblings = [...formData.siblings]
-    updatedSiblings[index][field] = value
+    const updatedSiblings = [...formData.siblings];
+    updatedSiblings[index][field] = value;
     setFormData((prev) => ({
       ...prev,
       siblings: updatedSiblings,
-    }))
-  }
+    }));
+  };
 
   const addSibling = () => {
     setFormData((prev) => ({
       ...prev,
-      siblings: [...prev.siblings, { name: "", schoolUniversity: "", gradeYear: "" }],
-    }))
-  }
+      siblings: [
+        ...prev.siblings,
+        { name: "", schoolUniversity: "", gradeYear: "" },
+      ],
+    }));
+  };
 
   const removeSibling = (index) => {
     if (formData.siblings.length > 1) {
-      const updatedSiblings = formData.siblings.filter((_, i) => i !== index)
+      const updatedSiblings = formData.siblings.filter((_, i) => i !== index);
       setFormData((prev) => ({
         ...prev,
         siblings: updatedSiblings,
-      }))
+      }));
     }
-  }
+  };
 
   const handleDocumentUpload = (field, file) => {
-    if (field === 'additionalDocuments') {
-      setDocuments(prev => ({
+    if (field === "additionalDocuments") {
+      setDocuments((prev) => ({
         ...prev,
-        additionalDocuments: [...prev.additionalDocuments, file]
-      }))
+        additionalDocuments: [...prev.additionalDocuments, file],
+      }));
     } else {
-      setDocuments(prev => ({
+      setDocuments((prev) => ({
         ...prev,
-        [field]: file
-      }))
+        [field]: file,
+      }));
     }
-  }
+  };
 
   const removeDocument = (field, index = null) => {
-    if (field === 'additionalDocuments' && index !== null) {
-      setDocuments(prev => ({
+    if (field === "additionalDocuments" && index !== null) {
+      setDocuments((prev) => ({
         ...prev,
-        additionalDocuments: prev.additionalDocuments.filter((_, i) => i !== index)
-      }))
+        additionalDocuments: prev.additionalDocuments.filter(
+          (_, i) => i !== index
+        ),
+      }));
     } else {
-      setDocuments(prev => ({
+      setDocuments((prev) => ({
         ...prev,
-        [field]: null
-      }))
+        [field]: null,
+      }));
     }
-  }
-
+  };
+  // file uploads
   const uploadFileToFirebase = async (file, path) => {
-    const storageRef = ref(storage, path)
-    const snapshot = await uploadBytes(storageRef, file)
-    return await getDownloadURL(snapshot.ref)
-  }
+    const storageRef = ref(storage, path);
+    const snapshot = await uploadBytes(storageRef, file);
+    return await getDownloadURL(snapshot.ref);
+  };
 
   const handleStepSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (currentStep === 1) {
       // Validate required fields for step 1
-      let requiredFields = ['registrationNumber', 'fullName', 'nameWithInitials', 'permanentAddress', 'mobileNumber', 'gender', 'district', 'closestTown', 'distanceToTown', 'distanceToFaculty', 'walkingDistanceToBusStop', 'presentLevel', 'emergencyContactName', 'emergencyContactAddress', 'emergencyContactPhone', 'emergencyContactRelation']
+      let requiredFields = [
+        "registrationNumber",
+        "fullName",
+        "nameWithInitials",
+        "permanentAddress",
+        "mobileNumber",
+        "gender",
+        "district",
+        "closestTown",
+        "distanceToTown",
+        "distanceToFaculty",
+        "walkingDistanceToBusStop",
+        "presentLevel",
+        "emergencyContactName",
+        "emergencyContactAddress",
+        "emergencyContactPhone",
+        "emergencyContactRelation",
+      ];
 
       // Add department to required fields only for 2nd year and above students
       if (formData.presentLevel !== "1") {
-        requiredFields.push('department')
+        requiredFields.push("department");
       }
 
       for (const field of requiredFields) {
         if (!formData[field]) {
-          setError(`Please fill in all required fields in Step 1.`)
-          return
+          setError(`Please fill in all required fields in Step 1.`);
+          return;
         }
       }
 
-      setCurrentStep(2)
-      setError("")
+      setCurrentStep(2);
+      setError("");
     } else {
       // Step 2 - Final submission
-      await handleFinalSubmit()
+      await handleFinalSubmit();
     }
-  }
+  };
 
   const handleFinalSubmit = async () => {
     try {
-      setError("")
-      setLoading(true)
+      setError("");
+      setLoading(true);
 
       // Upload documents to Firebase Storage
-      const documentUrls = {}
+      const documentUrls = {};
 
       if (documents.gramaNiladhariRecommendation) {
-        const path = `applications/${currentUser.uid}/grama-niladhari-${Date.now()}`
-        documentUrls.gramaNiladhariRecommendationUrl = await uploadFileToFirebase(documents.gramaNiladhariRecommendation, path)
+        const path = `applications/${
+          currentUser.uid
+        }/grama-niladhari-${Date.now()}`;
+        documentUrls.gramaNiladhariRecommendationUrl =
+          await uploadFileToFirebase(
+            documents.gramaNiladhariRecommendation,
+            path
+          );
       }
 
       if (documents.physicalEducationRecommendation) {
-        const path = `applications/${currentUser.uid}/physical-education-${Date.now()}`
-        documentUrls.physicalEducationRecommendationUrl = await uploadFileToFirebase(documents.physicalEducationRecommendation, path)
+        const path = `applications/${
+          currentUser.uid
+        }/physical-education-${Date.now()}`;
+        documentUrls.physicalEducationRecommendationUrl =
+          await uploadFileToFirebase(
+            documents.physicalEducationRecommendation,
+            path
+          );
       }
 
       if (documents.additionalDocuments.length > 0) {
-        const additionalUrls = []
+        const additionalUrls = [];
         for (let i = 0; i < documents.additionalDocuments.length; i++) {
-          const file = documents.additionalDocuments[i]
-          const path = `applications/${currentUser.uid}/additional-${i}-${Date.now()}`
-          const url = await uploadFileToFirebase(file, path)
+          const file = documents.additionalDocuments[i];
+          const path = `applications/${
+            currentUser.uid
+          }/additional-${i}-${Date.now()}`;
+          const url = await uploadFileToFirebase(file, path);
           additionalUrls.push({
             name: file.name,
-            url: url
-          })
+            url: url,
+          });
         }
-        documentUrls.additionalDocumentsUrls = additionalUrls
+        documentUrls.additionalDocumentsUrls = additionalUrls;
       }
 
       // Submit application with form data and document URLs
@@ -244,25 +280,25 @@ export default function ApplicationForm() {
         userId: currentUser.uid,
         status: "pending",
         createdAt: serverTimestamp(),
-      })
+      });
 
-      setSuccess(true)
+      setSuccess(true);
 
       setTimeout(() => {
-        navigate("/dashboard")
-      }, 1000)
+        navigate("/dashboard");
+      }, 1000);
     } catch (error) {
-      console.error("Error submitting application:", error)
-      setError("Failed to submit application. Please try again.")
+      console.error("Error submitting application:", error);
+      setError("Failed to submit application. Please try again.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const goBackToStep1 = () => {
-    setCurrentStep(1)
-    setError("")
-  }
+    setCurrentStep(1);
+    setError("");
+  };
 
   if (checkingStatus) {
     return (
@@ -273,7 +309,7 @@ export default function ApplicationForm() {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   if (success) {
@@ -283,16 +319,21 @@ export default function ApplicationForm() {
           <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8">
             <div className="text-center">
               <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">Application Submitted Successfully!</h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                Application Submitted Successfully!
+              </h2>
               <p className="text-gray-600 mb-6">
-                Thank you for your application and uploaded documents. We will review them and get back to you soon.
+                Thank you for your application and uploaded documents. We will
+                review them and get back to you soon.
               </p>
-              <p className="text-gray-500">You will be redirected to the dashboard in a few seconds...</p>
+              <p className="text-gray-500">
+                You will be redirected to the dashboard in a few seconds...
+              </p>
             </div>
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -318,32 +359,37 @@ export default function ApplicationForm() {
             <div className="mt-4">
               <div className="flex items-center">
                 <div
-                  className={`flex items-center ${currentStep >= 1 ? "text-white" : "text-white/50"
-                    }`}
+                  className={`flex items-center ${
+                    currentStep >= 1 ? "text-white" : "text-white/50"
+                  }`}
                 >
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${currentStep >= 1
-                      ? "bg-white text-[#4a2d5f]"
-                      : "bg-white/20"
-                      }`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                      currentStep >= 1
+                        ? "bg-white text-[#4a2d5f]"
+                        : "bg-white/20"
+                    }`}
                   >
                     1
                   </div>
                   <span className="ml-2 text-sm">Application Details</span>
                 </div>
                 <div
-                  className={`flex-1 h-1 mx-4 ${currentStep >= 2 ? "bg-white" : "bg-white/20"
-                    }`}
+                  className={`flex-1 h-1 mx-4 ${
+                    currentStep >= 2 ? "bg-white" : "bg-white/20"
+                  }`}
                 ></div>
                 <div
-                  className={`flex items-center ${currentStep >= 2 ? "text-white" : "text-white/50"
-                    }`}
+                  className={`flex items-center ${
+                    currentStep >= 2 ? "text-white" : "text-white/50"
+                  }`}
                 >
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${currentStep >= 2
-                      ? "bg-white text-[#4a2d5f]"
-                      : "bg-white/20"
-                      }`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                      currentStep >= 2
+                        ? "bg-white text-[#4a2d5f]"
+                        : "bg-white/20"
+                    }`}
                   >
                     2
                   </div>
@@ -383,28 +429,6 @@ export default function ApplicationForm() {
                               className="mr-2"
                             />
                             First
-                          </label>
-                          <label className="flex items-center">
-                            <input
-                              type="radio"
-                              name="yearOfApplying"
-                              value="second"
-                              checked={formData.yearOfApplying === "second"}
-                              onChange={handleChange}
-                              className="mr-2"
-                            />
-                            Second
-                          </label>
-                          <label className="flex items-center">
-                            <input
-                              type="radio"
-                              name="yearOfApplying"
-                              value="third"
-                              checked={formData.yearOfApplying === "third"}
-                              onChange={handleChange}
-                              className="mr-2"
-                            />
-                            Third
                           </label>
                           <label className="flex items-center">
                             <input
@@ -669,8 +693,11 @@ export default function ApplicationForm() {
                         />
                       </div>
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 894e5759916b4f23351cc73c2406ef3caceae986
                       <div>
                         <label htmlFor="distanceToTown" className="form-label">
                           Distance from residence to closest town (km)
@@ -1433,91 +1460,91 @@ export default function ApplicationForm() {
                     {/* Physical Education Recommendation (Conditional) */}
                     {(formData.universityTeam ||
                       formData.receivedColors === "yes") && (
-                        <div className="bg-gray-50 p-4 rounded-md">
-                          <h4 className="text-lg font-semibold mb-3 flex items-center">
-                            <Award className="h-5 w-5 mr-2 text-orange-600" />
-                            16. Recommendation of the Director of Physical
-                            Education Unit
-                          </h4>
-                          <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
-                            <p className="text-sm text-orange-800 mb-2">
-                              <strong>
-                                For students involved in sports activities (not
-                                applicable for first year students):
-                              </strong>
-                            </p>
-                            <ul className="text-sm text-orange-700 list-disc list-inside space-y-1">
-                              <li>
-                                Certification that you are a recipient of
-                                University colors
-                              </li>
-                              <li>
-                                Confirmation of representing the University team
-                                in the academic year
-                              </li>
-                              <li>
-                                Required to attend training sessions after 5:00 PM
-                              </li>
-                              <li>
-                                Must include signature, date, and official seal
-                              </li>
-                            </ul>
-                          </div>
-                          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
-                            {!documents.physicalEducationRecommendation ? (
-                              <div className="text-center">
-                                <Upload className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                                <label
-                                  htmlFor="physical-education"
-                                  className="cursor-pointer"
-                                >
-                                  <span className="text-blue-600 hover:text-blue-700 font-medium">
-                                    Upload Physical Education Recommendation
-                                  </span>
-                                  <input
-                                    id="physical-education"
-                                    type="file"
-                                    className="hidden"
-                                    accept=".pdf,.jpg,.jpeg,.png"
-                                    onChange={(e) =>
-                                      handleDocumentUpload(
-                                        "physicalEducationRecommendation",
-                                        e.target.files[0]
-                                      )
-                                    }
-                                  />
-                                </label>
-                                <p className="text-gray-500 text-sm mt-1">
-                                  PDF, JPG, JPEG, PNG (Max 10MB)
-                                </p>
-                              </div>
-                            ) : (
-                              <div className="flex items-center justify-between bg-green-50 p-3 rounded-lg">
-                                <div className="flex items-center">
-                                  <FileText className="h-5 w-5 text-green-600 mr-2" />
-                                  <span className="text-green-800 font-medium">
-                                    {
-                                      documents.physicalEducationRecommendation
-                                        .name
-                                    }
-                                  </span>
-                                </div>
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    removeDocument(
-                                      "physicalEducationRecommendation"
+                      <div className="bg-gray-50 p-4 rounded-md">
+                        <h4 className="text-lg font-semibold mb-3 flex items-center">
+                          <Award className="h-5 w-5 mr-2 text-orange-600" />
+                          16. Recommendation of the Director of Physical
+                          Education Unit
+                        </h4>
+                        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
+                          <p className="text-sm text-orange-800 mb-2">
+                            <strong>
+                              For students involved in sports activities (not
+                              applicable for first year students):
+                            </strong>
+                          </p>
+                          <ul className="text-sm text-orange-700 list-disc list-inside space-y-1">
+                            <li>
+                              Certification that you are a recipient of
+                              University colors
+                            </li>
+                            <li>
+                              Confirmation of representing the University team
+                              in the academic year
+                            </li>
+                            <li>
+                              Required to attend training sessions after 5:00 PM
+                            </li>
+                            <li>
+                              Must include signature, date, and official seal
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
+                          {!documents.physicalEducationRecommendation ? (
+                            <div className="text-center">
+                              <Upload className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                              <label
+                                htmlFor="physical-education"
+                                className="cursor-pointer"
+                              >
+                                <span className="text-blue-600 hover:text-blue-700 font-medium">
+                                  Upload Physical Education Recommendation
+                                </span>
+                                <input
+                                  id="physical-education"
+                                  type="file"
+                                  className="hidden"
+                                  accept=".pdf,.jpg,.jpeg,.png"
+                                  onChange={(e) =>
+                                    handleDocumentUpload(
+                                      "physicalEducationRecommendation",
+                                      e.target.files[0]
                                     )
                                   }
-                                  className="text-red-600 hover:text-red-700"
-                                >
-                                  Remove
-                                </button>
+                                />
+                              </label>
+                              <p className="text-gray-500 text-sm mt-1">
+                                PDF, JPG, JPEG, PNG (Max 10MB)
+                              </p>
+                            </div>
+                          ) : (
+                            <div className="flex items-center justify-between bg-green-50 p-3 rounded-lg">
+                              <div className="flex items-center">
+                                <FileText className="h-5 w-5 text-green-600 mr-2" />
+                                <span className="text-green-800 font-medium">
+                                  {
+                                    documents.physicalEducationRecommendation
+                                      .name
+                                  }
+                                </span>
                               </div>
-                            )}
-                          </div>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  removeDocument(
+                                    "physicalEducationRecommendation"
+                                  )
+                                }
+                                className="text-red-600 hover:text-red-700"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          )}
                         </div>
-                      )}
+                      </div>
+                    )}
 
                     {/* Additional Documents */}
                     <div className="bg-gray-50 p-4 rounded-md">
