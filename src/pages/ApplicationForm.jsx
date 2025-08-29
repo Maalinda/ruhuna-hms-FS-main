@@ -349,15 +349,52 @@ export default function ApplicationForm() {
                         <label className="form-label">Year of Applying</label>
                         <div className="flex gap-4">
                           <label className="flex items-center">
-                            <input type="radio" name="yearOfApplying" value="first" checked={formData.yearOfApplying === "first"} onChange={handleChange} className="mr-2" />
+                            <input
+                              type="radio"
+                              name="yearOfApplying"
+                              value="first"
+                              checked={formData.yearOfApplying === "first"}
+                              onChange={handleChange}
+                              className="mr-2"
+                            />
                             First
                           </label>
                           <label className="flex items-center">
-                            <input type="radio" name="yearOfApplying" value="final" checked={formData.yearOfApplying === "final"} onChange={handleChange} className="mr-2" />
+                            <input
+                              type="radio"
+                              name="yearOfApplying"
+                              value="second"
+                              checked={formData.yearOfApplying === "second"}
+                              onChange={handleChange}
+                              className="mr-2"
+                            />
+                            Second
+                          </label>
+                          <label className="flex items-center">
+                            <input
+                              type="radio"
+                              name="yearOfApplying"
+                              value="third"
+                              checked={formData.yearOfApplying === "third"}
+                              onChange={handleChange}
+                              className="mr-2"
+                            />
+                            Third
+                          </label>
+                          <label className="flex items-center">
+                            <input
+                              type="radio"
+                              name="yearOfApplying"
+                              value="final"
+                              checked={formData.yearOfApplying === "final"}
+                              onChange={handleChange}
+                              className="mr-2"
+                            />
                             Final
                           </label>
                         </div>
                       </div>
+
 
                       <div>
                         <label className="form-label">Degree</label>

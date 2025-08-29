@@ -925,7 +925,6 @@ export default function AdminDashboard() {
                         <option value="100_to_200">100 - 199 marks</option>
                         <option value="200_to_300">200 - 299 marks</option>
                         <option value="300_to_400">300 - 400 marks</option>
-                        <option value="above_300">Above 300 marks</option>
                       </select>
                     </div>
                   </div>
@@ -1302,17 +1301,16 @@ export default function AdminDashboard() {
                             <DollarSign className="h-5 w-5 mr-2 text-[#e91e63]" />
                             Payment Information
                           </h3>
-                          
+
                           {selectedApplication.paymentInfo ? (
                             <div className="space-y-4">
                               {/* Payment Status Header */}
-                              <div className={`border rounded-lg p-4 ${
-                                selectedApplication.paymentInfo.status === 'approved'
+                              <div className={`border rounded-lg p-4 ${selectedApplication.paymentInfo.status === 'approved'
                                   ? 'bg-green-50 border-green-200'
                                   : selectedApplication.paymentInfo.status === 'rejected'
-                                  ? 'bg-red-50 border-red-200'
-                                  : 'bg-yellow-50 border-yellow-200'
-                              }`}>
+                                    ? 'bg-red-50 border-red-200'
+                                    : 'bg-yellow-50 border-yellow-200'
+                                }`}>
                                 <div className="flex items-center justify-between mb-4">
                                   <div className="flex items-center">
                                     {selectedApplication.paymentInfo.status === 'approved' ? (
@@ -1323,23 +1321,22 @@ export default function AdminDashboard() {
                                       <Clock className="h-5 w-5 text-yellow-500 mr-3" />
                                     )}
                                     <div>
-                                      <span className={`font-semibold text-lg ${
-                                        selectedApplication.paymentInfo.status === 'approved'
+                                      <span className={`font-semibold text-lg ${selectedApplication.paymentInfo.status === 'approved'
                                           ? 'text-green-800'
                                           : selectedApplication.paymentInfo.status === 'rejected'
-                                          ? 'text-red-800'
-                                          : 'text-yellow-800'
-                                      }`}>
+                                            ? 'text-red-800'
+                                            : 'text-yellow-800'
+                                        }`}>
                                         {selectedApplication.paymentInfo.status === 'approved'
                                           ? 'Payment Approved'
                                           : selectedApplication.paymentInfo.status === 'rejected'
-                                          ? 'Payment Rejected'
-                                          : 'Payment Pending Review'
+                                            ? 'Payment Rejected'
+                                            : 'Payment Pending Review'
                                         }
                                       </span>
                                     </div>
                                   </div>
-                                  
+
                                   {selectedApplication.paymentInfo.status === 'pending' && (
                                     <div className="flex space-x-3">
                                       <button
@@ -1376,7 +1373,7 @@ export default function AdminDashboard() {
                                       </span>
                                     </div>
                                   </div>
-                                  
+
                                   <div className="space-y-3">
                                     <div className="flex justify-between items-center">
                                       <span className="text-sm font-medium text-gray-600">Receipt File:</span>
@@ -1386,7 +1383,7 @@ export default function AdminDashboard() {
                                     </div>
                                   </div>
                                 </div>
-                                
+
                                 {/* Actions Row - Separate from grid */}
                                 <div className="mt-4 pt-3 border-t border-gray-200">
                                   <div className="flex items-center justify-between">
