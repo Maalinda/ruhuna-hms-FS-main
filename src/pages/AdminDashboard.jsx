@@ -1399,7 +1399,7 @@ export default function AdminDashboard() {
                                         className="flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm font-medium"
                                       >
                                         <Eye className="h-4 w-4 mr-2" />
-                                        View Receipt
+                                        Preview Receipt
                                       </a>
                                       <a
                                         href={selectedApplication.paymentInfo.receiptUrl}
@@ -1475,13 +1475,14 @@ export default function AdminDashboard() {
                                   </p>
                                   <div className="mt-3 text-xs text-orange-600">
                                     <p>• Students must upload bank receipt as proof of payment</p>
-                                    <p>• Payment will be reviewed by admin before approval</p>
+                                    <p>• Payment details will be verified before approval</p>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           )}
                         </div>
+
 
                         {selectedApplication.siblings && selectedApplication.siblings.length > 0 && selectedApplication.siblings[0].name && (
                           <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-5 border border-gray-100 shadow-sm transform transition-all hover:shadow-md hover:translate-y-[-2px]">
@@ -1912,7 +1913,7 @@ export default function AdminDashboard() {
                                   </div>
 
                                   <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Signature of Warden or Sr. Assistant/Assistant Registrar</label>
+                                    <label className="block text-sm font-medium text-gray-700">Signature of Warden/Assistant Registrar</label>
                                     <input
                                       type="text"
                                       value={evaluationData.wardenSignature || ''}
