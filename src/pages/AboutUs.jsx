@@ -19,7 +19,7 @@ export default function AboutUs() {
         {/* Intro */}
         <Card className="shadow-lg rounded-2xl">
           <CardContent className="p-6">
-            <p className="text-lg text-gray-700 leading-relaxed">
+            <p className="text-lg text-gray-700 leading-relaxed text-justify">
               The <span className="font-semibold">Hostel Management System (HMS)</span> is a web-based platform designed to simplify and digitalize hostel administration tasks at the University of Ruhuna. Our system allows students and wardens to manage hostel-related activities such as registration, defect reporting and accessing virtual notice boards.
             </p>
           </CardContent>
@@ -31,7 +31,7 @@ export default function AboutUs() {
             <CardContent className="p-6 text-center">
               <Target className="mx-auto mb-3 text-blue-600 w-10 h-10" />
               <h2 className="text-xl font-semibold text-gray-700 mb-2">Our Mission</h2>
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-600 text-sm text-justify">
                 To provide a reliable, user-friendly, and efficient platform 
                 that improves hostel management and enhances student convenience.
               </p>
@@ -42,7 +42,7 @@ export default function AboutUs() {
             <CardContent className="p-6 text-center">
               <Building2 className="mx-auto mb-3 text-green-600 w-10 h-10" />
               <h2 className="text-xl font-semibold text-gray-700 mb-2">Our Vision</h2>
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-600 text-sm text-justify">
                 To be the leading digital hostel management solution in Sri Lanka, 
                 setting a standard for universities nationwide.
               </p>
@@ -53,7 +53,7 @@ export default function AboutUs() {
             <CardContent className="p-6 text-center">
               <Users className="mx-auto mb-3 text-purple-600 w-10 h-10" />
               <h2 className="text-xl font-semibold text-gray-700 mb-2">Our Team</h2>
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-600 text-sm text-justify">
               Developed by engineering undergraduates from the University of Ruhuna's 
               Faculty of Engineering, driven by a mission to utilize technology 
               for meaningful problem-solving.
