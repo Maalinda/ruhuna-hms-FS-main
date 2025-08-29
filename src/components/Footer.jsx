@@ -21,7 +21,7 @@ export default function Footer() {
                 <span className="text-4xl font-bold text-yellow-400">HMS</span>
               </div>
             </div>
-            <p className="text-center lg:text-left text-white/90 leading-relaxed">
+            <p className="text-center lg:text-justify text-white/90 leading-relaxed">
               The Faculty of Engineering of University of Ruhuna was established on 1st July 1999 at Hapugala, Galle. 
               Admission to the Faculty of Engineering, University of Ruhuna, is subject to the University Grants Commission 
               policy on university admissions.
