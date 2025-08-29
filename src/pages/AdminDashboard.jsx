@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react"
 import { collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp, addDoc } from "firebase/firestore"
 import { db } from "../firebase"
+
+
 import {
   AlertCircle,
   CheckCircle,
@@ -48,6 +50,7 @@ import {
   Bug,
   AlertTriangle as AlertTriangleIcon
 } from "lucide-react"
+
 import HostelManagement from "../components/HostelManagement"
 import RoomAssignmentModal from "../components/RoomAssignmentModal"
 
@@ -2056,8 +2059,11 @@ export default function AdminDashboard() {
                       >
                         <option value="info">Information</option>
                         <option value="warning">Warning</option>
-                        <option value="success">Success</option>
                         <option value="urgent">Urgent</option>
+                        <option value="event">Event</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="achievement">Achievement</option>
+                        <option value="reminder">Reminder</option>
                       </select>
                     </div>
 
@@ -2293,7 +2299,8 @@ export default function AdminDashboard() {
       </div>
 
       {/* Room Assignment Modal */}
-      {showRoomAssignment && applicationToAssign && (
+      {showRoomAssignment && applicationToAssign && 
+      (
         <RoomAssignmentModal
           application={applicationToAssign}
           onClose={() => {
