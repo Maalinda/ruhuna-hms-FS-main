@@ -1619,7 +1619,7 @@ export default function AdminDashboard() {
                                         className="flex items-center px-3 py-1.5 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors text-sm"
                                       >
                                         <ExternalLink className="h-4 w-4 mr-1" />
-                                        View
+                                        Preview
                                       </button>
                                       <a
                                         href={selectedApplication.gramaNiladhariRecommendationUrl}
@@ -1689,7 +1689,7 @@ export default function AdminDashboard() {
                                             className="flex items-center px-2 py-1 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition-colors text-sm"
                                           >
                                             <ExternalLink className="h-3 w-3 mr-1" />
-                                            View
+                                            Preview
                                           </button>
                                           <a
                                             href={doc.url}
@@ -1747,7 +1747,7 @@ export default function AdminDashboard() {
                               <div className="bg-white p-5 rounded-lg border border-amber-200">
                                 <h4 className="text-lg font-semibold mb-4 flex items-center text-gray-800">
                                   <Calculator className="h-5 w-5 mr-2 text-amber-600" />
-                                  Valuation Marks
+                                  Evaluation Marks
                                 </h4>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1842,6 +1842,7 @@ export default function AdminDashboard() {
                                       Siblings: {selectedApplication.siblings?.filter(s => s.name).length || 0} currently studying
                                     </p>
                                   </div>
+
 
                                   {/* Total Marks */}
                                   <div className="md:col-span-2 pt-4 border-t border-gray-200">
@@ -2043,7 +2044,7 @@ export default function AdminDashboard() {
                 <div className="bg-gradient-to-r from-[#4a2d5f] to-[#6d4088] p-4 text-white">
                   <h2 className="text-xl font-semibold flex items-center">
                     <Plus className="h-5 w-5 mr-2" />
-                    Create Notice
+                    Create a New Notice
                   </h2>
                 </div>
 
@@ -2053,7 +2054,7 @@ export default function AdminDashboard() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Type of the Notice
                       </label>
-                      
+
                       <select
                         value={noticeForm.type}
                         onChange={(e) => setNoticeForm(prev => ({ ...prev, type: e.target.value }))}
