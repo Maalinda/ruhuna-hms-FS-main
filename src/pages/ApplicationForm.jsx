@@ -669,20 +669,7 @@ export default function ApplicationForm() {
                         />
                       </div>
 
-                      <div>
-                        <label htmlFor="closestTown" className="form-label">
-                          Closest town to your residence
-                        </label>
-                        <input
-                          id="closestTown"
-                          name="closestTown"
-                          type="text"
-                          value={formData.closestTown}
-                          onChange={handleChange}
-                          required
-                          className="form-input"
-                        />
-                      </div>
+
 
                       <div>
                         <label htmlFor="distanceToTown" className="form-label">
