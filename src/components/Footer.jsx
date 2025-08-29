@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Mail, MapPin, Phone, Linkedin } from "lucide-react";
+import { Facebook, Mail, MapPin, Phone, Linkedin, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
@@ -76,8 +76,8 @@ export default function Footer() {
             <a href="https://www.linkedin.com/company/faculty-of-engineering-university-of-ruhuna/" className="text-white/70 hover:text-yellow-400 transition-colors p-2 rounded-full hover:bg-white/10">
               <Linkedin size={20} />
             </a>
-            <a href="#" className="text-white/70 hover:text-yellow-400 transition-colors p-2 rounded-full hover:bg-white/10">
-              <Instagram size={20} />
+            <a href="https://www.youtube.com/@refmedia" className="text-white/70 hover:text-yellow-400 transition-colors p-2 rounded-full hover:bg-white/10">
+              <Youtube size={20} />
             </a>
           </div>
         </div>
