@@ -96,7 +96,11 @@ export default function RoomAssignmentModal({ application, onClose, onComplete }
             id: application.userId,
             name: application.fullName,
             applicationId: application.id,
-            registrationNumber: application.registrationNumber
+            registrationNumber: application.registrationNumber,
+            assignedDate: new Date().toISOString(),
+            email: application.email || null,
+            phone: application.mobileNumber || null,
+            department: application.department || null
           }]
         }
       )

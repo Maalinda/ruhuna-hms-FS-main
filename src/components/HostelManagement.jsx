@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { collection, addDoc, getDocs, doc, serverTimestamp, getDoc, deleteDoc } from "firebase/firestore"
 import { db } from "../firebase"
 import {
@@ -16,7 +16,13 @@ import {
   ArrowRight,
   RefreshCw,
   Layers,
-  Trash2
+  Trash2,
+  ChevronDown,
+  ChevronRight,
+  GraduationCap,
+  Phone,
+  MapPin,
+  Mail
 } from "lucide-react"
 
 export default function HostelManagement() {
@@ -27,6 +33,7 @@ export default function HostelManagement() {
   const [showAddRoomForm, setShowAddRoomForm] = useState(false)
   const [currentHostel, setCurrentHostel] = useState(null)
   const [activateAnimation, setActivateAnimation] = useState(false)
+  const [expandedRooms, setExpandedRooms] = useState({}) // Track which rooms are expanded
   
   const [newHostel, setNewHostel] = useState({
     name: "",
@@ -62,19 +69,17 @@ export default function HostelManagement() {
         const rooms = await Promise.all(roomsSnapshot.docs.map(async (roomDoc) => {
           const roomData = { id: roomDoc.id, ...roomDoc.data() }
           
-          // If room has residents, check if they already have registration numbers
-          // For new assignments, registration numbers are stored directly
-          // For older data, we might need to fetch from applications
+          // If room has residents, enrich them with additional data from applications
           if (roomData.residents && roomData.residents.length > 0) {
             const enrichedResidents = await Promise.all(
               roomData.residents.map(async (resident) => {
-                // If registration number is already stored, use it
-                if (resident.registrationNumber && resident.registrationNumber !== 'N/A') {
-                  return resident
-                }
-                
-                // Otherwise, try to fetch from application (for legacy data)
                 try {
+                  // If we already have complete data, return as is
+                  if (resident.registrationNumber && resident.registrationNumber !== 'N/A' && resident.assignedDate) {
+                    return resident
+                  }
+                  
+                  // Otherwise, try to fetch from application (for legacy data or missing fields)
                   if (resident.applicationId) {
                     const appDocRef = doc(db, "applications", resident.applicationId)
                     const appDoc = await getDoc(appDocRef)
@@ -82,14 +87,28 @@ export default function HostelManagement() {
                       const appData = appDoc.data()
                       return {
                         ...resident,
-                        registrationNumber: appData.registrationNumber || 'N/A'
+                        registrationNumber: resident.registrationNumber || appData.registrationNumber || 'N/A',
+                        assignedDate: resident.assignedDate || appData.assignedAt || null,
+                        email: resident.email || appData.email || null,
+                        phone: resident.phone || appData.mobileNumber || null,
+                        department: resident.department || appData.department || null
                       }
                     }
                   }
-                  return { ...resident, registrationNumber: 'N/A' }
+                  
+                  // If no application found, return with defaults
+                  return {
+                    ...resident,
+                    registrationNumber: resident.registrationNumber || 'N/A',
+                    assignedDate: resident.assignedDate || null
+                  }
                 } catch (error) {
                   console.error("Error fetching resident details:", error)
-                  return { ...resident, registrationNumber: 'N/A' }
+                  return {
+                    ...resident,
+                    registrationNumber: resident.registrationNumber || 'N/A',
+                    assignedDate: resident.assignedDate || null
+                  }
                 }
               })
             )
@@ -244,6 +263,14 @@ export default function HostelManagement() {
     } finally {
       setLoading(false)
     }
+  }
+
+  // Toggle room expansion
+  const toggleRoomExpansion = (roomId) => {
+    setExpandedRooms(prev => ({
+      ...prev,
+      [roomId]: !prev[roomId]
+    }))
   }
 
   if (loading && hostels.length === 0) {
@@ -471,69 +498,143 @@ export default function HostelManagement() {
                           </thead>
                           <tbody className="bg-white divide-y divide-gray-200">
                             {hostel.rooms.map((room) => (
-                              <tr key={room.id} className="hover:bg-gray-50 transition-colors">
-                                <td className="px-4 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900">
-                                  {room.roomNumber}
-                                </td>
-                                <td className="px-4 py-2.5 whitespace-nowrap text-sm text-gray-500">
-                                  {room.floor}
-                                </td>
-                                <td className="px-4 py-2.5 whitespace-nowrap text-sm text-gray-500">
-                                  {room.capacity}
-                                </td>
-                                <td className="px-4 py-2.5 whitespace-nowrap text-sm text-gray-500">
-                                  {room.occupancy}/{room.capacity}
-                                </td>
-                                <td className="px-4 py-2.5 whitespace-nowrap text-sm">
-                                  {room.occupancy < room.capacity ? (
-                                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                      Available
-                                    </span>
-                                  ) : (
-                                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                      Full
-                                    </span>
-                                  )}
-                                </td>
-                                <td className="px-4 py-2.5 text-sm">
-                                  {room.residents && room.residents.length > 0 ? (
-                                    <div className="space-y-1">
-                                      {room.residents.map((resident, index) => (
-                                        <div key={index} className="flex items-center">
-                                          <User className="h-3 w-3 text-gray-400 mr-1 flex-shrink-0" />
-                                          <div className="min-w-0 flex-1">
-                                            <div className="text-xs font-medium text-gray-900 truncate">
-                                              {resident.name}
+                              <React.Fragment key={room.id}>
+                                <tr
+                                  className="hover:bg-gray-50 transition-colors cursor-pointer"
+                                  onClick={() => toggleRoomExpansion(room.id)}
+                                >
+                                  <td className="px-4 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    <div className="flex items-center">
+                                      {room.residents && room.residents.length > 0 ? (
+                                        expandedRooms[room.id] ? (
+                                          <ChevronDown className="h-4 w-4 mr-2 text-gray-400" />
+                                        ) : (
+                                          <ChevronRight className="h-4 w-4 mr-2 text-gray-400" />
+                                        )
+                                      ) : (
+                                        <div className="w-4 h-4 mr-2"></div>
+                                      )}
+                                      {room.roomNumber}
+                                    </div>
+                                  </td>
+                                  <td className="px-4 py-2.5 whitespace-nowrap text-sm text-gray-500">
+                                    {room.floor}
+                                  </td>
+                                  <td className="px-4 py-2.5 whitespace-nowrap text-sm text-gray-500">
+                                    {room.capacity}
+                                  </td>
+                                  <td className="px-4 py-2.5 whitespace-nowrap text-sm text-gray-500">
+                                    {room.occupancy}/{room.capacity}
+                                  </td>
+                                  <td className="px-4 py-2.5 whitespace-nowrap text-sm">
+                                    {room.occupancy < room.capacity ? (
+                                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        Available
+                                      </span>
+                                    ) : (
+                                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                        Full
+                                      </span>
+                                    )}
+                                  </td>
+                                  <td className="px-4 py-2.5 text-sm">
+                                    {room.residents && room.residents.length > 0 ? (
+                                      <div className="text-xs text-gray-600 font-medium">
+                                        {room.residents.length} resident{room.residents.length !== 1 ? 's' : ''}
+                                        <span className="text-gray-400 ml-1">
+                                          (click to {expandedRooms[room.id] ? 'collapse' : 'expand'})
+                                        </span>
+                                      </div>
+                                    ) : (
+                                      <div className="text-xs text-gray-400 italic">
+                                        No residents
+                                      </div>
+                                    )}
+                                  </td>
+                                  <td className="px-4 py-2.5 whitespace-nowrap text-sm">
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation()
+                                        handleDeleteRoom(hostel.id, room.id, room.roomNumber)
+                                      }}
+                                      className="text-red-600 hover:text-red-900 hover:bg-red-50 p-1 rounded transition-colors"
+                                      title={`Delete room ${room.roomNumber}`}
+                                      disabled={room.occupancy > 0}
+                                    >
+                                      <Trash2 className="h-4 w-4" />
+                                    </button>
+                                    {room.occupancy > 0 && (
+                                      <span className="ml-2 text-xs text-gray-500">
+                                        Cannot delete (occupied)
+                                      </span>
+                                    )}
+                                  </td>
+                                </tr>
+                                
+                                {/* Expanded resident details */}
+                                {expandedRooms[room.id] && room.residents && room.residents.length > 0 && (
+                                  <tr>
+                                    <td colSpan={7} className="px-4 py-0 bg-gray-50">
+                                      <div className="py-4">
+                                        <h5 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+                                          <Users className="h-4 w-4 mr-2" />
+                                          Room {room.roomNumber} - Resident Details
+                                        </h5>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                          {room.residents.map((resident, index) => (
+                                            <div key={index} className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+                                              <div className="flex items-start justify-between mb-3">
+                                                <div className="flex items-center">
+                                                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                                    <User className="h-5 w-5 text-blue-600" />
+                                                  </div>
+                                                  <div>
+                                                    <h6 className="font-semibold text-gray-900">{resident.name}</h6>
+                                                    <p className="text-sm text-gray-600">{resident.registrationNumber}</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              
+                                              {/* Student contact and academic details */}
+                                              <div className="space-y-2 text-sm">
+                                                {resident.email && (
+                                                  <div className="flex items-center text-gray-600">
+                                                    <Mail className="h-4 w-4 mr-2" />
+                                                    <span>{resident.email}</span>
+                                                  </div>
+                                                )}
+                                                
+                                                {resident.phone && (
+                                                  <div className="flex items-center text-gray-600">
+                                                    <Phone className="h-4 w-4 mr-2" />
+                                                    <span>{resident.phone}</span>
+                                                  </div>
+                                                )}
+                                                
+                                                {resident.department && (
+                                                  <div className="flex items-center text-gray-600">
+                                                    <Building className="h-4 w-4 mr-2" />
+                                                    <span>{resident.department}</span>
+                                                  </div>
+                                                )}
+                                                
+                                                <div className="pt-2 mt-3 border-t border-gray-100">
+                                                  <div className="flex items-center justify-between">
+                                                    <span className="text-xs text-gray-500">Assigned Date</span>
+                                                    <span className="text-xs font-medium text-gray-700">
+                                                      {resident.assignedDate ? new Date(resident.assignedDate).toLocaleDateString() : 'Not available'}
+                                                    </span>
+                                                  </div>
+                                                </div>
+                                              </div>
                                             </div>
-                                            <div className="text-xs text-gray-500">
-                                              {resident.registrationNumber}
-                                            </div>
-                                          </div>
+                                          ))}
                                         </div>
-                                      ))}
-                                    </div>
-                                  ) : (
-                                    <div className="text-xs text-gray-400 italic">
-                                      No residents
-                                    </div>
-                                  )}
-                                </td>
-                                <td className="px-4 py-2.5 whitespace-nowrap text-sm">
-                                  <button
-                                    onClick={() => handleDeleteRoom(hostel.id, room.id, room.roomNumber)}
-                                    className="text-red-600 hover:text-red-900 hover:bg-red-50 p-1 rounded transition-colors"
-                                    title={`Delete room ${room.roomNumber}`}
-                                    disabled={room.occupancy > 0}
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </button>
-                                  {room.occupancy > 0 && (
-                                    <span className="ml-2 text-xs text-gray-500">
-                                      Cannot delete (occupied)
-                                    </span>
-                                  )}
-                                </td>
-                              </tr>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                )}
+                              </React.Fragment>
                             ))}
                           </tbody>
                         </table>

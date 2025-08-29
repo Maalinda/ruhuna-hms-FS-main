@@ -480,14 +480,20 @@ export default function StudentDashboard() {
                         Report Issue
                       </button>
                       
-                      {/* Payment Upload Button - Only for approved students */}
-                      <button
-                        onClick={() => setShowPaymentForm(true)}
-                        className="w-full mt-3 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-teal-500 text-white py-2.5 px-4 rounded-lg font-medium shadow-sm hover:shadow-md transition-all"
-                      >
-                        <CreditCard className="h-4 w-4" />
-                        Upload Payment
-                      </button>
+                      {/* Payment Upload Button - Only for approved students who need to upload payment */}
+                      {(() => {
+                        const approvedApp = applications.find(app => app.status === 'approved');
+                        const needsPaymentUpload = !approvedApp?.paymentInfo || approvedApp?.paymentInfo?.status === 'rejected';
+                        return needsPaymentUpload && (
+                          <button
+                            onClick={() => setShowPaymentForm(true)}
+                            className="w-full mt-3 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-teal-500 text-white py-2.5 px-4 rounded-lg font-medium shadow-sm hover:shadow-md transition-all"
+                          >
+                            <CreditCard className="h-4 w-4" />
+                            {approvedApp?.paymentInfo?.status === 'rejected' ? 'Re-upload Payment' : 'Upload Payment'}
+                          </button>
+                        );
+                      })()}
                     </>
                   )}
                 </div>
