@@ -1864,17 +1864,6 @@ export default function AdminDashboard() {
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                   <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Prepared by</label>
-                                    <input
-                                      type="text"
-                                      value={evaluationData.preparedBy || ''}
-                                      onChange={(e) => handleEvaluationChange('preparedBy', e.target.value)}
-                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                      placeholder="Enter name"
-                                    />
-                                  </div>
-
-                                  <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Checked by</label>
                                     <input
                                       type="text"
@@ -1882,17 +1871,6 @@ export default function AdminDashboard() {
                                       onChange={(e) => handleEvaluationChange('checkedBy', e.target.value)}
                                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                       placeholder="Enter name"
-                                    />
-                                  </div>
-
-                                  <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Signature of Subject Clerk</label>
-                                    <input
-                                      type="text"
-                                      value={evaluationData.subjectClerkSignature || ''}
-                                      onChange={(e) => handleEvaluationChange('subjectClerkSignature', e.target.value)}
-                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                      placeholder="Enter signature/name"
                                     />
                                   </div>
 
@@ -1908,6 +1886,7 @@ export default function AdminDashboard() {
                                   </div>
                                 </div>
                               </div>
+
 
                               {/* Recommendation Section */}
                               <div className="bg-white p-5 rounded-lg border border-purple-200">
