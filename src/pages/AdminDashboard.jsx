@@ -1797,7 +1797,7 @@ export default function AdminDashboard() {
                                   {/* Special Reasons Related to Parent */}
                                   <div className="space-y-2 md:col-span-2">
                                     <label className="block text-sm font-medium text-gray-700">
-                                      Special Reasons Related to Parent
+                                      Special Reasons Related to Parents
                                     </label>
                                     <div className="flex items-center space-x-2">
                                       <input
@@ -1924,7 +1924,7 @@ export default function AdminDashboard() {
                               <div className="bg-white p-5 rounded-lg border border-green-200">
                                 <h4 className="text-lg font-semibold mb-4 flex items-center text-gray-800">
                                   <CheckCircle className="h-5 w-5 mr-2 text-green-600" />
-                                  Final Approval Decision
+                                  Final Decision
                                 </h4>
 
                                 <div className="space-y-4">
@@ -2011,7 +2011,7 @@ export default function AdminDashboard() {
                     </div>
                     <h3 className="text-xl font-semibold text-gray-700 mb-2">No Application Selected</h3>
                     <p className="text-gray-600 max-w-md">
-                      Choose an application from the list to see details and take action.
+                    Select an application to review and process.
                     </p>
                   </div>
                 )}
@@ -2024,7 +2024,7 @@ export default function AdminDashboard() {
               <div className="bg-gradient-to-r from-[#4a2d5f] to-[#6d4088] p-4 text-white">
                 <h2 className="text-xl font-semibold flex items-center">
                   <Layout className="h-5 w-5 mr-2" />
-                  Hostel Management
+                  Hostel and Room Management
                 </h2>
               </div>
               <div className="p-1">
@@ -2040,14 +2040,14 @@ export default function AdminDashboard() {
                 <div className="bg-gradient-to-r from-[#4a2d5f] to-[#6d4088] p-4 text-white">
                   <h2 className="text-xl font-semibold flex items-center">
                     <Plus className="h-5 w-5 mr-2" />
-                    Create New Notice
+                    Create Notice
                   </h2>
                 </div>
                 <div className="p-6">
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Notice Type
+                        Type of the Notice
                       </label>
                       <select
                         value={noticeForm.type}
@@ -2063,7 +2063,7 @@ export default function AdminDashboard() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Notice Title
+                        Title of the Notice
                       </label>
                       <input
                         type="text"
@@ -2076,7 +2076,7 @@ export default function AdminDashboard() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Notice Content
+                        Content of the Notice
                       </label>
                       <textarea
                         value={noticeForm.content}
@@ -2124,7 +2124,7 @@ export default function AdminDashboard() {
                     <div className="p-8 text-center">
                       <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                       <h3 className="text-lg font-medium text-gray-700 mb-2">No Notices Created</h3>
-                      <p className="text-gray-500">Create your first notice to broadcast information to all students.</p>
+                      <p className="text-gray-500">Create a new announcement for all students</p>
                     </div>
                   ) : (
                     notices.map((notice) => (
@@ -2224,7 +2224,7 @@ export default function AdminDashboard() {
                     <div className="p-8 text-center">
                       <Bug className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                       <h3 className="text-lg font-medium text-gray-700 mb-2">No Defect Reports</h3>
-                      <p className="text-gray-500">No issues have been reported by students yet.</p>
+                      <p className="text-gray-500">No Defect Reports have been reported by students yet.</p>
                     </div>
                   ) : (
                     defectReports.map((report) => (
