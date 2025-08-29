@@ -70,7 +70,7 @@ export default function Footer() {
           
           {/* Social Media Links */}
           <div className="flex space-x-4">
-            <a href="#" className="text-white/70 hover:text-yellow-400 transition-colors p-2 rounded-full hover:bg-white/10">
+            <a href="https://web.facebook.com/EfacUOR/?_rdc=1&_rdr#" className="text-white/70 hover:text-yellow-400 transition-colors p-2 rounded-full hover:bg-white/10">
               <Facebook size={20} />
             </a>
             <a href="#" className="text-white/70 hover:text-yellow-400 transition-colors p-2 rounded-full hover:bg-white/10">
