@@ -152,7 +152,7 @@ export default function Home() {
               <br /> System
             </h1>
 
-            <p className="text-xl md:text-1.5xl text-white font-bold mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-lg bg-black/30 rounded-xl px-4 py-3 inline-block">
+            <p className="text-xl md:text-2xl text-white font-bold mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-lg bg-black/30 rounded-xl px-4 py-3 inline-block">
               Experience comfortable, affordable, and community-focused living
               <br />
               designed specifically for engineering students.
@@ -221,10 +221,11 @@ export default function Home() {
         className="py-20 bg-white"
       >
         <div
-          className={`container mx-auto px-4 transition-all duration-1000 ${isVisible.welcome
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10"
-            }`}
+          className={`container mx-auto px-4 transition-all duration-1000 ${
+            isVisible.welcome
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-10"
+          }`}
         >
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-[#4a2d5f]">
@@ -273,7 +274,7 @@ export default function Home() {
                 Study-Friendly
               </h3>
               <p className="text-gray-600 text-center">
-                Enjoy dedicated study areas, fast and reliable internet,
+                Enjoy dedicated study areas, fast and reliable internet, 
                 and quiet hours — all designed to help you excel academically.
               </p>
             </div>
@@ -288,10 +289,11 @@ export default function Home() {
         className="py-20 bg-gray-50"
       >
         <div
-          className={`container mx-auto px-4 transition-all duration-1000 ${isVisible.features
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10"
-            }`}
+          className={`container mx-auto px-4 transition-all duration-1000 ${
+            isVisible.features
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-10"
+          }`}
         >
           <div className="flex flex-col lg:flex-row items-center gap-16">
             <div className="lg:w-1/2 order-2 lg:order-1">
@@ -526,10 +528,11 @@ export default function Home() {
       {/* FAQ Section */}
       <section id="faq" ref={sectionRefs.faq} className="py-20 bg-gray-50">
         <div
-          className={`container mx-auto px-4 transition-all duration-1000 ${isVisible.faq
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10"
-            }`}
+          className={`container mx-auto px-4 transition-all duration-1000 ${
+            isVisible.faq
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-10"
+          }`}
         >
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6 text-[#4a2d5f]">
@@ -545,34 +548,38 @@ export default function Home() {
             {faqs.map((faq, index) => (
               <div key={index} className="mb-5 overflow-hidden">
                 <button
-                  className={`w-full flex justify-between items-center p-5 text-left font-medium focus:outline-none rounded-xl transition-all ${activeAccordion === index
-                    ? "bg-gradient-to-r from-[#4a2d5f] to-[#5d3a75] text-white shadow-md"
-                    : "bg-white hover:bg-gray-50 shadow-sm"
-                    }`}
+                  className={`w-full flex justify-between items-center p-5 text-left font-medium focus:outline-none rounded-xl transition-all ${
+                    activeAccordion === index
+                      ? "bg-gradient-to-r from-[#4a2d5f] to-[#5d3a75] text-white shadow-md"
+                      : "bg-white hover:bg-gray-50 shadow-sm"
+                  }`}
                   onClick={() => toggleAccordion(index)}
                 >
                   <span className="text-lg">{faq.question}</span>
                   {activeAccordion === index ? (
                     <ChevronUp
-                      className={`h-5 w-5 ${activeAccordion === index
-                        ? "text-white"
-                        : "text-[#4a2d5f]"
-                        }`}
+                      className={`h-5 w-5 ${
+                        activeAccordion === index
+                          ? "text-white"
+                          : "text-[#4a2d5f]"
+                      }`}
                     />
                   ) : (
                     <ChevronDown
-                      className={`h-5 w-5 ${activeAccordion === index
-                        ? "text-white"
-                        : "text-[#4a2d5f]"
-                        }`}
+                      className={`h-5 w-5 ${
+                        activeAccordion === index
+                          ? "text-white"
+                          : "text-[#4a2d5f]"
+                      }`}
                     />
                   )}
                 </button>
                 <div
-                  className={`bg-white px-5 rounded-b-xl shadow-sm transition-all duration-300 ${activeAccordion === index
-                    ? "max-h-96 py-5 opacity-100"
-                    : "max-h-0 py-0 opacity-0"
-                    }`}
+                  className={`bg-white px-5 rounded-b-xl shadow-sm transition-all duration-300 ${
+                    activeAccordion === index
+                      ? "max-h-96 py-5 opacity-100"
+                      : "max-h-0 py-0 opacity-0"
+                  }`}
                 >
                   <p className="text-gray-600">{faq.answer}</p>
                 </div>
@@ -597,10 +604,11 @@ export default function Home() {
         </div>
 
         <div
-          className={`container mx-auto px-4 text-center relative z-10 transition-all duration-1000 ${isVisible.cta
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10"
-            }`}
+          className={`container mx-auto px-4 text-center relative z-10 transition-all duration-1000 ${
+            isVisible.cta
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-10"
+          }`}
         >
           <h2 className="text-4xl font-bold mb-6">
             Ready to Join Our Student Community?
@@ -653,10 +661,11 @@ export default function Home() {
         className="py-20 bg-white"
       >
         <div
-          className={`container mx-auto px-4 transition-all duration-1000 ${isVisible.location
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10"
-            }`}
+          className={`container mx-auto px-4 transition-all duration-1000 ${
+            isVisible.location
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-10"
+          }`}
         >
           <div className="flex flex-col lg:flex-row items-center gap-16">
             <div className="lg:w-1/2">

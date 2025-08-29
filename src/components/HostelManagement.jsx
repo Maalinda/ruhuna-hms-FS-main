@@ -1,21 +1,22 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { collection, addDoc, getDocs, updateDoc, doc, serverTimestamp, query, where, getDoc } from "firebase/firestore"
+import { collection, addDoc, getDocs, doc, serverTimestamp, getDoc, deleteDoc } from "firebase/firestore"
 import { db } from "../firebase"
-import { 
-  AlertCircle, 
-  Plus, 
-  Home, 
-  User, 
-  Users, 
-  CheckCircle, 
+import {
+  AlertCircle,
+  Plus,
+  Home,
+  User,
+  Users,
+  CheckCircle,
   Pencil,
   Building,
   Briefcase,
   ArrowRight,
   RefreshCw,
-  Layers
+  Layers,
+  Trash2
 } from "lucide-react"
 
 export default function HostelManagement() {
@@ -50,17 +51,52 @@ export default function HostelManagement() {
       setLoading(true)
       const hostelSnapshot = await getDocs(collection(db, "hostels"))
       
-      const hostelData = await Promise.all(hostelSnapshot.docs.map(async (doc) => {
-        const hostel = { id: doc.id, ...doc.data() }
+      const hostelData = await Promise.all(hostelSnapshot.docs.map(async (hostelDoc) => {
+        const hostel = { id: hostelDoc.id, ...hostelDoc.data() }
         
         // Fetch rooms for this hostel
         const roomsSnapshot = await getDocs(
-          collection(db, "hostels", doc.id, "rooms")
+          collection(db, "hostels", hostelDoc.id, "rooms")
         )
         
-        const rooms = roomsSnapshot.docs.map(roomDoc => ({
-          id: roomDoc.id,
-          ...roomDoc.data()
+        const rooms = await Promise.all(roomsSnapshot.docs.map(async (roomDoc) => {
+          const roomData = { id: roomDoc.id, ...roomDoc.data() }
+          
+          // If room has residents, check if they already have registration numbers
+          // For new assignments, registration numbers are stored directly
+          // For older data, we might need to fetch from applications
+          if (roomData.residents && roomData.residents.length > 0) {
+            const enrichedResidents = await Promise.all(
+              roomData.residents.map(async (resident) => {
+                // If registration number is already stored, use it
+                if (resident.registrationNumber && resident.registrationNumber !== 'N/A') {
+                  return resident
+                }
+                
+                // Otherwise, try to fetch from application (for legacy data)
+                try {
+                  if (resident.applicationId) {
+                    const appDocRef = doc(db, "applications", resident.applicationId)
+                    const appDoc = await getDoc(appDocRef)
+                    if (appDoc.exists()) {
+                      const appData = appDoc.data()
+                      return {
+                        ...resident,
+                        registrationNumber: appData.registrationNumber || 'N/A'
+                      }
+                    }
+                  }
+                  return { ...resident, registrationNumber: 'N/A' }
+                } catch (error) {
+                  console.error("Error fetching resident details:", error)
+                  return { ...resident, registrationNumber: 'N/A' }
+                }
+              })
+            )
+            return { ...roomData, residents: enrichedResidents }
+          }
+          
+          return roomData
         }))
         
         return { ...hostel, rooms }
@@ -88,7 +124,7 @@ export default function HostelManagement() {
         return
       }
       
-      const hostelRef = await addDoc(collection(db, "hostels"), {
+      await addDoc(collection(db, "hostels"), {
         name: newHostel.name,
         gender: newHostel.gender,
         totalRooms: totalRoomsNum,
@@ -166,6 +202,48 @@ export default function HostelManagement() {
   const startAddingRoom = (hostel) => {
     setCurrentHostel(hostel)
     setShowAddRoomForm(true)
+  }
+
+  const handleDeleteHostel = async (hostelId, hostelName) => {
+    if (!window.confirm(`Are you sure you want to delete "${hostelName}" hostel? This will also delete all rooms in this hostel. This action cannot be undone.`)) {
+      return
+    }
+
+    try {
+      setLoading(true)
+      
+      // Delete the hostel document (this will also delete all subcollections like rooms)
+      await deleteDoc(doc(db, "hostels", hostelId))
+      
+      await fetchHostels()
+      
+    } catch (error) {
+      console.error("Error deleting hostel:", error)
+      setError("Failed to delete hostel. Please try again.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDeleteRoom = async (hostelId, roomId, roomNumber) => {
+    if (!window.confirm(`Are you sure you want to delete room "${roomNumber}"? This action cannot be undone.`)) {
+      return
+    }
+
+    try {
+      setLoading(true)
+      
+      // Delete the room document
+      await deleteDoc(doc(db, "hostels", hostelId, "rooms", roomId))
+      
+      await fetchHostels()
+      
+    } catch (error) {
+      console.error("Error deleting room:", error)
+      setError("Failed to delete room. Please try again.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (loading && hostels.length === 0) {
@@ -341,6 +419,13 @@ export default function HostelManagement() {
                     >
                       <Plus className="h-3 w-3 mr-1" /> Room
                     </button>
+                    <button
+                      onClick={() => handleDeleteHostel(hostel.id, hostel.name)}
+                      className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-lg text-xs flex items-center font-medium ml-2 transition-colors"
+                      title="Delete Hostel"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </button>
                   </div>
                 </div>
                 
@@ -376,6 +461,12 @@ export default function HostelManagement() {
                               <th scope="col" className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Status
                               </th>
+                              <th scope="col" className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Residents
+                              </th>
+                              <th scope="col" className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                              </th>
                             </tr>
                           </thead>
                           <tbody className="bg-white divide-y divide-gray-200">
@@ -401,6 +492,44 @@ export default function HostelManagement() {
                                   ) : (
                                     <span className="px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                       Full
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="px-4 py-2.5 text-sm">
+                                  {room.residents && room.residents.length > 0 ? (
+                                    <div className="space-y-1">
+                                      {room.residents.map((resident, index) => (
+                                        <div key={index} className="flex items-center">
+                                          <User className="h-3 w-3 text-gray-400 mr-1 flex-shrink-0" />
+                                          <div className="min-w-0 flex-1">
+                                            <div className="text-xs font-medium text-gray-900 truncate">
+                                              {resident.name}
+                                            </div>
+                                            <div className="text-xs text-gray-500">
+                                              {resident.registrationNumber}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  ) : (
+                                    <div className="text-xs text-gray-400 italic">
+                                      No residents
+                                    </div>
+                                  )}
+                                </td>
+                                <td className="px-4 py-2.5 whitespace-nowrap text-sm">
+                                  <button
+                                    onClick={() => handleDeleteRoom(hostel.id, room.id, room.roomNumber)}
+                                    className="text-red-600 hover:text-red-900 hover:bg-red-50 p-1 rounded transition-colors"
+                                    title={`Delete room ${room.roomNumber}`}
+                                    disabled={room.occupancy > 0}
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </button>
+                                  {room.occupancy > 0 && (
+                                    <span className="ml-2 text-xs text-gray-500">
+                                      Cannot delete (occupied)
                                     </span>
                                   )}
                                 </td>

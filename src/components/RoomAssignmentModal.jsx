@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { collection, getDocs, query, where, doc, getDoc, updateDoc, increment } from "firebase/firestore"
+import { collection, getDocs, query, where, doc, updateDoc, increment } from "firebase/firestore"
 import { db } from "../firebase"
 import { AlertCircle, X, Check, Search, Building, Home, Users, Loader2, ArrowRight } from "lucide-react"
 
@@ -95,7 +95,8 @@ export default function RoomAssignmentModal({ application, onClose, onComplete }
           residents: [...(selectedRoom.residents || []), {
             id: application.userId,
             name: application.fullName,
-            applicationId: application.id
+            applicationId: application.id,
+            registrationNumber: application.registrationNumber
           }]
         }
       )

@@ -623,6 +623,53 @@ export default function AdminDashboard() {
     }
   }
 
+  const handlePaymentApproval = async (applicationId, newStatus) => {
+    try {
+      const application = applications.find(app => app.id === applicationId)
+      if (!application || !application.paymentInfo) {
+        setError("Application or payment information not found.")
+        return
+      }
+
+      const updateData = {
+        paymentInfo: {
+          ...application.paymentInfo,
+          status: newStatus,
+          ...(newStatus === 'approved' ? {
+            approvedBy: 'Current Admin', // You can replace with actual admin user info
+            approvedDate: new Date().toISOString()
+          } : {
+            rejectedBy: 'Current Admin', // You can replace with actual admin user info
+            rejectedDate: new Date().toISOString(),
+            rejectionReason: 'Invalid payment receipt' // You could add a prompt for reason
+          })
+        }
+      }
+
+      await updateDoc(doc(db, "applications", applicationId), updateData)
+
+      // Update local state
+      const updatedApplications = applications.map(app =>
+        app.id === applicationId
+          ? { ...app, paymentInfo: updateData.paymentInfo }
+          : app
+      )
+      setApplications(updatedApplications)
+
+      // Update selected application if it's the same one
+      if (selectedApplication?.id === applicationId) {
+        setSelectedApplication({
+          ...selectedApplication,
+          paymentInfo: updateData.paymentInfo
+        })
+      }
+
+    } catch (error) {
+      console.error("Error updating payment status:", error)
+      setError("Failed to update payment status. Please try again.")
+    }
+  }
+
   // Initialize evaluation data when application is selected
   useEffect(() => {
     if (selectedApplication) {
@@ -653,7 +700,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 via-purple-50/30 to-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className={`transition-all duration-700 ease-in-out transform ${activateAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
             <div>
@@ -1248,6 +1295,193 @@ export default function AdminDashboard() {
                             </div>
                           </div>
                         )}
+
+                        {/* Payment Information */}
+                        <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-5 border border-gray-100 shadow-sm transform transition-all hover:shadow-md hover:translate-y-[-2px]">
+                          <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-800">
+                            <DollarSign className="h-5 w-5 mr-2 text-[#e91e63]" />
+                            Payment Information
+                          </h3>
+                          
+                          {selectedApplication.paymentInfo ? (
+                            <div className="space-y-4">
+                              {/* Payment Status Header */}
+                              <div className={`border rounded-lg p-4 ${
+                                selectedApplication.paymentInfo.status === 'approved'
+                                  ? 'bg-green-50 border-green-200'
+                                  : selectedApplication.paymentInfo.status === 'rejected'
+                                  ? 'bg-red-50 border-red-200'
+                                  : 'bg-yellow-50 border-yellow-200'
+                              }`}>
+                                <div className="flex items-center justify-between mb-4">
+                                  <div className="flex items-center">
+                                    {selectedApplication.paymentInfo.status === 'approved' ? (
+                                      <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
+                                    ) : selectedApplication.paymentInfo.status === 'rejected' ? (
+                                      <XCircle className="h-5 w-5 text-red-500 mr-3" />
+                                    ) : (
+                                      <Clock className="h-5 w-5 text-yellow-500 mr-3" />
+                                    )}
+                                    <div>
+                                      <span className={`font-semibold text-lg ${
+                                        selectedApplication.paymentInfo.status === 'approved'
+                                          ? 'text-green-800'
+                                          : selectedApplication.paymentInfo.status === 'rejected'
+                                          ? 'text-red-800'
+                                          : 'text-yellow-800'
+                                      }`}>
+                                        {selectedApplication.paymentInfo.status === 'approved'
+                                          ? 'Payment Approved'
+                                          : selectedApplication.paymentInfo.status === 'rejected'
+                                          ? 'Payment Rejected'
+                                          : 'Payment Pending Review'
+                                        }
+                                      </span>
+                                    </div>
+                                  </div>
+                                  
+                                  {selectedApplication.paymentInfo.status === 'pending' && (
+                                    <div className="flex space-x-3">
+                                      <button
+                                        onClick={() => handlePaymentApproval(selectedApplication.id, 'approved')}
+                                        className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium shadow-sm"
+                                      >
+                                        <CheckCircle className="h-4 w-4 mr-2" />
+                                        Approve
+                                      </button>
+                                      <button
+                                        onClick={() => handlePaymentApproval(selectedApplication.id, 'rejected')}
+                                        className="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium shadow-sm"
+                                      >
+                                        <XCircle className="h-4 w-4 mr-2" />
+                                        Reject
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+
+                                {/* Payment Details Grid */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                  <div className="space-y-3">
+                                    <div className="flex justify-between items-center">
+                                      <span className="text-sm font-medium text-gray-600">Amount:</span>
+                                      <span className="font-semibold text-gray-900 text-lg">
+                                        {selectedApplication.paymentInfo.currency} {selectedApplication.paymentInfo.amount}
+                                      </span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                      <span className="text-sm font-medium text-gray-600">Upload Date:</span>
+                                      <span className="font-medium text-gray-800">
+                                        {new Date(selectedApplication.paymentInfo.uploadDate).toLocaleDateString()}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="space-y-3">
+                                    <div className="flex justify-between items-center">
+                                      <span className="text-sm font-medium text-gray-600">Receipt File:</span>
+                                      <span className="font-medium text-gray-800 text-right max-w-32 truncate" title={selectedApplication.paymentInfo.fileName}>
+                                        {selectedApplication.paymentInfo.fileName}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                {/* Actions Row - Separate from grid */}
+                                <div className="mt-4 pt-3 border-t border-gray-200">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-sm font-medium text-gray-600">Receipt Actions:</span>
+                                    <div className="flex space-x-3">
+                                      <a
+                                        href={selectedApplication.paymentInfo.receiptUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm font-medium"
+                                      >
+                                        <Eye className="h-4 w-4 mr-2" />
+                                        View Receipt
+                                      </a>
+                                      <a
+                                        href={selectedApplication.paymentInfo.receiptUrl}
+                                        download
+                                        className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+                                      >
+                                        <Download className="h-4 w-4 mr-2" />
+                                        Download
+                                      </a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Approval Details */}
+                              {selectedApplication.paymentInfo.status === 'approved' && selectedApplication.paymentInfo.approvedBy && (
+                                <div className="bg-white border border-green-200 rounded-lg p-4">
+                                  <h4 className="font-medium text-green-800 mb-2 flex items-center">
+                                    <CheckCircle className="h-4 w-4 mr-2" />
+                                    Approval Details
+                                  </h4>
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                    <div className="flex justify-between">
+                                      <span className="text-gray-600">Approved by:</span>
+                                      <span className="font-medium text-green-700">{selectedApplication.paymentInfo.approvedBy}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                      <span className="text-gray-600">Approved on:</span>
+                                      <span className="font-medium text-green-700">{new Date(selectedApplication.paymentInfo.approvedDate).toLocaleDateString()}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Rejection Details */}
+                              {selectedApplication.paymentInfo.status === 'rejected' && selectedApplication.paymentInfo.rejectedBy && (
+                                <div className="bg-white border border-red-200 rounded-lg p-4">
+                                  <h4 className="font-medium text-red-800 mb-2 flex items-center">
+                                    <XCircle className="h-4 w-4 mr-2" />
+                                    Rejection Details
+                                  </h4>
+                                  <div className="space-y-3 text-sm">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-600">Rejected by:</span>
+                                        <span className="font-medium text-red-700">{selectedApplication.paymentInfo.rejectedBy}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-600">Rejected on:</span>
+                                        <span className="font-medium text-red-700">{new Date(selectedApplication.paymentInfo.rejectedDate).toLocaleDateString()}</span>
+                                      </div>
+                                    </div>
+                                    {selectedApplication.paymentInfo.rejectionReason && (
+                                      <div className="pt-2 border-t border-red-100">
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-600">Reason:</span>
+                                          <span className="font-medium text-red-700 text-right flex-1 ml-3">{selectedApplication.paymentInfo.rejectionReason}</span>
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
+                              <div className="flex items-start">
+                                <AlertTriangle className="h-6 w-6 text-orange-500 mr-3 mt-0.5 flex-shrink-0" />
+                                <div className="flex-1">
+                                  <h4 className="font-semibold text-orange-800 mb-2">Payment Pending</h4>
+                                  <p className="text-orange-700 text-sm leading-relaxed">
+                                    Student has not uploaded payment receipt yet. The annual hostel fee of <span className="font-medium">LKR 1,500</span> is required for accommodation services.
+                                  </p>
+                                  <div className="mt-3 text-xs text-orange-600">
+                                    <p>• Students must upload bank receipt as proof of payment</p>
+                                    <p>• Payment will be reviewed by admin before approval</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
 
                         {selectedApplication.siblings && selectedApplication.siblings.length > 0 && selectedApplication.siblings[0].name && (
                           <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-5 border border-gray-100 shadow-sm transform transition-all hover:shadow-md hover:translate-y-[-2px]">
