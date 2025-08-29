@@ -1978,7 +1978,7 @@ export default function AdminDashboard() {
                                   onClick={() => setEvaluationData({})}
                                   className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                                 >
-                                  Clear Form
+                                  Clear Application
                                 </button>
                                 <button
                                   onClick={saveEvaluation}
@@ -2053,6 +2053,7 @@ export default function AdminDashboard() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Type of the Notice
                       </label>
+                      
                       <select
                         value={noticeForm.type}
                         onChange={(e) => setNoticeForm(prev => ({ ...prev, type: e.target.value }))}
@@ -2081,7 +2082,7 @@ export default function AdminDashboard() {
                       />
                     </div>
 
-                    {/* Expiry Date */}
+                    {/* Set Expiry Date for the Notice */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Expiry Date</label>
                       <input
@@ -2105,7 +2106,7 @@ export default function AdminDashboard() {
                       />
                     </div>
 
-                      {/* Pin Notice */}
+                      {/* Pin Important Notices to the Top of the Dashboard */}
                       <div className="flex items-center">
                         <input
                           type="checkbox"
@@ -2113,7 +2114,7 @@ export default function AdminDashboard() {
                           onChange={(e) => setNoticeForm(prev => ({ ...prev, pinned: e.target.checked }))}
                           className="mr-2"
                         />
-                        <label className="text-sm text-gray-700">Pin this notice to top</label>
+                        <label className="text-sm text-gray-700">Pin to Top</label>
                       </div>          
 
                     <div className="flex justify-end space-x-3">
@@ -2152,7 +2153,7 @@ export default function AdminDashboard() {
                   {notices.length === 0 ? (
                     <div className="p-8 text-center">
                       <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                      <h3 className="text-lg font-medium text-gray-700 mb-2">No Notices Created</h3>
+                      <h3 className="text-lg font-medium text-gray-700 mb-2">No Notices to Display</h3>
                       <p className="text-gray-500">Create a new announcement for all students</p>
                     </div>
                   ) : (
@@ -2173,6 +2174,7 @@ export default function AdminDashboard() {
                             <h3 className="font-semibold text-gray-900 mb-1">{notice.title}</h3>
                             <p className="text-gray-600 text-sm">{notice.content}</p>
                           </div>
+
                           <button
                             onClick={() => deleteNotice(notice.id)}
                             className="ml-4 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
@@ -2180,6 +2182,7 @@ export default function AdminDashboard() {
                           >
                             <Trash className="h-4 w-4" />
                           </button>
+
                         </div>
                       </div>
                     ))
