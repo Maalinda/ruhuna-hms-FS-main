@@ -24,27 +24,27 @@ export default function ApplicationForm() {
     mobileNumber: "",
     gender: "",
     maritalStatus: "single",
-    
+
     // Residence Details
     district: "",
     closestTown: "",
     distanceToTown: "",
     distanceToFaculty: "",
     walkingDistanceToBusStop: "",
-    
+
     // Academic Details
     academicDegreeType: "",
     department: "",
     presentLevel: "",
     hasMisconduct: "no",
-    
+
     // Financial Information
     receivesGrant: "no",
     grantAmount: "",
-    
+
     // Family Details - Brothers/Sisters
     siblings: [{ name: "", schoolUniversity: "", gradeYear: "" }],
-    
+
     // Family Income
     fatherIncome: "",
     motherIncome: "",
@@ -53,17 +53,17 @@ export default function ApplicationForm() {
     fatherOccupation: "",
     motherOccupation: "",
     guardianOccupation: "",
-    
+
     // Previous Hostel
     receivedHostelBefore: "no",
     previousHostelYears: "",
-    
+
     // Emergency Contact
     emergencyContactName: "",
     emergencyContactAddress: "",
     emergencyContactPhone: "",
     emergencyContactRelation: "",
-    
+
     // Sports Activities
     universityTeam: "",
     receivedColors: "no"
@@ -74,7 +74,7 @@ export default function ApplicationForm() {
   const [loading, setLoading] = useState(false)
   const [checkingStatus, setCheckingStatus] = useState(true)
   const [currentStep, setCurrentStep] = useState(1)
-  
+
   // Document upload states
   const [documents, setDocuments] = useState({
     gramaNiladhariRecommendation: null,
@@ -179,23 +179,23 @@ export default function ApplicationForm() {
 
   const handleStepSubmit = async (e) => {
     e.preventDefault()
-    
+
     if (currentStep === 1) {
       // Validate required fields for step 1
       let requiredFields = ['registrationNumber', 'fullName', 'nameWithInitials', 'permanentAddress', 'mobileNumber', 'gender', 'district', 'closestTown', 'distanceToTown', 'distanceToFaculty', 'walkingDistanceToBusStop', 'presentLevel', 'emergencyContactName', 'emergencyContactAddress', 'emergencyContactPhone', 'emergencyContactRelation']
-      
+
       // Add department to required fields only for 2nd year and above students
       if (formData.presentLevel !== "1") {
         requiredFields.push('department')
       }
-      
+
       for (const field of requiredFields) {
         if (!formData[field]) {
           setError(`Please fill in all required fields in Step 1.`)
           return
         }
       }
-      
+
       setCurrentStep(2)
       setError("")
     } else {
@@ -211,17 +211,17 @@ export default function ApplicationForm() {
 
       // Upload documents to Firebase Storage
       const documentUrls = {}
-      
+
       if (documents.gramaNiladhariRecommendation) {
         const path = `applications/${currentUser.uid}/grama-niladhari-${Date.now()}`
         documentUrls.gramaNiladhariRecommendationUrl = await uploadFileToFirebase(documents.gramaNiladhariRecommendation, path)
       }
-      
+
       if (documents.physicalEducationRecommendation) {
         const path = `applications/${currentUser.uid}/physical-education-${Date.now()}`
         documentUrls.physicalEducationRecommendationUrl = await uploadFileToFirebase(documents.physicalEducationRecommendation, path)
       }
-      
+
       if (documents.additionalDocuments.length > 0) {
         const additionalUrls = []
         for (let i = 0; i < documents.additionalDocuments.length; i++) {
@@ -318,37 +318,32 @@ export default function ApplicationForm() {
             <div className="mt-4">
               <div className="flex items-center">
                 <div
-                  className={`flex items-center ${
-                    currentStep >= 1 ? "text-white" : "text-white/50"
-                  }`}
+                  className={`flex items-center ${currentStep >= 1 ? "text-white" : "text-white/50"
+                    }`}
                 >
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                      currentStep >= 1
-                        ? "bg-white text-[#4a2d5f]"
-                        : "bg-white/20"
-                    }`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${currentStep >= 1
+                      ? "bg-white text-[#4a2d5f]"
+                      : "bg-white/20"
+                      }`}
                   >
                     1
                   </div>
                   <span className="ml-2 text-sm">Application Details</span>
                 </div>
                 <div
-                  className={`flex-1 h-1 mx-4 ${
-                    currentStep >= 2 ? "bg-white" : "bg-white/20"
-                  }`}
+                  className={`flex-1 h-1 mx-4 ${currentStep >= 2 ? "bg-white" : "bg-white/20"
+                    }`}
                 ></div>
                 <div
-                  className={`flex items-center ${
-                    currentStep >= 2 ? "text-white" : "text-white/50"
-                  }`}
+                  className={`flex items-center ${currentStep >= 2 ? "text-white" : "text-white/50"
+                    }`}
                 >
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                      currentStep >= 2
-                        ? "bg-white text-[#4a2d5f]"
-                        : "bg-white/20"
-                    }`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${currentStep >= 2
+                      ? "bg-white text-[#4a2d5f]"
+                      : "bg-white/20"
+                      }`}
                   >
                     2
                   </div>
@@ -388,6 +383,28 @@ export default function ApplicationForm() {
                               className="mr-2"
                             />
                             First
+                          </label>
+                          <label className="flex items-center">
+                            <input
+                              type="radio"
+                              name="yearOfApplying"
+                              value="second"
+                              checked={formData.yearOfApplying === "second"}
+                              onChange={handleChange}
+                              className="mr-2"
+                            />
+                            Second
+                          </label>
+                          <label className="flex items-center">
+                            <input
+                              type="radio"
+                              name="yearOfApplying"
+                              value="third"
+                              checked={formData.yearOfApplying === "third"}
+                              onChange={handleChange}
+                              className="mr-2"
+                            />
+                            Third
                           </label>
                           <label className="flex items-center">
                             <input
@@ -652,20 +669,7 @@ export default function ApplicationForm() {
                         />
                       </div>
 
-                      <div>
-                        <label htmlFor="closestTown" className="form-label">
-                          Closest town to your residence
-                        </label>
-                        <input
-                          id="closestTown"
-                          name="closestTown"
-                          type="text"
-                          value={formData.closestTown}
-                          onChange={handleChange}
-                          required
-                          className="form-input"
-                        />
-                      </div>
+
 
                       <div>
                         <label htmlFor="distanceToTown" className="form-label">
@@ -1429,91 +1433,91 @@ export default function ApplicationForm() {
                     {/* Physical Education Recommendation (Conditional) */}
                     {(formData.universityTeam ||
                       formData.receivedColors === "yes") && (
-                      <div className="bg-gray-50 p-4 rounded-md">
-                        <h4 className="text-lg font-semibold mb-3 flex items-center">
-                          <Award className="h-5 w-5 mr-2 text-orange-600" />
-                          16. Recommendation of the Director of Physical
-                          Education Unit
-                        </h4>
-                        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
-                          <p className="text-sm text-orange-800 mb-2">
-                            <strong>
-                              For students involved in sports activities (not
-                              applicable for first year students):
-                            </strong>
-                          </p>
-                          <ul className="text-sm text-orange-700 list-disc list-inside space-y-1">
-                            <li>
-                              Certification that you are a recipient of
-                              University colors
-                            </li>
-                            <li>
-                              Confirmation of representing the University team
-                              in the academic year
-                            </li>
-                            <li>
-                              Required to attend training sessions after 5:00 PM
-                            </li>
-                            <li>
-                              Must include signature, date, and official seal
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
-                          {!documents.physicalEducationRecommendation ? (
-                            <div className="text-center">
-                              <Upload className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                              <label
-                                htmlFor="physical-education"
-                                className="cursor-pointer"
-                              >
-                                <span className="text-blue-600 hover:text-blue-700 font-medium">
-                                  Upload Physical Education Recommendation
-                                </span>
-                                <input
-                                  id="physical-education"
-                                  type="file"
-                                  className="hidden"
-                                  accept=".pdf,.jpg,.jpeg,.png"
-                                  onChange={(e) =>
-                                    handleDocumentUpload(
-                                      "physicalEducationRecommendation",
-                                      e.target.files[0]
+                        <div className="bg-gray-50 p-4 rounded-md">
+                          <h4 className="text-lg font-semibold mb-3 flex items-center">
+                            <Award className="h-5 w-5 mr-2 text-orange-600" />
+                            16. Recommendation of the Director of Physical
+                            Education Unit
+                          </h4>
+                          <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
+                            <p className="text-sm text-orange-800 mb-2">
+                              <strong>
+                                For students involved in sports activities (not
+                                applicable for first year students):
+                              </strong>
+                            </p>
+                            <ul className="text-sm text-orange-700 list-disc list-inside space-y-1">
+                              <li>
+                                Certification that you are a recipient of
+                                University colors
+                              </li>
+                              <li>
+                                Confirmation of representing the University team
+                                in the academic year
+                              </li>
+                              <li>
+                                Required to attend training sessions after 5:00 PM
+                              </li>
+                              <li>
+                                Must include signature, date, and official seal
+                              </li>
+                            </ul>
+                          </div>
+                          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
+                            {!documents.physicalEducationRecommendation ? (
+                              <div className="text-center">
+                                <Upload className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                                <label
+                                  htmlFor="physical-education"
+                                  className="cursor-pointer"
+                                >
+                                  <span className="text-blue-600 hover:text-blue-700 font-medium">
+                                    Upload Physical Education Recommendation
+                                  </span>
+                                  <input
+                                    id="physical-education"
+                                    type="file"
+                                    className="hidden"
+                                    accept=".pdf,.jpg,.jpeg,.png"
+                                    onChange={(e) =>
+                                      handleDocumentUpload(
+                                        "physicalEducationRecommendation",
+                                        e.target.files[0]
+                                      )
+                                    }
+                                  />
+                                </label>
+                                <p className="text-gray-500 text-sm mt-1">
+                                  PDF, JPG, JPEG, PNG (Max 10MB)
+                                </p>
+                              </div>
+                            ) : (
+                              <div className="flex items-center justify-between bg-green-50 p-3 rounded-lg">
+                                <div className="flex items-center">
+                                  <FileText className="h-5 w-5 text-green-600 mr-2" />
+                                  <span className="text-green-800 font-medium">
+                                    {
+                                      documents.physicalEducationRecommendation
+                                        .name
+                                    }
+                                  </span>
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    removeDocument(
+                                      "physicalEducationRecommendation"
                                     )
                                   }
-                                />
-                              </label>
-                              <p className="text-gray-500 text-sm mt-1">
-                                PDF, JPG, JPEG, PNG (Max 10MB)
-                              </p>
-                            </div>
-                          ) : (
-                            <div className="flex items-center justify-between bg-green-50 p-3 rounded-lg">
-                              <div className="flex items-center">
-                                <FileText className="h-5 w-5 text-green-600 mr-2" />
-                                <span className="text-green-800 font-medium">
-                                  {
-                                    documents.physicalEducationRecommendation
-                                      .name
-                                  }
-                                </span>
+                                  className="text-red-600 hover:text-red-700"
+                                >
+                                  Remove
+                                </button>
                               </div>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  removeDocument(
-                                    "physicalEducationRecommendation"
-                                  )
-                                }
-                                className="text-red-600 hover:text-red-700"
-                              >
-                                Remove
-                              </button>
-                            </div>
-                          )}
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
 
                     {/* Additional Documents */}
                     <div className="bg-gray-50 p-4 rounded-md">
