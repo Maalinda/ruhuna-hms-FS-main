@@ -42,9 +42,11 @@ import {
   Bug,
   Send,
   AlertTriangle as AlertTriangleIcon,
-  Upload,
-  CreditCard
-} from "lucide-react"
+  // Add these missing icons:
+  ShowerHead,
+  Wifi,
+  Droplets,
+} from "lucide-react";
 
 export default function StudentDashboard() {
   const { currentUser } = useAuth()
@@ -62,6 +64,8 @@ export default function StudentDashboard() {
   const [uploadingPayment, setUploadingPayment] = useState(false)
   const [showRegulations, setShowRegulations] = useState(false);
   const [showCampusMap, setShowCampusMap] = useState(false);
+  const [showHostelFacilities, setShowHostelFacilities] = useState(false);
+  const [showFAQ, setShowFAQ] = useState(false);
 
   const fetchUserApplications = async () => {
     if (!currentUser) return
@@ -647,28 +651,28 @@ const hostelRegulations = [
                       </button>
                     </li>
                     <li>
-                      <a
-                        href="#"
-                        className="flex items-center p-2 hover:bg-gray-50 rounded-lg transition-colors"
+                      <button
+                        onClick={() => setShowHostelFacilities(true)}
+                        className="w-full flex items-center p-2 hover:bg-gray-50 rounded-lg transition-colors text-left"
                       >
                         <div className="p-1.5 bg-purple-100 rounded-md mr-3">
                           <DoorOpen className="h-4 w-4 text-purple-600" />
                         </div>
                         <span className="text-gray-700">Hostel Facilities</span>
                         <ChevronRight className="h-4 w-4 text-gray-400 ml-auto" />
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a
-                        href="#"
-                        className="flex items-center p-2 hover:bg-gray-50 rounded-lg transition-colors"
+                      <button
+                        onClick={() => setShowFAQ(true)}
+                        className="w-full flex items-center p-2 hover:bg-gray-50 rounded-lg transition-colors text-left"
                       >
                         <div className="p-1.5 bg-yellow-100 rounded-md mr-3">
                           <Lightbulb className="h-4 w-4 text-yellow-600" />
                         </div>
                         <span className="text-gray-700">FAQ & Support</span>
                         <ChevronRight className="h-4 w-4 text-gray-400 ml-auto" />
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </div>
@@ -1977,6 +1981,550 @@ const hostelRegulations = [
                 <button
                   onClick={() => setShowCampusMap(false)}
                   className="px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg hover:from-green-600 hover:to-emerald-600 transition-colors font-medium"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Hostel Facilities Modal */}
+      {showHostelFacilities && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-gradient-to-r from-purple-500 to-indigo-500 p-6 text-white">
+              <div className="flex items-center justify-between">
+                <h3 className="text-2xl font-bold flex items-center">
+                  <DoorOpen className="h-6 w-6 mr-3" />
+                  Hostel Facilities
+                </h3>
+                <button
+                  onClick={() => setShowHostelFacilities(false)}
+                  className="text-white hover:text-gray-200 transition-colors"
+                >
+                  <XCircle className="h-6 w-6" />
+                </button>
+              </div>
+              <p className="text-purple-100 mt-2">
+                Explore the modern facilities and amenities available in our
+                hostels.
+              </p>
+            </div>
+
+            <div className="p-6">
+              {/* Facilities Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                {/* Room Facilities */}
+                <div className="bg-purple-50 rounded-lg p-5 border border-purple-200">
+                  <h4 className="text-lg font-semibold text-purple-800 mb-4 flex items-center">
+                    <Home className="h-5 w-5 mr-2" />
+                    Room Facilities
+                  </h4>
+                  <ul className="space-y-2">
+                    {[
+                      "Individual beds with mattresses",
+                      "Study desk and chair for each student",
+                      "Wardrobe/storage space",
+                      "Power outlets for electronics",
+                      "Ceiling fans for ventilation",
+                      "Windows with proper lighting",
+                    ].map((facility, index) => (
+                      <li
+                        key={index}
+                        className="flex items-start text-purple-700"
+                      >
+                        <div className="w-2 h-2 bg-purple-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <span className="text-sm leading-relaxed">
+                          {facility}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                {/* Common Areas */}
+                <div className="bg-blue-50 rounded-lg p-5 border border-blue-200">
+                  <h4 className="text-lg font-semibold text-blue-800 mb-4 flex items-center">
+                    <Users className="h-5 w-5 mr-2" />
+                    Common Areas
+                  </h4>
+                  <ul className="space-y-2">
+                    {[
+                      "Spacious common room for relaxation",
+                      "Study areas with charging points",
+                      "Recreation and entertainment space",
+                      "Notice boards for announcements",
+                      "Seating areas for group discussions",
+                      "Television and entertainment facilities",
+                    ].map((facility, index) => (
+                      <li
+                        key={index}
+                        className="flex items-start text-blue-700"
+                      >
+                        <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <span className="text-sm leading-relaxed">
+                          {facility}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                {/* Washroom Facilities */}
+                <div className="bg-green-50 rounded-lg p-5 border border-green-200">
+                  <h4 className="text-lg font-semibold text-green-800 mb-4 flex items-center">
+                    <ShowerHead className="h-5 w-5 mr-2" />
+                    Washroom Facilities
+                  </h4>
+                  <ul className="space-y-2">
+                    {[
+                      "Clean and well-maintained washrooms",
+                      "Individual shower facilities",
+                      "Mirrors and wash basins",
+                      "Hot water availability",
+                      "Proper drainage and ventilation",
+                      "Regular cleaning and maintenance",
+                    ].map((facility, index) => (
+                      <li
+                        key={index}
+                        className="flex items-start text-green-700"
+                      >
+                        <div className="w-2 h-2 bg-green-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <span className="text-sm leading-relaxed">
+                          {facility}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Technology & Connectivity */}
+                <div className="bg-orange-50 rounded-lg p-5 border border-orange-200">
+                  <h4 className="text-lg font-semibold text-orange-800 mb-4 flex items-center">
+                    <Wifi className="h-5 w-5 mr-2" />
+                    Technology & Connectivity
+                  </h4>
+                  <ul className="space-y-2">
+                    {[
+                      "High-speed WiFi throughout the hostel",
+                      "Reliable internet connectivity",
+                      "Power backup for essential services",
+                      "Multiple charging points in rooms",
+                      "Common area with laptop charging",
+                      "Network support and maintenance",
+                    ].map((facility, index) => (
+                      <li
+                        key={index}
+                        className="flex items-start text-orange-700"
+                      >
+                        <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <span className="text-sm leading-relaxed">
+                          {facility}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              {/* Additional Services */}
+              <div className="bg-gray-50 rounded-lg p-5 border border-gray-200 mb-6">
+                <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                  <Shield className="h-5 w-5 mr-2" />
+                  Security & Support Services
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <ul className="space-y-2">
+                    {[
+                      "24/7 security monitoring",
+                      "Controlled access system",
+                      "Emergency support available",
+                      "Warden supervision and guidance",
+                    ].map((service, index) => (
+                      <li
+                        key={index}
+                        className="flex items-start text-gray-700"
+                      >
+                        <div className="w-2 h-2 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <span className="text-sm leading-relaxed">
+                          {service}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <ul className="space-y-2">
+                    {[
+                      "Regular maintenance services",
+                      "Complaint handling system",
+                      "Lost and found services",
+                      "Visitor registration facility",
+                    ].map((service, index) => (
+                      <li
+                        key={index}
+                        className="flex items-start text-gray-700"
+                      >
+                        <div className="w-2 h-2 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <span className="text-sm leading-relaxed">
+                          {service}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              {/* Facility Rules */}
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start">
+                  <AlertTriangleIcon className="h-5 w-5 text-yellow-500 mt-0.5 mr-3 flex-shrink-0" />
+                  <div>
+                    <h5 className="font-medium text-yellow-800 mb-2">
+                      Facility Usage Guidelines
+                    </h5>
+                    <ul className="text-yellow-700 text-sm space-y-1">
+                      <li>• Keep all facilities clean and tidy after use</li>
+                      <li>
+                        • Report any damages or maintenance issues immediately
+                      </li>
+                      <li>• Respect shared spaces and other residents</li>
+                      <li>• Follow designated quiet hours in common areas</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact for Issues */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-start">
+                  <Info className="h-5 w-5 text-blue-500 mt-0.5 mr-3 flex-shrink-0" />
+                  <div>
+                    <h5 className="font-medium text-blue-800 mb-1">
+                      Need Assistance?
+                    </h5>
+                    <p className="text-blue-700 text-sm">
+                      For any facility-related issues or maintenance requests,
+                      please contact the hostel warden or use the "Report Issue"
+                      feature in your dashboard.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={() => setShowHostelFacilities(false)}
+                  className="px-6 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-lg hover:from-purple-600 hover:to-indigo-600 transition-colors font-medium"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* FAQ & Support Modal */}
+      {showFAQ && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-gradient-to-r from-yellow-500 to-orange-500 p-6 text-white">
+              <div className="flex items-center justify-between">
+                <h3 className="text-2xl font-bold flex items-center">
+                  <Lightbulb className="h-6 w-6 mr-3" />
+                  FAQ & Support
+                </h3>
+                <button
+                  onClick={() => setShowFAQ(false)}
+                  className="text-white hover:text-gray-200 transition-colors"
+                >
+                  <XCircle className="h-6 w-6" />
+                </button>
+              </div>
+              <p className="text-yellow-100 mt-2">
+                Find answers to common questions and get support for your hostel
+                accommodation.
+              </p>
+            </div>
+            <div className="p-6">
+              {/* FAQ Sections */}
+              <div className="space-y-6">
+                {/* Application Process */}
+                <div className="bg-yellow-50 rounded-lg p-5 border border-yellow-200">
+                  <h4 className="text-lg font-semibold text-yellow-800 mb-4 flex items-center">
+                    <FileText className="h-5 w-5 mr-2" />
+                    Application Process
+                  </h4>
+                  <div className="space-y-4">
+                    <div>
+                      <h5 className="font-medium text-yellow-800 mb-2">
+                        How do I apply for hostel accommodation?
+                      </h5>
+                      <p className="text-yellow-700 text-sm">
+                        Click on "Apply for Accommodation" in your dashboard or
+                        use the Apply button. Fill out all required information
+                        including personal details, academic information, and
+                        family details.
+                      </p>
+                    </div>
+                    <div>
+                      <h5 className="font-medium text-yellow-800 mb-2">
+                        How long does the approval process take?
+                      </h5>
+                      <p className="text-yellow-700 text-sm">
+                        The review process typically takes 3-5 business days.
+                        You'll receive updates on your application status
+                        through your dashboard.
+                      </p>
+                    </div>
+                    <div>
+                      <h5 className="font-medium text-yellow-800 mb-2">
+                        Can I edit my application after submission?
+                      </h5>
+                      <p className="text-yellow-700 text-sm">
+                        Once submitted, applications cannot be edited. If you
+                        need to make changes, contact the administration office
+                        immediately.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {/* Room Assignment */}
+                <div className="bg-blue-50 rounded-lg p-5 border border-blue-200">
+                  <h4 className="text-lg font-semibold text-blue-800 mb-4 flex items-center">
+                    <Building className="h-5 w-5 mr-2" />
+                    Room Assignment & Keys
+                  </h4>
+                  <div className="space-y-4">
+                    <div>
+                      <h5 className="font-medium text-blue-800 mb-2">
+                        When will I get my room assignment?
+                      </h5>
+                      <p className="text-blue-700 text-sm">
+                        Room assignments are made after application approval.
+                        You'll see your hostel and room number in your dashboard
+                        once assigned.
+                      </p>
+                    </div>
+                    <div>
+                      <h5 className="font-medium text-blue-800 mb-2">
+                        How do I collect my room key?
+                      </h5>
+                      <p className="text-blue-700 text-sm">
+                        Visit the administration office with your student ID and
+                        approval notification. Office hours are Monday-Friday,
+                        8:00 AM - 4:00 PM.
+                      </p>
+                    </div>
+
+                    <div>
+                      <h5 className="font-medium text-blue-800 mb-2">
+                        Can I request a specific hostel or room?
+                      </h5>
+                      <p className="text-blue-700 text-sm">
+                        Room assignments are made based on availability and
+                        administrative criteria. Special requests can be
+                        submitted but are not guaranteed.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Fees & Payments */}
+                <div className="bg-green-50 rounded-lg p-5 border border-green-200">
+                  <h4 className="text-lg font-semibold text-green-800 mb-4 flex items-center">
+                    <DollarSign className="h-5 w-5 mr-2" />
+                    Fees & Payments
+                  </h4>
+                  <div className="space-y-4">
+                    <div>
+                      <h5 className="font-medium text-green-800 mb-2">
+                        How much does hostel accommodation cost?
+                      </h5>
+                      <p className="text-green-700 text-sm">
+                        Accommodation is free for students. Only a small annual
+                        fee of approximately Rs. 1000 is charged for the student
+                        welfare fund.
+                      </p>
+                    </div>
+                    <div>
+                      <h5 className="font-medium text-green-800 mb-2">
+                        When and how do I pay the welfare fund fee?
+                      </h5>
+                      <p className="text-green-700 text-sm">
+                        The welfare fund fee is collected during the
+                        registration process. Payment details will be provided
+                        by the administration office.
+                      </p>
+                    </div>
+
+                    <div>
+                      <h5 className="font-medium text-green-800 mb-2">
+                        Are there any additional charges?
+                      </h5>
+                      <p className="text-green-700 text-sm">
+                        No additional charges for basic accommodation. However,
+                        damage to hostel property may result in repair costs.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {/* Issues & Maintenance */}
+                <div className="bg-orange-50 rounded-lg p-5 border border-orange-200">
+                  <h4 className="text-lg font-semibold text-orange-800 mb-4 flex items-center">
+                    <Bug className="h-5 w-5 mr-2" />
+                    Issues & Maintenance
+                  </h4>
+                  <div className="space-y-4">
+                    <div>
+                      <h5 className="font-medium text-orange-800 mb-2">
+                        How do I report maintenance issues?
+                      </h5>
+                      <p className="text-orange-700 text-sm">
+                        Use the "Report Issue" button in your dashboard. Select
+                        the appropriate category and provide detailed
+                        information about the problem.
+                      </p>
+                    </div>
+                    <div>
+                      <h5 className="font-medium text-orange-800 mb-2">
+                        How quickly are issues resolved?
+                      </h5>
+                      <p className="text-orange-700 text-sm">
+                        Response time depends on priority level. Urgent issues
+                        are addressed within 24 hours, while routine maintenance
+                        may take 2-5 days.
+                      </p>
+                    </div>
+
+                    <div>
+                      <h5 className="font-medium text-orange-800 mb-2">
+                        What if I have an emergency?
+                      </h5>
+                      <p className="text-orange-700 text-sm">
+                        For emergencies, contact the security office at the main
+                        gate (available 24/7) or the hostel warden immediately.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Rules & Regulations */}
+                <div className="bg-purple-50 rounded-lg p-5 border border-purple-200">
+                  <h4 className="text-lg font-semibold text-purple-800 mb-4 flex items-center">
+                    <BookOpen className="h-5 w-5 mr-2" />
+                    Rules & Regulations
+                  </h4>
+                  <div className="space-y-4">
+                    <div>
+                      <h5 className="font-medium text-purple-800 mb-2">
+                        What are the check-in/check-out times?
+                      </h5>
+                      <p className="text-purple-700 text-sm">
+                        Check-in is from 6:00 AM to 10:00 PM. Late entry
+                        requires prior permission from the warden. Check the
+                        Hostel Regulations for complete details.
+                      </p>
+                    </div>
+                    <div>
+                      <h5 className="font-medium text-purple-800 mb-2">
+                        Can I have guests in my room?
+                      </h5>
+                      <p className="text-purple-700 text-sm">
+                        Guests must be registered at the front desk and can stay
+                        for a maximum of 2 days with approval. All visitors must
+                        follow hostel rules.
+                      </p>
+                    </div>
+                    <div>
+                      <h5 className="font-medium text-purple-800 mb-2">
+                        What happens if I violate hostel rules?
+                      </h5>
+                      <p className="text-purple-700 text-sm">
+                        Violations may result in warnings, fines, or termination
+                        of accommodation. Serious violations are reported to
+                        academic authorities.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Contact Support */}
+              <div className="mt-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
+                <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                  <Phone className="h-5 w-5 mr-2" />
+                  Need More Help?
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h5 className="font-medium text-gray-800 mb-3">
+                      Contact Information
+                    </h5>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center">
+                        <Building className="h-4 w-4 text-gray-500 mr-2" />
+                        <span className="text-gray-700">
+                          Administration Office: Main Building
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <Clock className="h-4 w-4 text-gray-500 mr-2" />
+                        <span className="text-gray-700">
+                          Office Hours: Mon-Fri, 8:00 AM - 4:00 PM
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <Shield className="h-4 w-4 text-gray-500 mr-2" />
+                        <span className="text-gray-700">
+                          Security: Main Gate - 24/7
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <h5 className="font-medium text-gray-800 mb-3">
+                      Digital Support
+                    </h5>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center">
+                        <Bug className="h-4 w-4 text-gray-500 mr-2" />
+                        <span className="text-gray-700">
+                          Report issues through your dashboard
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <Bell className="h-4 w-4 text-gray-500 mr-2" />
+                        <span className="text-gray-700">
+                          Check notices for important updates
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <MapPin className="h-4 w-4 text-gray-500 mr-2" />
+                        <span className="text-gray-700">
+                          Use campus map for navigation
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Quick Tips */}
+              <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-start">
+                  <Info className="h-5 w-5 text-blue-500 mt-0.5 mr-3 flex-shrink-0" />
+                  <div>
+                    <h5 className="font-medium text-blue-800 mb-2">
+                      Quick Tips for New Students
+                    </h5>
+                    <ul className="text-blue-700 text-sm space-y-1">
+                      <li>• Keep your student ID with you at all times</li>
+                      <li>• Read the hostel regulations thoroughly</li>
+                      <li>• Save important contact numbers in your phone</li>
+                      <li>• Join the student community groups for updates</li>
+                      <li>• Report any issues promptly for quick resolution</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={() => setShowFAQ(false)}
+                  className="px-6 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg hover:from-yellow-600 hover:to-orange-600 transition-colors font-medium"
                 >
                   Close
                 </button>
