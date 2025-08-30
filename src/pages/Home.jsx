@@ -152,7 +152,7 @@ export default function Home() {
               <br /> System
             </h1>
 
-            <p className="text-xl md:text-1.5xl text-white font-bold mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-lg bg-black/30 rounded-xl px-4 py-3 inline-block">
+            <p className="text-xl md:text-2xl text-white font-bold mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-lg bg-black/30 rounded-xl px-4 py-3 inline-block">
               Experience comfortable, affordable, and community-focused living
               <br />
               designed specifically for engineering students.
@@ -221,10 +221,11 @@ export default function Home() {
         className="py-20 bg-white"
       >
         <div
-          className={`container mx-auto px-4 transition-all duration-1000 ${isVisible.welcome
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10"
-            }`}
+          className={`container mx-auto px-4 transition-all duration-1000 ${
+            isVisible.welcome
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-10"
+          }`}
         >
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-[#4a2d5f]">
@@ -273,7 +274,7 @@ export default function Home() {
                 Study-Friendly
               </h3>
               <p className="text-gray-600 text-center">
-                Enjoy dedicated study areas, fast and reliable internet,
+                Enjoy dedicated study areas, fast and reliable internet, 
                 and quiet hours — all designed to help you excel academically.
               </p>
             </div>
@@ -288,10 +289,11 @@ export default function Home() {
         className="py-20 bg-gray-50"
       >
         <div
-          className={`container mx-auto px-4 transition-all duration-1000 ${isVisible.features
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10"
-            }`}
+          className={`container mx-auto px-4 transition-all duration-1000 ${
+            isVisible.features
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-10"
+          }`}
         >
           <div className="flex flex-col lg:flex-row items-center gap-16">
             <div className="lg:w-1/2 order-2 lg:order-1">
@@ -305,7 +307,7 @@ export default function Home() {
                   Student Life
                 </h2>
                 <div className="w-24 h-1 bg-yellow-400 mb-6"></div>
-                <p className="text-xl text-gray-700 mb-8 leading-relaxed">
+                <p className="text-xl text-gray-700 mb-8 leading-relaxed text-justify">
                   Our student accommodation is designed with your needs in mind.
                   Enjoy a range of amenities that make your stay comfortable,
                   convenient, and conducive to both studying and socializing.
@@ -319,8 +321,8 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-bold text-lg mb-2">Common Area</h3>
-                    <p className="text-gray-600">
-                      Relax, study, charge your laptop at power points, and stay
+                    <p className="text-gray-600 text-justify">
+                      Relax, study, take food, charge your laptop at power points, and stay
                       cool with ceiling fans in our comfortable common areas.
                     </p>
                   </div>
@@ -332,7 +334,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-bold text-lg mb-2">Modern Washrooms</h3>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 text-justify">
                       Our washrooms are kept clean and feature mirrors, sinks,
                       and individual shower facilities for your comfort.
                     </p>
@@ -345,8 +347,8 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-bold text-lg mb-2">High-Speed WiFi</h3>
-                    <p className="text-gray-600">
-                      Stay connected with reliable, high-speed internet
+                    <p className="text-gray-600 text-justify">
+                      Stay connected with reliable, high-speed, stable internet connection
                       throughout the hostel.
                     </p>
                   </div>
@@ -358,7 +360,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-bold text-lg mb-2">24/7 Access</h3>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 text-justify">
                       Come and go as you please with secure 24/7 access to the
                       facilities.
                     </p>
@@ -459,7 +461,7 @@ export default function Home() {
                 <GraduationCap className="h-7 w-7 text-[#e91e63]" />
               </div>
               <h3 className="text-xl font-bold mb-3">Academic Focus</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-justify">
                 Designed with your studies in mind, with quiet environments and
                 study-friendly spaces.
               </p>
@@ -470,7 +472,7 @@ export default function Home() {
                 <Building className="h-7 w-7 text-[#4a2d5f]" />
               </div>
               <h3 className="text-xl font-bold mb-3">Campus Proximity</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-justify">
                 Located right on campus, putting you minutes away from classes,
                 libraries, and facilities.
               </p>
@@ -481,7 +483,7 @@ export default function Home() {
                 <Leaf className="h-7 w-7 text-[#e91e63]" />
               </div>
               <h3 className="text-xl font-bold mb-3">Sustainable Living</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-justify">
                 Environmentally conscious facilities with energy-efficient
                 design and waste management.
               </p>
@@ -492,7 +494,7 @@ export default function Home() {
                 <Users className="h-7 w-7 text-[#4a2d5f]" />
               </div>
               <h3 className="text-xl font-bold mb-3">Inclusive Community</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-justify">
                 A diverse environment where students from all backgrounds feel
                 welcome and supported.
               </p>
@@ -503,7 +505,7 @@ export default function Home() {
                 <CheckCircle2 className="h-7 w-7 text-[#e91e63]" />
               </div>
               <h3 className="text-xl font-bold mb-3">Affordable Living</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-justify">
                 Accommodation is free for students. Only a small annual fee
                 (about Rs. 1000) is charged for the student welfare fund.
               </p>
@@ -514,7 +516,7 @@ export default function Home() {
                 <Shield className="h-7 w-7 text-[#4a2d5f]" />
               </div>
               <h3 className="text-xl font-bold mb-3">Peace of Mind</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-justify">
                 Professional management, maintenance, and support teams
                 available whenever you need assistance.
               </p>
@@ -526,10 +528,11 @@ export default function Home() {
       {/* FAQ Section */}
       <section id="faq" ref={sectionRefs.faq} className="py-20 bg-gray-50">
         <div
-          className={`container mx-auto px-4 transition-all duration-1000 ${isVisible.faq
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10"
-            }`}
+          className={`container mx-auto px-4 transition-all duration-1000 ${
+            isVisible.faq
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-10"
+          }`}
         >
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6 text-[#4a2d5f]">
@@ -545,34 +548,38 @@ export default function Home() {
             {faqs.map((faq, index) => (
               <div key={index} className="mb-5 overflow-hidden">
                 <button
-                  className={`w-full flex justify-between items-center p-5 text-left font-medium focus:outline-none rounded-xl transition-all ${activeAccordion === index
-                    ? "bg-gradient-to-r from-[#4a2d5f] to-[#5d3a75] text-white shadow-md"
-                    : "bg-white hover:bg-gray-50 shadow-sm"
-                    }`}
+                  className={`w-full flex justify-between items-center p-5 text-left font-medium focus:outline-none rounded-xl transition-all ${
+                    activeAccordion === index
+                      ? "bg-gradient-to-r from-[#4a2d5f] to-[#5d3a75] text-white shadow-md"
+                      : "bg-white hover:bg-gray-50 shadow-sm"
+                  }`}
                   onClick={() => toggleAccordion(index)}
                 >
                   <span className="text-lg">{faq.question}</span>
                   {activeAccordion === index ? (
                     <ChevronUp
-                      className={`h-5 w-5 ${activeAccordion === index
-                        ? "text-white"
-                        : "text-[#4a2d5f]"
-                        }`}
+                      className={`h-5 w-5 ${
+                        activeAccordion === index
+                          ? "text-white"
+                          : "text-[#4a2d5f]"
+                      }`}
                     />
                   ) : (
                     <ChevronDown
-                      className={`h-5 w-5 ${activeAccordion === index
-                        ? "text-white"
-                        : "text-[#4a2d5f]"
-                        }`}
+                      className={`h-5 w-5 ${
+                        activeAccordion === index
+                          ? "text-white"
+                          : "text-[#4a2d5f]"
+                      }`}
                     />
                   )}
                 </button>
                 <div
-                  className={`bg-white px-5 rounded-b-xl shadow-sm transition-all duration-300 ${activeAccordion === index
-                    ? "max-h-96 py-5 opacity-100"
-                    : "max-h-0 py-0 opacity-0"
-                    }`}
+                  className={`bg-white px-5 rounded-b-xl shadow-sm transition-all duration-300 ${
+                    activeAccordion === index
+                      ? "max-h-96 py-5 opacity-100"
+                      : "max-h-0 py-0 opacity-0"
+                  }`}
                 >
                   <p className="text-gray-600">{faq.answer}</p>
                 </div>
@@ -597,10 +604,11 @@ export default function Home() {
         </div>
 
         <div
-          className={`container mx-auto px-4 text-center relative z-10 transition-all duration-1000 ${isVisible.cta
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10"
-            }`}
+          className={`container mx-auto px-4 text-center relative z-10 transition-all duration-1000 ${
+            isVisible.cta
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-10"
+          }`}
         >
           <h2 className="text-4xl font-bold mb-6">
             Ready to Join Our Student Community?
@@ -653,10 +661,11 @@ export default function Home() {
         className="py-20 bg-white"
       >
         <div
-          className={`container mx-auto px-4 transition-all duration-1000 ${isVisible.location
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10"
-            }`}
+          className={`container mx-auto px-4 transition-all duration-1000 ${
+            isVisible.location
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-10"
+          }`}
         >
           <div className="flex flex-col lg:flex-row items-center gap-16">
             <div className="lg:w-1/2">
@@ -683,7 +692,7 @@ export default function Home() {
                 Conveniently Located
               </h2>
               <div className="w-24 h-1 bg-yellow-400 mb-6"></div>
-              <p className="text-xl text-gray-700 mb-8 leading-relaxed">
+              <p className="text-xl text-gray-700 mb-8 leading-relaxed text-justify">
                 Our hostels are right inside the campus, so lectures, libraries,
                 and sports grounds are only minutes away. Safe, convenient, and
                 community focused - everything you need for an easier student
