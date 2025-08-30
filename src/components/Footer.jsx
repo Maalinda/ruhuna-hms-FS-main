@@ -21,7 +21,7 @@ export default function Footer() {
                 <span className="text-4xl font-bold text-yellow-400">HMS</span>
               </div>
             </div>
-            <p className="text-center lg:text-left text-white/90 leading-relaxed">
+            <p className="text-center lg:text-justify text-white/90 leading-relaxed">
               The Faculty of Engineering of University of Ruhuna was established on 1st July 1999 at Hapugala, Galle. 
               Admission to the Faculty of Engineering, University of Ruhuna, is subject to the University Grants Commission 
               policy on university admissions.
@@ -32,8 +32,15 @@ export default function Footer() {
           <div className="flex flex-col">
             <h3 className="text-xl font-bold mb-4 text-center lg:text-left border-b border-yellow-400 pb-2">Quick Links</h3>
             <ul className="space-y-2">
-             <li><Link to="/" className="text-white/80 hover:text-yellow-400 transition-colors">Home</Link></li>            
-              <li><Link to="/aboutus" className="text-white/80 hover:text-yellow-400 transition-colors">About Us</Link></li>
+              <li>
+                <Link to="/" className="text-white/80 hover:text-yellow-400 transition-colors">Home</Link>
+              </li>
+
+              <li>
+                <Link to="/aboutus" className="text-white/80 hover:text-yellow-400 transition-colors">About Us</Link>
+              </li>
+
+             
             </ul>
           </div>
 
