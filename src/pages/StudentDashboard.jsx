@@ -42,7 +42,6 @@ import {
   Bug,
   Send,
   AlertTriangle as AlertTriangleIcon,
-  // Add these missing icons:
   ShowerHead,
   Wifi
 } from "lucide-react"
