@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react"
 import { collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp, addDoc } from "firebase/firestore"
 import { db } from "../firebase"
+
+
 import {
   AlertCircle,
   CheckCircle,
@@ -48,6 +50,7 @@ import {
   Bug,
   AlertTriangle as AlertTriangleIcon
 } from "lucide-react"
+
 import HostelManagement from "../components/HostelManagement"
 import RoomAssignmentModal from "../components/RoomAssignmentModal"
 
@@ -1396,7 +1399,7 @@ export default function AdminDashboard() {
                                         className="flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm font-medium"
                                       >
                                         <Eye className="h-4 w-4 mr-2" />
-                                        View Receipt
+                                        Preview Receipt
                                       </a>
                                       <a
                                         href={selectedApplication.paymentInfo.receiptUrl}
@@ -1472,13 +1475,14 @@ export default function AdminDashboard() {
                                   </p>
                                   <div className="mt-3 text-xs text-orange-600">
                                     <p>• Students must upload bank receipt as proof of payment</p>
-                                    <p>• Payment will be reviewed by admin before approval</p>
+                                    <p>• Payment details will be verified before approval</p>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           )}
                         </div>
+
 
                         {selectedApplication.siblings && selectedApplication.siblings.length > 0 && selectedApplication.siblings[0].name && (
                           <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-5 border border-gray-100 shadow-sm transform transition-all hover:shadow-md hover:translate-y-[-2px]">
@@ -1616,7 +1620,7 @@ export default function AdminDashboard() {
                                         className="flex items-center px-3 py-1.5 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors text-sm"
                                       >
                                         <ExternalLink className="h-4 w-4 mr-1" />
-                                        View
+                                        Preview
                                       </button>
                                       <a
                                         href={selectedApplication.gramaNiladhariRecommendationUrl}
@@ -1686,7 +1690,7 @@ export default function AdminDashboard() {
                                             className="flex items-center px-2 py-1 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition-colors text-sm"
                                           >
                                             <ExternalLink className="h-3 w-3 mr-1" />
-                                            View
+                                            Preview
                                           </button>
                                           <a
                                             href={doc.url}
@@ -1744,7 +1748,7 @@ export default function AdminDashboard() {
                               <div className="bg-white p-5 rounded-lg border border-amber-200">
                                 <h4 className="text-lg font-semibold mb-4 flex items-center text-gray-800">
                                   <Calculator className="h-5 w-5 mr-2 text-amber-600" />
-                                  Valuation Marks
+                                  Evaluation Marks
                                 </h4>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1797,7 +1801,7 @@ export default function AdminDashboard() {
                                   {/* Special Reasons Related to Parent */}
                                   <div className="space-y-2 md:col-span-2">
                                     <label className="block text-sm font-medium text-gray-700">
-                                      Special Reasons Related to Parent
+                                      Special Reasons Related to Parents
                                     </label>
                                     <div className="flex items-center space-x-2">
                                       <input
@@ -1839,6 +1843,7 @@ export default function AdminDashboard() {
                                       Siblings: {selectedApplication.siblings?.filter(s => s.name).length || 0} currently studying
                                     </p>
                                   </div>
+
 
                                   {/* Total Marks */}
                                   <div className="md:col-span-2 pt-4 border-t border-gray-200">
@@ -1908,7 +1913,7 @@ export default function AdminDashboard() {
                                   </div>
 
                                   <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Signature of Warden or Sr. Assistant/Assistant Registrar</label>
+                                    <label className="block text-sm font-medium text-gray-700">Signature of Warden/Assistant Registrar</label>
                                     <input
                                       type="text"
                                       value={evaluationData.wardenSignature || ''}
@@ -1924,7 +1929,7 @@ export default function AdminDashboard() {
                               <div className="bg-white p-5 rounded-lg border border-green-200">
                                 <h4 className="text-lg font-semibold mb-4 flex items-center text-gray-800">
                                   <CheckCircle className="h-5 w-5 mr-2 text-green-600" />
-                                  Final Approval Decision
+                                  Final Decision
                                 </h4>
 
                                 <div className="space-y-4">
@@ -1975,7 +1980,7 @@ export default function AdminDashboard() {
                                   onClick={() => setEvaluationData({})}
                                   className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                                 >
-                                  Clear Form
+                                  Clear Application
                                 </button>
                                 <button
                                   onClick={saveEvaluation}
@@ -2011,7 +2016,7 @@ export default function AdminDashboard() {
                     </div>
                     <h3 className="text-xl font-semibold text-gray-700 mb-2">No Application Selected</h3>
                     <p className="text-gray-600 max-w-md">
-                      Choose an application from the list to see details and take action.
+                    Select an application to review and process.
                     </p>
                   </div>
                 )}
@@ -2024,7 +2029,7 @@ export default function AdminDashboard() {
               <div className="bg-gradient-to-r from-[#4a2d5f] to-[#6d4088] p-4 text-white">
                 <h2 className="text-xl font-semibold flex items-center">
                   <Layout className="h-5 w-5 mr-2" />
-                  Hostel Management
+                  Hostel and Room Management
                 </h2>
               </div>
               <div className="p-1">
@@ -2040,15 +2045,17 @@ export default function AdminDashboard() {
                 <div className="bg-gradient-to-r from-[#4a2d5f] to-[#6d4088] p-4 text-white">
                   <h2 className="text-xl font-semibold flex items-center">
                     <Plus className="h-5 w-5 mr-2" />
-                    Create New Notice
+                    Create a New Notice
                   </h2>
                 </div>
+
                 <div className="p-6">
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Notice Type
+                        Type of the Notice
                       </label>
+
                       <select
                         value={noticeForm.type}
                         onChange={(e) => setNoticeForm(prev => ({ ...prev, type: e.target.value }))}
@@ -2056,14 +2063,17 @@ export default function AdminDashboard() {
                       >
                         <option value="info">Information</option>
                         <option value="warning">Warning</option>
-                        <option value="success">Success</option>
                         <option value="urgent">Urgent</option>
+                        <option value="event">Event</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="achievement">Achievement</option>
+                        <option value="reminder">Reminder</option>
                       </select>
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Notice Title
+                        Title of the Notice
                       </label>
                       <input
                         type="text"
@@ -2074,9 +2084,20 @@ export default function AdminDashboard() {
                       />
                     </div>
 
+                    {/* Set Expiry Date for the Notice */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Expiry Date</label>
+                      <input
+                        type="date"
+                        value={noticeForm.expiryDate || ""}
+                        onChange={(e) => setNoticeForm(prev => ({ ...prev, expiryDate: e.target.value }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4a2d5f]"
+                      />
+                    </div>  
+                                                
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Notice Content
+                        Content of the Notice
                       </label>
                       <textarea
                         value={noticeForm.content}
@@ -2086,6 +2107,17 @@ export default function AdminDashboard() {
                         placeholder="Enter notice content..."
                       />
                     </div>
+
+                      {/* Pin Important Notices to the Top of the Dashboard */}
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={noticeForm.pinned || false}
+                          onChange={(e) => setNoticeForm(prev => ({ ...prev, pinned: e.target.checked }))}
+                          className="mr-2"
+                        />
+                        <label className="text-sm text-gray-700">Pin to Top</label>
+                      </div>          
 
                     <div className="flex justify-end space-x-3">
                       <button
@@ -2123,8 +2155,8 @@ export default function AdminDashboard() {
                   {notices.length === 0 ? (
                     <div className="p-8 text-center">
                       <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                      <h3 className="text-lg font-medium text-gray-700 mb-2">No Notices Created</h3>
-                      <p className="text-gray-500">Create your first notice to broadcast information to all students.</p>
+                      <h3 className="text-lg font-medium text-gray-700 mb-2">No Notices to Display</h3>
+                      <p className="text-gray-500">Create a new announcement for all students</p>
                     </div>
                   ) : (
                     notices.map((notice) => (
@@ -2144,6 +2176,7 @@ export default function AdminDashboard() {
                             <h3 className="font-semibold text-gray-900 mb-1">{notice.title}</h3>
                             <p className="text-gray-600 text-sm">{notice.content}</p>
                           </div>
+
                           <button
                             onClick={() => deleteNotice(notice.id)}
                             className="ml-4 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
@@ -2151,6 +2184,7 @@ export default function AdminDashboard() {
                           >
                             <Trash className="h-4 w-4" />
                           </button>
+
                         </div>
                       </div>
                     ))
@@ -2224,7 +2258,7 @@ export default function AdminDashboard() {
                     <div className="p-8 text-center">
                       <Bug className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                       <h3 className="text-lg font-medium text-gray-700 mb-2">No Defect Reports</h3>
-                      <p className="text-gray-500">No issues have been reported by students yet.</p>
+                      <p className="text-gray-500">No Defect Reports have been reported by students yet.</p>
                     </div>
                   ) : (
                     defectReports.map((report) => (
@@ -2293,7 +2327,8 @@ export default function AdminDashboard() {
       </div>
 
       {/* Room Assignment Modal */}
-      {showRoomAssignment && applicationToAssign && (
+      {showRoomAssignment && applicationToAssign && 
+      (
         <RoomAssignmentModal
           application={applicationToAssign}
           onClose={() => {
