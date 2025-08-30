@@ -2067,6 +2067,7 @@ export default function AdminDashboard() {
                     Create New Notice
                   </h2>
                 </div>
+
                 <div className="p-6">
                   <div className="space-y-4">
                     <div>
@@ -2080,10 +2081,14 @@ export default function AdminDashboard() {
                       >
                         <option value="info">Information</option>
                         <option value="warning">Warning</option>
-                        <option value="success">Success</option>
                         <option value="urgent">Urgent</option>
+                        <option value="event">Event</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="achievement">Achievement</option>
+                        <option value="reminder">Reminder</option>
                       </select>
                     </div>
+
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
