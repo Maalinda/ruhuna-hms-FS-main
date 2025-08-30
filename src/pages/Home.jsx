@@ -307,7 +307,7 @@ export default function Home() {
                   Student Life
                 </h2>
                 <div className="w-24 h-1 bg-yellow-400 mb-6"></div>
-                <p className="text-xl text-gray-700 mb-8 leading-relaxed text-justify">
+                <p className="text-xl text-gray-700 mb-8 leading-relaxed">
                   Our student accommodation is designed with your needs in mind.
                   Enjoy a range of amenities that make your stay comfortable,
                   convenient, and conducive to both studying and socializing.
@@ -321,8 +321,8 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-bold text-lg mb-2">Common Area</h3>
-                    <p className="text-gray-600 text-justify">
-                      Relax, study, take food, charge your laptop at power points, and stay
+                    <p className="text-gray-600">
+                      Relax, study, charge your laptop at power points, and stay
                       cool with ceiling fans in our comfortable common areas.
                     </p>
                   </div>
@@ -334,7 +334,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-bold text-lg mb-2">Modern Washrooms</h3>
-                    <p className="text-gray-600 text-justify">
+                    <p className="text-gray-600">
                       Our washrooms are kept clean and feature mirrors, sinks,
                       and individual shower facilities for your comfort.
                     </p>
@@ -347,8 +347,8 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-bold text-lg mb-2">High-Speed WiFi</h3>
-                    <p className="text-gray-600 text-justify">
-                      Stay connected with reliable, high-speed, stable internet connection
+                    <p className="text-gray-600">
+                      Stay connected with reliable, high-speed internet
                       throughout the hostel.
                     </p>
                   </div>
@@ -360,7 +360,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-bold text-lg mb-2">24/7 Access</h3>
-                    <p className="text-gray-600 text-justify">
+                    <p className="text-gray-600">
                       Come and go as you please with secure 24/7 access to the
                       facilities.
                     </p>
@@ -461,7 +461,7 @@ export default function Home() {
                 <GraduationCap className="h-7 w-7 text-[#e91e63]" />
               </div>
               <h3 className="text-xl font-bold mb-3">Academic Focus</h3>
-              <p className="text-gray-600 text-justify">
+              <p className="text-gray-600">
                 Designed with your studies in mind, with quiet environments and
                 study-friendly spaces.
               </p>
@@ -472,7 +472,7 @@ export default function Home() {
                 <Building className="h-7 w-7 text-[#4a2d5f]" />
               </div>
               <h3 className="text-xl font-bold mb-3">Campus Proximity</h3>
-              <p className="text-gray-600 text-justify">
+              <p className="text-gray-600">
                 Located right on campus, putting you minutes away from classes,
                 libraries, and facilities.
               </p>
@@ -483,7 +483,7 @@ export default function Home() {
                 <Leaf className="h-7 w-7 text-[#e91e63]" />
               </div>
               <h3 className="text-xl font-bold mb-3">Sustainable Living</h3>
-              <p className="text-gray-600 text-justify">
+              <p className="text-gray-600">
                 Environmentally conscious facilities with energy-efficient
                 design and waste management.
               </p>
@@ -494,7 +494,7 @@ export default function Home() {
                 <Users className="h-7 w-7 text-[#4a2d5f]" />
               </div>
               <h3 className="text-xl font-bold mb-3">Inclusive Community</h3>
-              <p className="text-gray-600 text-justify">
+              <p className="text-gray-600">
                 A diverse environment where students from all backgrounds feel
                 welcome and supported.
               </p>
@@ -505,7 +505,7 @@ export default function Home() {
                 <CheckCircle2 className="h-7 w-7 text-[#e91e63]" />
               </div>
               <h3 className="text-xl font-bold mb-3">Affordable Living</h3>
-              <p className="text-gray-600 text-justify">
+              <p className="text-gray-600">
                 Accommodation is free for students. Only a small annual fee
                 (about Rs. 1000) is charged for the student welfare fund.
               </p>
@@ -516,7 +516,7 @@ export default function Home() {
                 <Shield className="h-7 w-7 text-[#4a2d5f]" />
               </div>
               <h3 className="text-xl font-bold mb-3">Peace of Mind</h3>
-              <p className="text-gray-600 text-justify">
+              <p className="text-gray-600">
                 Professional management, maintenance, and support teams
                 available whenever you need assistance.
               </p>
@@ -692,7 +692,7 @@ export default function Home() {
                 Conveniently Located
               </h2>
               <div className="w-24 h-1 bg-yellow-400 mb-6"></div>
-              <p className="text-xl text-gray-700 mb-8 leading-relaxed text-justify">
+              <p className="text-xl text-gray-700 mb-8 leading-relaxed">
                 Our hostels are right inside the campus, so lectures, libraries,
                 and sports grounds are only minutes away. Safe, convenient, and
                 community focused - everything you need for an easier student
