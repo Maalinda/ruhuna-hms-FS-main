@@ -2127,6 +2127,18 @@ export default function AdminDashboard() {
                       />
                     </div>
 
+                      {/* Pin Important Notices to the top of the dash board */}
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={noticeForm.pinned || false}
+                          onChange={(e) => setNoticeForm(prev => ({ ...prev, pinned: e.target.checked }))}
+                          className="mr-2"
+                        />
+                        <label className="text-sm text-gray-700">Pin this notice to top</label>
+                      </div>          
+
+
                     <div className="flex justify-end space-x-3">
                       <button
                         onClick={() => setNoticeForm({ title: '', content: '', type: 'info' })}
