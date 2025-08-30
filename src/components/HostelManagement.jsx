@@ -1,21 +1,28 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { collection, addDoc, getDocs, updateDoc, doc, serverTimestamp, query, where, getDoc } from "firebase/firestore"
+import React, { useState, useEffect } from "react"
+import { collection, addDoc, getDocs, doc, serverTimestamp, getDoc, deleteDoc } from "firebase/firestore"
 import { db } from "../firebase"
-import { 
-  AlertCircle, 
-  Plus, 
-  Home, 
-  User, 
-  Users, 
-  CheckCircle, 
+import {
+  AlertCircle,
+  Plus,
+  Home,
+  User,
+  Users,
+  CheckCircle,
   Pencil,
   Building,
   Briefcase,
   ArrowRight,
   RefreshCw,
-  Layers
+  Layers,
+  Trash2,
+  ChevronDown,
+  ChevronRight,
+  GraduationCap,
+  Phone,
+  MapPin,
+  Mail
 } from "lucide-react"
 
 export default function HostelManagement() {
@@ -26,6 +33,7 @@ export default function HostelManagement() {
   const [showAddRoomForm, setShowAddRoomForm] = useState(false)
   const [currentHostel, setCurrentHostel] = useState(null)
   const [activateAnimation, setActivateAnimation] = useState(false)
+  const [expandedRooms, setExpandedRooms] = useState({}) // Track which rooms are expanded
   
   const [newHostel, setNewHostel] = useState({
     name: "",
@@ -50,17 +58,64 @@ export default function HostelManagement() {
       setLoading(true)
       const hostelSnapshot = await getDocs(collection(db, "hostels"))
       
-      const hostelData = await Promise.all(hostelSnapshot.docs.map(async (doc) => {
-        const hostel = { id: doc.id, ...doc.data() }
+      const hostelData = await Promise.all(hostelSnapshot.docs.map(async (hostelDoc) => {
+        const hostel = { id: hostelDoc.id, ...hostelDoc.data() }
         
         // Fetch rooms for this hostel
         const roomsSnapshot = await getDocs(
-          collection(db, "hostels", doc.id, "rooms")
+          collection(db, "hostels", hostelDoc.id, "rooms")
         )
         
-        const rooms = roomsSnapshot.docs.map(roomDoc => ({
-          id: roomDoc.id,
-          ...roomDoc.data()
+        const rooms = await Promise.all(roomsSnapshot.docs.map(async (roomDoc) => {
+          const roomData = { id: roomDoc.id, ...roomDoc.data() }
+          
+          // If room has residents, enrich them with additional data from applications
+          if (roomData.residents && roomData.residents.length > 0) {
+            const enrichedResidents = await Promise.all(
+              roomData.residents.map(async (resident) => {
+                try {
+                  // If we already have complete data, return as is
+                  if (resident.registrationNumber && resident.registrationNumber !== 'N/A' && resident.assignedDate) {
+                    return resident
+                  }
+                  
+                  // Otherwise, try to fetch from application (for legacy data or missing fields)
+                  if (resident.applicationId) {
+                    const appDocRef = doc(db, "applications", resident.applicationId)
+                    const appDoc = await getDoc(appDocRef)
+                    if (appDoc.exists()) {
+                      const appData = appDoc.data()
+                      return {
+                        ...resident,
+                        registrationNumber: resident.registrationNumber || appData.registrationNumber || 'N/A',
+                        assignedDate: resident.assignedDate || appData.assignedAt || null,
+                        email: resident.email || appData.email || null,
+                        phone: resident.phone || appData.mobileNumber || null,
+                        department: resident.department || appData.department || null
+                      }
+                    }
+                  }
+                  
+                  // If no application found, return with defaults
+                  return {
+                    ...resident,
+                    registrationNumber: resident.registrationNumber || 'N/A',
+                    assignedDate: resident.assignedDate || null
+                  }
+                } catch (error) {
+                  console.error("Error fetching resident details:", error)
+                  return {
+                    ...resident,
+                    registrationNumber: resident.registrationNumber || 'N/A',
+                    assignedDate: resident.assignedDate || null
+                  }
+                }
+              })
+            )
+            return { ...roomData, residents: enrichedResidents }
+          }
+          
+          return roomData
         }))
         
         return { ...hostel, rooms }
@@ -88,7 +143,7 @@ export default function HostelManagement() {
         return
       }
       
-      const hostelRef = await addDoc(collection(db, "hostels"), {
+      await addDoc(collection(db, "hostels"), {
         name: newHostel.name,
         gender: newHostel.gender,
         totalRooms: totalRoomsNum,
@@ -166,6 +221,56 @@ export default function HostelManagement() {
   const startAddingRoom = (hostel) => {
     setCurrentHostel(hostel)
     setShowAddRoomForm(true)
+  }
+
+  const handleDeleteHostel = async (hostelId, hostelName) => {
+    if (!window.confirm(`Are you sure you want to delete "${hostelName}" hostel? This will also delete all rooms in this hostel. This action cannot be undone.`)) {
+      return
+    }
+
+    try {
+      setLoading(true)
+      
+      // Delete the hostel document (this will also delete all subcollections like rooms)
+      await deleteDoc(doc(db, "hostels", hostelId))
+      
+      await fetchHostels()
+      
+    } catch (error) {
+      console.error("Error deleting hostel:", error)
+      setError("Failed to delete hostel. Please try again.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDeleteRoom = async (hostelId, roomId, roomNumber) => {
+    if (!window.confirm(`Are you sure you want to delete room "${roomNumber}"? This action cannot be undone.`)) {
+      return
+    }
+
+    try {
+      setLoading(true)
+      
+      // Delete the room document
+      await deleteDoc(doc(db, "hostels", hostelId, "rooms", roomId))
+      
+      await fetchHostels()
+      
+    } catch (error) {
+      console.error("Error deleting room:", error)
+      setError("Failed to delete room. Please try again.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Toggle room expansion
+  const toggleRoomExpansion = (roomId) => {
+    setExpandedRooms(prev => ({
+      ...prev,
+      [roomId]: !prev[roomId]
+    }))
   }
 
   if (loading && hostels.length === 0) {
@@ -341,6 +446,13 @@ export default function HostelManagement() {
                     >
                       <Plus className="h-3 w-3 mr-1" /> Room
                     </button>
+                    <button
+                      onClick={() => handleDeleteHostel(hostel.id, hostel.name)}
+                      className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-lg text-xs flex items-center font-medium ml-2 transition-colors"
+                      title="Delete Hostel"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </button>
                   </div>
                 </div>
                 
@@ -376,35 +488,153 @@ export default function HostelManagement() {
                               <th scope="col" className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Status
                               </th>
+                              <th scope="col" className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Residents
+                              </th>
+                              <th scope="col" className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                              </th>
                             </tr>
                           </thead>
                           <tbody className="bg-white divide-y divide-gray-200">
                             {hostel.rooms.map((room) => (
-                              <tr key={room.id} className="hover:bg-gray-50 transition-colors">
-                                <td className="px-4 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900">
-                                  {room.roomNumber}
-                                </td>
-                                <td className="px-4 py-2.5 whitespace-nowrap text-sm text-gray-500">
-                                  {room.floor}
-                                </td>
-                                <td className="px-4 py-2.5 whitespace-nowrap text-sm text-gray-500">
-                                  {room.capacity}
-                                </td>
-                                <td className="px-4 py-2.5 whitespace-nowrap text-sm text-gray-500">
-                                  {room.occupancy}/{room.capacity}
-                                </td>
-                                <td className="px-4 py-2.5 whitespace-nowrap text-sm">
-                                  {room.occupancy < room.capacity ? (
-                                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                      Available
-                                    </span>
-                                  ) : (
-                                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                      Full
-                                    </span>
-                                  )}
-                                </td>
-                              </tr>
+                              <React.Fragment key={room.id}>
+                                <tr
+                                  className="hover:bg-gray-50 transition-colors cursor-pointer"
+                                  onClick={() => toggleRoomExpansion(room.id)}
+                                >
+                                  <td className="px-4 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    <div className="flex items-center">
+                                      {room.residents && room.residents.length > 0 ? (
+                                        expandedRooms[room.id] ? (
+                                          <ChevronDown className="h-4 w-4 mr-2 text-gray-400" />
+                                        ) : (
+                                          <ChevronRight className="h-4 w-4 mr-2 text-gray-400" />
+                                        )
+                                      ) : (
+                                        <div className="w-4 h-4 mr-2"></div>
+                                      )}
+                                      {room.roomNumber}
+                                    </div>
+                                  </td>
+                                  <td className="px-4 py-2.5 whitespace-nowrap text-sm text-gray-500">
+                                    {room.floor}
+                                  </td>
+                                  <td className="px-4 py-2.5 whitespace-nowrap text-sm text-gray-500">
+                                    {room.capacity}
+                                  </td>
+                                  <td className="px-4 py-2.5 whitespace-nowrap text-sm text-gray-500">
+                                    {room.occupancy}/{room.capacity}
+                                  </td>
+                                  <td className="px-4 py-2.5 whitespace-nowrap text-sm">
+                                    {room.occupancy < room.capacity ? (
+                                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        Available
+                                      </span>
+                                    ) : (
+                                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                        Full
+                                      </span>
+                                    )}
+                                  </td>
+                                  <td className="px-4 py-2.5 text-sm">
+                                    {room.residents && room.residents.length > 0 ? (
+                                      <div className="text-xs text-gray-600 font-medium">
+                                        {room.residents.length} resident{room.residents.length !== 1 ? 's' : ''}
+                                        <span className="text-gray-400 ml-1">
+                                          (click to {expandedRooms[room.id] ? 'collapse' : 'expand'})
+                                        </span>
+                                      </div>
+                                    ) : (
+                                      <div className="text-xs text-gray-400 italic">
+                                        No residents
+                                      </div>
+                                    )}
+                                  </td>
+                                  <td className="px-4 py-2.5 whitespace-nowrap text-sm">
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation()
+                                        handleDeleteRoom(hostel.id, room.id, room.roomNumber)
+                                      }}
+                                      className="text-red-600 hover:text-red-900 hover:bg-red-50 p-1 rounded transition-colors"
+                                      title={`Delete room ${room.roomNumber}`}
+                                      disabled={room.occupancy > 0}
+                                    >
+                                      <Trash2 className="h-4 w-4" />
+                                    </button>
+                                    {room.occupancy > 0 && (
+                                      <span className="ml-2 text-xs text-gray-500">
+                                        Cannot delete (occupied)
+                                      </span>
+                                    )}
+                                  </td>
+                                </tr>
+                                
+                                {/* Expanded resident details */}
+                                {expandedRooms[room.id] && room.residents && room.residents.length > 0 && (
+                                  <tr>
+                                    <td colSpan={7} className="px-4 py-0 bg-gray-50">
+                                      <div className="py-4">
+                                        <h5 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+                                          <Users className="h-4 w-4 mr-2" />
+                                          Room {room.roomNumber} - Resident Details
+                                        </h5>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                          {room.residents.map((resident, index) => (
+                                            <div key={index} className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+                                              <div className="flex items-start justify-between mb-3">
+                                                <div className="flex items-center">
+                                                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                                    <User className="h-5 w-5 text-blue-600" />
+                                                  </div>
+                                                  <div>
+                                                    <h6 className="font-semibold text-gray-900">{resident.name}</h6>
+                                                    <p className="text-sm text-gray-600">{resident.registrationNumber}</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              
+                                              {/* Student contact and academic details */}
+                                              <div className="space-y-2 text-sm">
+                                                {resident.email && (
+                                                  <div className="flex items-center text-gray-600">
+                                                    <Mail className="h-4 w-4 mr-2" />
+                                                    <span>{resident.email}</span>
+                                                  </div>
+                                                )}
+                                                
+                                                {resident.phone && (
+                                                  <div className="flex items-center text-gray-600">
+                                                    <Phone className="h-4 w-4 mr-2" />
+                                                    <span>{resident.phone}</span>
+                                                  </div>
+                                                )}
+                                                
+                                                {resident.department && (
+                                                  <div className="flex items-center text-gray-600">
+                                                    <Building className="h-4 w-4 mr-2" />
+                                                    <span>{resident.department}</span>
+                                                  </div>
+                                                )}
+                                                
+                                                <div className="pt-2 mt-3 border-t border-gray-100">
+                                                  <div className="flex items-center justify-between">
+                                                    <span className="text-xs text-gray-500">Assigned Date</span>
+                                                    <span className="text-xs font-medium text-gray-700">
+                                                      {resident.assignedDate ? new Date(resident.assignedDate).toLocaleDateString() : 'Not available'}
+                                                    </span>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                )}
+                              </React.Fragment>
                             ))}
                           </tbody>
                         </table>
