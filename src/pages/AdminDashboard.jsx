@@ -1800,7 +1800,7 @@ export default function AdminDashboard() {
                                   {/* Special Reasons Related to Parent */}
                                   <div className="space-y-2 md:col-span-2">
                                     <label className="block text-sm font-medium text-gray-700">
-                                      Special Reasons Related to Parents
+                                      Special Reasons Related to Parent
                                     </label>
                                     <div className="flex items-center space-x-2">
                                       <input
@@ -1863,6 +1863,16 @@ export default function AdminDashboard() {
                                 </h4>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                  <div className="space-y-2">
+                                    <label className="block text-sm font-medium text-gray-700">Prepared by</label>
+                                    <input
+                                      type="text"
+                                      value={evaluationData.preparedBy || ''}
+                                      onChange={(e) => handleEvaluationChange('preparedBy', e.target.value)}
+                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                      placeholder="Enter name"
+                                    />
+                                  </div>
 
                                   <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Checked by</label>
@@ -1875,6 +1885,16 @@ export default function AdminDashboard() {
                                     />
                                   </div>
 
+                                  <div className="space-y-2">
+                                    <label className="block text-sm font-medium text-gray-700">Signature of Subject Clerk</label>
+                                    <input
+                                      type="text"
+                                      value={evaluationData.subjectClerkSignature || ''}
+                                      onChange={(e) => handleEvaluationChange('subjectClerkSignature', e.target.value)}
+                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                      placeholder="Enter signature/name"
+                                    />
+                                  </div>
 
                                   <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Signature of Sub Warden</label>
@@ -1912,7 +1932,7 @@ export default function AdminDashboard() {
                                   </div>
 
                                   <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Signature of Warden/Assistant Registrar</label>
+                                    <label className="block text-sm font-medium text-gray-700">Signature of Warden or Sr. Assistant/Assistant Registrar</label>
                                     <input
                                       type="text"
                                       value={evaluationData.wardenSignature || ''}
@@ -1979,7 +1999,7 @@ export default function AdminDashboard() {
                                   onClick={() => setEvaluationData({})}
                                   className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                                 >
-                                  Clear Application
+                                  Clear Form
                                 </button>
                                 <button
                                   onClick={saveEvaluation}
@@ -2047,7 +2067,6 @@ export default function AdminDashboard() {
                     Create New Notice
                   </h2>
                 </div>
-
                 <div className="p-6">
                   <div className="space-y-4">
                     <div>
@@ -2061,14 +2080,10 @@ export default function AdminDashboard() {
                       >
                         <option value="info">Information</option>
                         <option value="warning">Warning</option>
+                        <option value="success">Success</option>
                         <option value="urgent">Urgent</option>
-                        <option value="event">Event</option>
-                        <option value="maintenance">Maintenance</option>
-                        <option value="achievement">Achievement</option>
-                        <option value="reminder">Reminder</option>
                       </select>
                     </div>
-
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -2083,17 +2098,6 @@ export default function AdminDashboard() {
                       />
                     </div>
 
-                    {/* Expiry Date */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Expiry Date</label>
-                      <input
-                        type="date"
-                        value={noticeForm.expiryDate || ""}
-                        onChange={(e) => setNoticeForm(prev => ({ ...prev, expiryDate: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4a2d5f]"
-                      />
-                    </div>                    
-
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Notice Content
@@ -2106,18 +2110,6 @@ export default function AdminDashboard() {
                         placeholder="Enter notice content..."
                       />
                     </div>
-
-                      {/* Pin Important Notices to the top of the dash board */}
-                      <div className="flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={noticeForm.pinned || false}
-                          onChange={(e) => setNoticeForm(prev => ({ ...prev, pinned: e.target.checked }))}
-                          className="mr-2"
-                        />
-                        <label className="text-sm text-gray-700">Pin this notice to top</label>
-                      </div>          
-
 
                     <div className="flex justify-end space-x-3">
                       <button
