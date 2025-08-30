@@ -16,7 +16,7 @@ export default function ApplicationForm() {
     // Basic Information
     yearOfApplying: "",
     degreeType: "",
-    faculty: "Faculty of Engineering.....",
+    faculty: "Faculty of Engineering",
     registrationNumber: "",
     fullName: currentUser?.displayName || "",
     nameWithInitials: "",
