@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { collection, getDocs, query, where, doc, getDoc, updateDoc, increment } from "firebase/firestore"
+import { collection, getDocs, query, where, doc, updateDoc, increment } from "firebase/firestore"
 import { db } from "../firebase"
 import { AlertCircle, X, Check, Search, Building, Home, Users, Loader2, ArrowRight } from "lucide-react"
 
@@ -95,7 +95,12 @@ export default function RoomAssignmentModal({ application, onClose, onComplete }
           residents: [...(selectedRoom.residents || []), {
             id: application.userId,
             name: application.fullName,
-            applicationId: application.id
+            applicationId: application.id,
+            registrationNumber: application.registrationNumber,
+            assignedDate: new Date().toISOString(),
+            email: application.email || null,
+            phone: application.mobileNumber || null,
+            department: application.department || null
           }]
         }
       )
@@ -202,7 +207,7 @@ export default function RoomAssignmentModal({ application, onClose, onComplete }
                 <div className="mb-6">
                   <h3 className="text-lg font-medium mb-3 text-gray-800 flex items-center">
                     <Building className="h-5 w-5 mr-2 text-[#4a2d5f]" />
-                    Available Hostels
+                    Hostels with Available Rooms
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {filteredHostels.map((hostel, index) => (
@@ -251,7 +256,7 @@ export default function RoomAssignmentModal({ application, onClose, onComplete }
                         Rooms in {selectedHostel.name}
                       </h3>
                       <span className="text-sm text-gray-500">
-                        Select a room to assign
+                        Select a room for assignment
                       </span>
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
@@ -327,7 +332,7 @@ export default function RoomAssignmentModal({ application, onClose, onComplete }
                 </>
               ) : (
                 <>
-                  <Check className="h-4 w-4 mr-2" /> Assign Room
+                  <Check className="h-4 w-4 mr-2" /> Confirm Assignment
                 </>
               )}
             </button>
