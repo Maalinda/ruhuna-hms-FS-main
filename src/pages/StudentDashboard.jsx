@@ -60,6 +60,7 @@ export default function StudentDashboard() {
   const [showPaymentForm, setShowPaymentForm] = useState(false)
   const [paymentFile, setPaymentFile] = useState(null)
   const [uploadingPayment, setUploadingPayment] = useState(false)
+  const [showRegulations, setShowRegulations] = useState(false);
 
   const fetchUserApplications = async () => {
     if (!currentUser) return
@@ -234,6 +235,62 @@ export default function StudentDashboard() {
       setSubmittingDefect(false)
     }
   }
+const hostelRegulations = [
+  {
+    title: "Check-in and Check-out",
+    rules: [
+      "Check-in time: 6:00 AM to 10:00 PM",
+      "Late entry requires prior permission from warden",
+      "Guests must be registered at the front desk",
+      "Maximum guest stay: 2 days with approval",
+    ],
+  },
+  {
+    title: "Room and Property Care",
+    rules: [
+      "Keep rooms clean and tidy at all times",
+      "Report any damages immediately",
+      "No modifications to room structure",
+      "Room inspections may occur monthly",
+    ],
+  },
+  {
+    title: "Noise and Conduct",
+    rules: [
+      "Quiet hours: 10:00 PM to 6:00 AM",
+      "No loud music or disturbances",
+      "Respectful behavior toward staff and residents",
+      "No alcohol or illegal substances",
+    ],
+  },
+  {
+    title: "Common Areas",
+    rules: [
+      "Clean up after using common facilities",
+      "No personal items in common areas",
+      "Study rooms: quiet environment only",
+      "Kitchen facilities: clean after use",
+    ],
+  },
+  {
+    title: "Safety and Security",
+    rules: [
+      "Keep room doors locked when away",
+      "Do not share room keys or access cards",
+      "Report suspicious activities immediately",
+      "Emergency procedures must be followed",
+    ],
+  },
+  {
+    title: "Internet and Technology",
+    rules: [
+      "Use WiFi responsibly and ethically",
+      "No illegal downloads or activities",
+      "Report technical issues to IT support",
+      "Personal routers are not allowed",
+    ],
+  },
+];
 
   const handlePaymentUpload = async (e) => {
     e.preventDefault()
@@ -507,14 +564,17 @@ export default function StudentDashboard() {
                 <div className="p-4">
                   <ul className="space-y-3">
                     <li>
-                      <a href="#" className="flex items-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
-                        <div className="p-1.5 bg-blue-100 rounded-md mr-3">
-                          <BookOpen className="h-4 w-4 text-blue-600" />
-                        </div>
-                        <span className="text-gray-700">Hostel Regulations</span>
-                        <ChevronRight className="h-4 w-4 text-gray-400 ml-auto" />
-                      </a>
-                    </li>
+  <button 
+    onClick={() => setShowRegulations(true)}
+    className="w-full flex items-center p-2 hover:bg-gray-50 rounded-lg transition-colors text-left"
+  >
+    <div className="p-1.5 bg-blue-100 rounded-md mr-3">
+      <BookOpen className="h-4 w-4 text-blue-600" />
+    </div>
+    <span className="text-gray-700">Hostel Regulations</span>
+    <ChevronRight className="h-4 w-4 text-gray-400 ml-auto" />
+  </button>
+</li>
                     <li>
                       <a href="#" className="flex items-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
                         <div className="p-1.5 bg-green-100 rounded-md mr-3">
@@ -1276,6 +1336,88 @@ export default function StudentDashboard() {
           </div>
         </div>
       )}
+      {/* Hostel Regulations Modal */}
+{showRegulations && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div className="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-6 text-white">
+        <div className="flex items-center justify-between">
+          <h3 className="text-2xl font-bold flex items-center">
+            <BookOpen className="h-6 w-6 mr-3" />
+            Hostel Regulations
+          </h3>
+          <button
+            onClick={() => setShowRegulations(false)}
+            className="text-white hover:text-gray-200 transition-colors"
+          >
+            <XCircle className="h-6 w-6" />
+          </button>
+        </div>
+        <p className="text-blue-100 mt-2">
+          Please read and follow these regulations to ensure a pleasant stay for everyone.
+        </p>
+      </div>
+      <div className="p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {hostelRegulations.map((section, index) => (
+            <div key={index} className="bg-gray-50 rounded-lg p-5 border border-gray-200">
+              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                  <span className="text-blue-600 font-bold text-sm">{index + 1}</span>
+                </div>
+                {section.title}
+              </h4>
+              <ul className="space-y-2">
+                {section.rules.map((rule, ruleIndex) => (
+                  <li key={ruleIndex} className="flex items-start text-gray-700">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span className="text-sm leading-relaxed">{rule}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        {/* Important Notice */}
+        <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <div className="flex items-start">
+            <AlertTriangleIcon className="h-5 w-5 text-yellow-500 mt-0.5 mr-3 flex-shrink-0" />
+            <div>
+              <h5 className="font-medium text-yellow-800 mb-1">Important Notice</h5>
+              <p className="text-yellow-700 text-sm">
+                Violation of these regulations may result in warnings, fines, or termination of hostel accommodation. 
+                For clarifications, please contact the hostel administration.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Contact Information */}
+        <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="flex items-start">
+            <Info className="h-5 w-5 text-blue-500 mt-0.5 mr-3 flex-shrink-0" />
+            <div>
+              <h5 className="font-medium text-blue-800 mb-1">Need Help?</h5>
+              <p className="text-blue-700 text-sm">
+                Contact the hostel warden or administration office for any questions about these regulations.
+              </p>
+            </div>
+          </div>
+        </div>
+         <div className="flex justify-end mt-6">
+          <button
+            onClick={() => setShowRegulations(false)}
+            className="px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-colors font-medium"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+
     </div>
   )
 }
