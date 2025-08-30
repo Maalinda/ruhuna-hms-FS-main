@@ -1863,16 +1863,6 @@ export default function AdminDashboard() {
                                 </h4>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                  <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Prepared by</label>
-                                    <input
-                                      type="text"
-                                      value={evaluationData.preparedBy || ''}
-                                      onChange={(e) => handleEvaluationChange('preparedBy', e.target.value)}
-                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                      placeholder="Enter name"
-                                    />
-                                  </div>
 
                                   <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Checked by</label>
@@ -1885,16 +1875,6 @@ export default function AdminDashboard() {
                                     />
                                   </div>
 
-                                  <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Signature of Subject Clerk</label>
-                                    <input
-                                      type="text"
-                                      value={evaluationData.subjectClerkSignature || ''}
-                                      onChange={(e) => handleEvaluationChange('subjectClerkSignature', e.target.value)}
-                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                      placeholder="Enter signature/name"
-                                    />
-                                  </div>
 
                                   <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Signature of Sub Warden</label>
@@ -2126,6 +2106,18 @@ export default function AdminDashboard() {
                         placeholder="Enter notice content..."
                       />
                     </div>
+
+                      {/* Pin Important Notices to the top of the dash board */}
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={noticeForm.pinned || false}
+                          onChange={(e) => setNoticeForm(prev => ({ ...prev, pinned: e.target.checked }))}
+                          className="mr-2"
+                        />
+                        <label className="text-sm text-gray-700">Pin this notice to top</label>
+                      </div>          
+
 
                     <div className="flex justify-end space-x-3">
                       <button
