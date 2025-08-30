@@ -48,12 +48,7 @@ function App() {
                   </PrivateRoute>
                 }
               />
-              <Route
-                path="/aboutus"
-                element={
-                  <AboutUs />
-                }
-              />
+              <Route path="/aboutus" element={<AboutUs />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
