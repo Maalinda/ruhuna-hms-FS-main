@@ -1800,7 +1800,7 @@ export default function AdminDashboard() {
                                   {/* Special Reasons Related to Parent */}
                                   <div className="space-y-2 md:col-span-2">
                                     <label className="block text-sm font-medium text-gray-700">
-                                      Special Reasons Related to Parent
+                                      Special Reasons Related to Parents
                                     </label>
                                     <div className="flex items-center space-x-2">
                                       <input
@@ -1912,7 +1912,7 @@ export default function AdminDashboard() {
                                   </div>
 
                                   <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Signature of Warden or Sr. Assistant/Assistant Registrar</label>
+                                    <label className="block text-sm font-medium text-gray-700">Signature of Warden/Assistant Registrar</label>
                                     <input
                                       type="text"
                                       value={evaluationData.wardenSignature || ''}
@@ -1979,7 +1979,7 @@ export default function AdminDashboard() {
                                   onClick={() => setEvaluationData({})}
                                   className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                                 >
-                                  Clear Form
+                                  Clear Application
                                 </button>
                                 <button
                                   onClick={saveEvaluation}
