@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react"
 import { collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp, addDoc } from "firebase/firestore"
 import { db } from "../firebase"
+
+
 import {
   AlertCircle,
   CheckCircle,
@@ -48,6 +50,7 @@ import {
   Bug,
   AlertTriangle as AlertTriangleIcon
 } from "lucide-react"
+
 import HostelManagement from "../components/HostelManagement"
 import RoomAssignmentModal from "../components/RoomAssignmentModal"
 
@@ -623,6 +626,53 @@ export default function AdminDashboard() {
     }
   }
 
+  const handlePaymentApproval = async (applicationId, newStatus) => {
+    try {
+      const application = applications.find(app => app.id === applicationId)
+      if (!application || !application.paymentInfo) {
+        setError("Application or payment information not found.")
+        return
+      }
+
+      const updateData = {
+        paymentInfo: {
+          ...application.paymentInfo,
+          status: newStatus,
+          ...(newStatus === 'approved' ? {
+            approvedBy: 'Current Admin', // You can replace with actual admin user info
+            approvedDate: new Date().toISOString()
+          } : {
+            rejectedBy: 'Current Admin', // You can replace with actual admin user info
+            rejectedDate: new Date().toISOString(),
+            rejectionReason: 'Invalid payment receipt' // You could add a prompt for reason
+          })
+        }
+      }
+
+      await updateDoc(doc(db, "applications", applicationId), updateData)
+
+      // Update local state
+      const updatedApplications = applications.map(app =>
+        app.id === applicationId
+          ? { ...app, paymentInfo: updateData.paymentInfo }
+          : app
+      )
+      setApplications(updatedApplications)
+
+      // Update selected application if it's the same one
+      if (selectedApplication?.id === applicationId) {
+        setSelectedApplication({
+          ...selectedApplication,
+          paymentInfo: updateData.paymentInfo
+        })
+      }
+
+    } catch (error) {
+      console.error("Error updating payment status:", error)
+      setError("Failed to update payment status. Please try again.")
+    }
+  }
+
   // Initialize evaluation data when application is selected
   useEffect(() => {
     if (selectedApplication) {
@@ -653,7 +703,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 via-purple-50/30 to-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className={`transition-all duration-700 ease-in-out transform ${activateAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
             <div>
@@ -878,7 +928,6 @@ export default function AdminDashboard() {
                         <option value="100_to_200">100 - 199 marks</option>
                         <option value="200_to_300">200 - 299 marks</option>
                         <option value="300_to_400">300 - 400 marks</option>
-                        <option value="above_300">Above 300 marks</option>
                       </select>
                     </div>
                   </div>
@@ -1249,6 +1298,192 @@ export default function AdminDashboard() {
                           </div>
                         )}
 
+                        {/* Payment Information */}
+                        <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-5 border border-gray-100 shadow-sm transform transition-all hover:shadow-md hover:translate-y-[-2px]">
+                          <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-800">
+                            <DollarSign className="h-5 w-5 mr-2 text-[#e91e63]" />
+                            Payment Information
+                          </h3>
+
+                          {selectedApplication.paymentInfo ? (
+                            <div className="space-y-4">
+                              {/* Payment Status Header */}
+                              <div className={`border rounded-lg p-4 ${selectedApplication.paymentInfo.status === 'approved'
+                                  ? 'bg-green-50 border-green-200'
+                                  : selectedApplication.paymentInfo.status === 'rejected'
+                                    ? 'bg-red-50 border-red-200'
+                                    : 'bg-yellow-50 border-yellow-200'
+                                }`}>
+                                <div className="flex items-center justify-between mb-4">
+                                  <div className="flex items-center">
+                                    {selectedApplication.paymentInfo.status === 'approved' ? (
+                                      <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
+                                    ) : selectedApplication.paymentInfo.status === 'rejected' ? (
+                                      <XCircle className="h-5 w-5 text-red-500 mr-3" />
+                                    ) : (
+                                      <Clock className="h-5 w-5 text-yellow-500 mr-3" />
+                                    )}
+                                    <div>
+                                      <span className={`font-semibold text-lg ${selectedApplication.paymentInfo.status === 'approved'
+                                          ? 'text-green-800'
+                                          : selectedApplication.paymentInfo.status === 'rejected'
+                                            ? 'text-red-800'
+                                            : 'text-yellow-800'
+                                        }`}>
+                                        {selectedApplication.paymentInfo.status === 'approved'
+                                          ? 'Payment Approved'
+                                          : selectedApplication.paymentInfo.status === 'rejected'
+                                            ? 'Payment Rejected'
+                                            : 'Payment Pending Review'
+                                        }
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  {selectedApplication.paymentInfo.status === 'pending' && (
+                                    <div className="flex space-x-3">
+                                      <button
+                                        onClick={() => handlePaymentApproval(selectedApplication.id, 'approved')}
+                                        className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium shadow-sm"
+                                      >
+                                        <CheckCircle className="h-4 w-4 mr-2" />
+                                        Approve
+                                      </button>
+                                      <button
+                                        onClick={() => handlePaymentApproval(selectedApplication.id, 'rejected')}
+                                        className="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium shadow-sm"
+                                      >
+                                        <XCircle className="h-4 w-4 mr-2" />
+                                        Reject
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+
+                                {/* Payment Details Grid */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                  <div className="space-y-3">
+                                    <div className="flex justify-between items-center">
+                                      <span className="text-sm font-medium text-gray-600">Amount:</span>
+                                      <span className="font-semibold text-gray-900 text-lg">
+                                        {selectedApplication.paymentInfo.currency} {selectedApplication.paymentInfo.amount}
+                                      </span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                      <span className="text-sm font-medium text-gray-600">Upload Date:</span>
+                                      <span className="font-medium text-gray-800">
+                                        {new Date(selectedApplication.paymentInfo.uploadDate).toLocaleDateString()}
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <div className="space-y-3">
+                                    <div className="flex justify-between items-center">
+                                      <span className="text-sm font-medium text-gray-600">Receipt File:</span>
+                                      <span className="font-medium text-gray-800 text-right max-w-32 truncate" title={selectedApplication.paymentInfo.fileName}>
+                                        {selectedApplication.paymentInfo.fileName}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Actions Row - Separate from grid */}
+                                <div className="mt-4 pt-3 border-t border-gray-200">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-sm font-medium text-gray-600">Receipt Actions:</span>
+                                    <div className="flex space-x-3">
+                                      <a
+                                        href={selectedApplication.paymentInfo.receiptUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm font-medium"
+                                      >
+                                        <Eye className="h-4 w-4 mr-2" />
+                                        Preview Receipt
+                                      </a>
+                                      <a
+                                        href={selectedApplication.paymentInfo.receiptUrl}
+                                        download
+                                        className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+                                      >
+                                        <Download className="h-4 w-4 mr-2" />
+                                        Download
+                                      </a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Approval Details */}
+                              {selectedApplication.paymentInfo.status === 'approved' && selectedApplication.paymentInfo.approvedBy && (
+                                <div className="bg-white border border-green-200 rounded-lg p-4">
+                                  <h4 className="font-medium text-green-800 mb-2 flex items-center">
+                                    <CheckCircle className="h-4 w-4 mr-2" />
+                                    Approval Details
+                                  </h4>
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                    <div className="flex justify-between">
+                                      <span className="text-gray-600">Approved by:</span>
+                                      <span className="font-medium text-green-700">{selectedApplication.paymentInfo.approvedBy}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                      <span className="text-gray-600">Approved on:</span>
+                                      <span className="font-medium text-green-700">{new Date(selectedApplication.paymentInfo.approvedDate).toLocaleDateString()}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Rejection Details */}
+                              {selectedApplication.paymentInfo.status === 'rejected' && selectedApplication.paymentInfo.rejectedBy && (
+                                <div className="bg-white border border-red-200 rounded-lg p-4">
+                                  <h4 className="font-medium text-red-800 mb-2 flex items-center">
+                                    <XCircle className="h-4 w-4 mr-2" />
+                                    Rejection Details
+                                  </h4>
+                                  <div className="space-y-3 text-sm">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-600">Rejected by:</span>
+                                        <span className="font-medium text-red-700">{selectedApplication.paymentInfo.rejectedBy}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-600">Rejected on:</span>
+                                        <span className="font-medium text-red-700">{new Date(selectedApplication.paymentInfo.rejectedDate).toLocaleDateString()}</span>
+                                      </div>
+                                    </div>
+                                    {selectedApplication.paymentInfo.rejectionReason && (
+                                      <div className="pt-2 border-t border-red-100">
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-600">Reason:</span>
+                                          <span className="font-medium text-red-700 text-right flex-1 ml-3">{selectedApplication.paymentInfo.rejectionReason}</span>
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
+                              <div className="flex items-start">
+                                <AlertTriangle className="h-6 w-6 text-orange-500 mr-3 mt-0.5 flex-shrink-0" />
+                                <div className="flex-1">
+                                  <h4 className="font-semibold text-orange-800 mb-2">Payment Pending</h4>
+                                  <p className="text-orange-700 text-sm leading-relaxed">
+                                    Student has not uploaded payment receipt yet. The annual hostel fee of <span className="font-medium">LKR 1,500</span> is required for accommodation services.
+                                  </p>
+                                  <div className="mt-3 text-xs text-orange-600">
+                                    <p>• Students must upload bank receipt as proof of payment</p>
+                                    <p>• Payment details will be verified before approval</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+
                         {selectedApplication.siblings && selectedApplication.siblings.length > 0 && selectedApplication.siblings[0].name && (
                           <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-5 border border-gray-100 shadow-sm transform transition-all hover:shadow-md hover:translate-y-[-2px]">
                             <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-800">
@@ -1385,7 +1620,7 @@ export default function AdminDashboard() {
                                         className="flex items-center px-3 py-1.5 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors text-sm"
                                       >
                                         <ExternalLink className="h-4 w-4 mr-1" />
-                                        View
+                                        Preview
                                       </button>
                                       <a
                                         href={selectedApplication.gramaNiladhariRecommendationUrl}
@@ -1455,7 +1690,7 @@ export default function AdminDashboard() {
                                             className="flex items-center px-2 py-1 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition-colors text-sm"
                                           >
                                             <ExternalLink className="h-3 w-3 mr-1" />
-                                            View
+                                            Preview
                                           </button>
                                           <a
                                             href={doc.url}
@@ -1513,7 +1748,7 @@ export default function AdminDashboard() {
                               <div className="bg-white p-5 rounded-lg border border-amber-200">
                                 <h4 className="text-lg font-semibold mb-4 flex items-center text-gray-800">
                                   <Calculator className="h-5 w-5 mr-2 text-amber-600" />
-                                  Valuation Marks
+                                  Evaluation Marks
                                 </h4>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1566,7 +1801,7 @@ export default function AdminDashboard() {
                                   {/* Special Reasons Related to Parent */}
                                   <div className="space-y-2 md:col-span-2">
                                     <label className="block text-sm font-medium text-gray-700">
-                                      Special Reasons Related to Parent
+                                      Special Reasons Related to Parents
                                     </label>
                                     <div className="flex items-center space-x-2">
                                       <input
@@ -1609,6 +1844,7 @@ export default function AdminDashboard() {
                                     </p>
                                   </div>
 
+
                                   {/* Total Marks */}
                                   <div className="md:col-span-2 pt-4 border-t border-gray-200">
                                     <div className="flex items-center justify-between">
@@ -1630,17 +1866,6 @@ export default function AdminDashboard() {
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                   <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Prepared by</label>
-                                    <input
-                                      type="text"
-                                      value={evaluationData.preparedBy || ''}
-                                      onChange={(e) => handleEvaluationChange('preparedBy', e.target.value)}
-                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                      placeholder="Enter name"
-                                    />
-                                  </div>
-
-                                  <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Checked by</label>
                                     <input
                                       type="text"
@@ -1648,17 +1873,6 @@ export default function AdminDashboard() {
                                       onChange={(e) => handleEvaluationChange('checkedBy', e.target.value)}
                                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                       placeholder="Enter name"
-                                    />
-                                  </div>
-
-                                  <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Signature of Subject Clerk</label>
-                                    <input
-                                      type="text"
-                                      value={evaluationData.subjectClerkSignature || ''}
-                                      onChange={(e) => handleEvaluationChange('subjectClerkSignature', e.target.value)}
-                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                      placeholder="Enter signature/name"
                                     />
                                   </div>
 
@@ -1674,6 +1888,7 @@ export default function AdminDashboard() {
                                   </div>
                                 </div>
                               </div>
+
 
                               {/* Recommendation Section */}
                               <div className="bg-white p-5 rounded-lg border border-purple-200">
@@ -1698,7 +1913,7 @@ export default function AdminDashboard() {
                                   </div>
 
                                   <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Signature of Warden or Sr. Assistant/Assistant Registrar</label>
+                                    <label className="block text-sm font-medium text-gray-700">Signature of Warden/Assistant Registrar</label>
                                     <input
                                       type="text"
                                       value={evaluationData.wardenSignature || ''}
@@ -1714,7 +1929,7 @@ export default function AdminDashboard() {
                               <div className="bg-white p-5 rounded-lg border border-green-200">
                                 <h4 className="text-lg font-semibold mb-4 flex items-center text-gray-800">
                                   <CheckCircle className="h-5 w-5 mr-2 text-green-600" />
-                                  Final Approval Decision
+                                  Final Decision
                                 </h4>
 
                                 <div className="space-y-4">
@@ -1765,7 +1980,7 @@ export default function AdminDashboard() {
                                   onClick={() => setEvaluationData({})}
                                   className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                                 >
-                                  Clear Form
+                                  Clear Application
                                 </button>
                                 <button
                                   onClick={saveEvaluation}
@@ -1801,7 +2016,7 @@ export default function AdminDashboard() {
                     </div>
                     <h3 className="text-xl font-semibold text-gray-700 mb-2">No Application Selected</h3>
                     <p className="text-gray-600 max-w-md">
-                      Choose an application from the list to see details and take action.
+                    Select an application to review and process.
                     </p>
                   </div>
                 )}
@@ -1814,7 +2029,7 @@ export default function AdminDashboard() {
               <div className="bg-gradient-to-r from-[#4a2d5f] to-[#6d4088] p-4 text-white">
                 <h2 className="text-xl font-semibold flex items-center">
                   <Layout className="h-5 w-5 mr-2" />
-                  Hostel Management
+                  Hostel and Room Management
                 </h2>
               </div>
               <div className="p-1">
@@ -1830,15 +2045,17 @@ export default function AdminDashboard() {
                 <div className="bg-gradient-to-r from-[#4a2d5f] to-[#6d4088] p-4 text-white">
                   <h2 className="text-xl font-semibold flex items-center">
                     <Plus className="h-5 w-5 mr-2" />
-                    Create New Notice
+                    Create a New Notice
                   </h2>
                 </div>
+
                 <div className="p-6">
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Notice Type
+                        Type of the Notice
                       </label>
+
                       <select
                         value={noticeForm.type}
                         onChange={(e) => setNoticeForm(prev => ({ ...prev, type: e.target.value }))}
@@ -1846,14 +2063,17 @@ export default function AdminDashboard() {
                       >
                         <option value="info">Information</option>
                         <option value="warning">Warning</option>
-                        <option value="success">Success</option>
                         <option value="urgent">Urgent</option>
+                        <option value="event">Event</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="achievement">Achievement</option>
+                        <option value="reminder">Reminder</option>
                       </select>
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Notice Title
+                        Title of the Notice
                       </label>
                       <input
                         type="text"
@@ -1864,9 +2084,20 @@ export default function AdminDashboard() {
                       />
                     </div>
 
+                    {/* Set Expiry Date for the Notice */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Expiry Date</label>
+                      <input
+                        type="date"
+                        value={noticeForm.expiryDate || ""}
+                        onChange={(e) => setNoticeForm(prev => ({ ...prev, expiryDate: e.target.value }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4a2d5f]"
+                      />
+                    </div>  
+                                                
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Notice Content
+                        Content of the Notice
                       </label>
                       <textarea
                         value={noticeForm.content}
@@ -1876,6 +2107,17 @@ export default function AdminDashboard() {
                         placeholder="Enter notice content..."
                       />
                     </div>
+
+                      {/* Pin Important Notices to the Top of the Dashboard */}
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={noticeForm.pinned || false}
+                          onChange={(e) => setNoticeForm(prev => ({ ...prev, pinned: e.target.checked }))}
+                          className="mr-2"
+                        />
+                        <label className="text-sm text-gray-700">Pin to Top</label>
+                      </div>          
 
                     <div className="flex justify-end space-x-3">
                       <button
@@ -1913,8 +2155,8 @@ export default function AdminDashboard() {
                   {notices.length === 0 ? (
                     <div className="p-8 text-center">
                       <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                      <h3 className="text-lg font-medium text-gray-700 mb-2">No Notices Created</h3>
-                      <p className="text-gray-500">Create your first notice to broadcast information to all students.</p>
+                      <h3 className="text-lg font-medium text-gray-700 mb-2">No Notices to Display</h3>
+                      <p className="text-gray-500">Create a new announcement for all students</p>
                     </div>
                   ) : (
                     notices.map((notice) => (
@@ -1934,6 +2176,7 @@ export default function AdminDashboard() {
                             <h3 className="font-semibold text-gray-900 mb-1">{notice.title}</h3>
                             <p className="text-gray-600 text-sm">{notice.content}</p>
                           </div>
+
                           <button
                             onClick={() => deleteNotice(notice.id)}
                             className="ml-4 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
@@ -1941,6 +2184,7 @@ export default function AdminDashboard() {
                           >
                             <Trash className="h-4 w-4" />
                           </button>
+
                         </div>
                       </div>
                     ))
@@ -2014,7 +2258,7 @@ export default function AdminDashboard() {
                     <div className="p-8 text-center">
                       <Bug className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                       <h3 className="text-lg font-medium text-gray-700 mb-2">No Defect Reports</h3>
-                      <p className="text-gray-500">No issues have been reported by students yet.</p>
+                      <p className="text-gray-500">No Defect Reports have been reported by students yet.</p>
                     </div>
                   ) : (
                     defectReports.map((report) => (
@@ -2083,7 +2327,8 @@ export default function AdminDashboard() {
       </div>
 
       {/* Room Assignment Modal */}
-      {showRoomAssignment && applicationToAssign && (
+      {showRoomAssignment && applicationToAssign && 
+      (
         <RoomAssignmentModal
           application={applicationToAssign}
           onClose={() => {
